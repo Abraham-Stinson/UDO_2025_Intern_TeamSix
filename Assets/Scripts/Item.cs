@@ -1,11 +1,12 @@
 using System;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody),typeof(SphereCollider))]
+[RequireComponent(typeof(Rigidbody))]
 public class Item : MonoBehaviour
 {
     [Header("Elements")] 
     [SerializeField] private Renderer renderer;
+    [SerializeField] private Collider collider;
 
     private Material baseMaterial;
 
@@ -16,13 +17,13 @@ public class Item : MonoBehaviour
 
     public void DisableShadows()
     {
-        
+        renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
     }
 
     public void DisablePhysics()
     {
         GetComponent<Rigidbody>().isKinematic = true;
-        GetComponent<Collider>().enabled = false;
+        collider.enabled = false;
     }
 
 

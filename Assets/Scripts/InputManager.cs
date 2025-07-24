@@ -36,7 +36,11 @@ public class InputManager : MonoBehaviour
             return;
         }
 
-        if (!hit.collider.TryGetComponent(out Item item))
+        if (hit.collider.transform.parent == null)
+        {
+            return;
+        }
+        if (!hit.collider.transform.parent.TryGetComponent(out Item item))
         {
             DeselectionCurrentItem();
             return;
