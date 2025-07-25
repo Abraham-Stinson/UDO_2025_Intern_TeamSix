@@ -6,10 +6,20 @@ public class ItemSpot : MonoBehaviour
     private Item item;
 
 
+
+   
+    
     public void Populate(Item item)
     {
         this.item = item;
         item.transform.SetParent(transform);
+        
+        item.AssignSpot(this);
+    }
+    
+    public void Clear()
+    {
+        item = null;
     }
     public bool IsEmpty()
     {

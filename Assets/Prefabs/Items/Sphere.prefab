@@ -181,5 +181,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd461eb0d3f29b847b9e5a20ea7b2184, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  itemName: 1
   renderer: {fileID: 912590885696817189}
   collider: {fileID: 331816728715407758}
