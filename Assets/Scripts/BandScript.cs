@@ -6,7 +6,7 @@ public class BandScript : MonoBehaviour
 {
     [Range(1, 100)] public float bandSpeed = 10f;
     public Vector3 bandDirection = -Vector3.forward;
-    //public ForceMode bandForceMode;//For Testing
+    //public ForceMode bandForceMode;//For Testing // Deactived for optimzation
 
     void Start()
     {
