@@ -4,7 +4,7 @@ public class ItemSpot : MonoBehaviour
 {
     [Header("Settings")] 
     private Item item;
-
+    public Item Item => item;
 
 
    

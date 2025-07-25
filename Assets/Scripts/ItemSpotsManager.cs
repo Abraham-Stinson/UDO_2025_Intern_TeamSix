@@ -84,39 +84,46 @@ public class ItemSpotsManager : MonoBehaviour
 
 
     }
-    private void TryMoveToItemIdealSpot(Item item, ItemSpot idealSpot)
+    private void TryMoveToItemIdealSpot(Item item, ItemSpot targetSpot)
     {
-        if (!idealSpot.IsEmpty())
+        if (!targetSpot.IsEmpty())
         {
-            HandleIdealSpotFull(item, idealSpot);
+            HandleIdealSpotFull(item, targetSpot);
+            return;
         }
 
-        MoveItemToSpot(item, idealSpot);
+        MoveItemToSpot(item, targetSpot, () => HandleItemReachedSpot(item));
     }
 
-    private void MoveItemToSpot(Item item,ItemSpot targetSpot)
+    private void MoveItemToSpot(Item item,ItemSpot idealSpot,Action completeCallback)
     {
-        targetSpot.Populate(item);
+        idealSpot.Populate(item);
         item.transform.localPosition = itemLocalPositionOnSpot;
         item.transform.localScale = itemLocalScalenOnSpot;
         item.transform.localRotation=quaternion.identity;
 
         item.DisableShadows();
         item.DisablePhysics();
-
-        HandleFirstItemReachedSpot(item);
         
-        HandleItemReachedSpot(item);
+        
+        completeCallback?.Invoke();
+        //HandleItemReachedSpot(item,checkForMerge);
     }
 
-    private void HandleItemReachedSpot(Item item)
+    private void HandleItemReachedSpot(Item item,bool checkForMerge=true)
     {
+        if (!checkForMerge)
+            return;
+        
         if (itemMergeDataDictionnary[item.ItemName].CanMergeItems())
+        {
             MergeItems(itemMergeDataDictionnary[item.ItemName]);
+        }
         else
         {
             CheckForGameOver();
         }
+        
 
 
     }
@@ -131,21 +138,108 @@ public class ItemSpotsManager : MonoBehaviour
             items[i].Spot.Clear();
             Destroy(items[i].gameObject);
         }
-
         //remove this line after moving the items to the left
+        //isBusy = false;
+        
+        if (itemMergeDataDictionnary.Count<=0)
+        {
+            isBusy = false;
+        }
+        else
+        {
+            MoveAllItemsToTheLeft(HandleAllItemsMovedToTheLeft);
+        }
+        
+        
+    }
+
+    private void MoveAllItemsToTheLeft(Action completeCallback)
+    {
+        bool callbackTriggered = false;
+ 
+        for (int i = 3; i < spots.Length; i++)
+        {
+            ItemSpot spot = spots[i];
+ 
+            if (spot.IsEmpty())
+                continue;
+ 
+            Item item = spot.Item;
+            ItemSpot targetSpot = spots[i - 3];
+ 
+            if(!targetSpot.IsEmpty())
+            {
+                Debug.LogWarning($"{targetSpot.name} is full");
+                isBusy = false;
+                return;
+            }
+ 
+            spot.Clear();
+ 
+            completeCallback += () => HandleItemReachedSpot(item, false);
+            MoveItemToSpot(item, targetSpot, completeCallback);
+ 
+            callbackTriggered = true;
+        }
+ 
+        if (!callbackTriggered)
+        {
+            completeCallback?.Invoke();
+        }
+    } 
+
+    private void HandleAllItemsMovedToTheLeft()
+    {
         isBusy = false;
     }
 
+
     private void HandleIdealSpotFull(Item item, ItemSpot idealSpot)
     {
-        throw new NotImplementedException();
+        MoveAllItemsToTheRightFrom(idealSpot, item);
+    }
+
+    private void MoveAllItemsToTheRightFrom(ItemSpot idealSpot, Item itemToPlace)
+    {
+        int spotIndex = idealSpot.transform.GetSiblingIndex();
+
+        for (int i = spots.Length - 2; i >= spotIndex; i--)
+        {
+            ItemSpot spot = spots[i];
+            if (spot.IsEmpty())
+            {
+                continue;
+            }
+            
+            if (spots[i].IsEmpty())
+            {
+                continue;
+            }
+            
+            Item item = spots[i].Item;
+            
+            spot.Clear();
+
+            ItemSpot targetSpot = spots[i + 1];
+
+            if (!targetSpot.IsEmpty())
+            {
+                Debug.LogError("Error");
+                isBusy = false;
+                return;
+            }
+            
+            MoveItemToSpot(item, targetSpot, () => HandleItemReachedSpot(item, false));
+        }
+        
+        MoveItemToSpot(itemToPlace, idealSpot, () => HandleItemReachedSpot(itemToPlace));
     }
 
     private void MoveItemToFirstFreeSpot(Item item)
     {
-        ItemSpot targetspot = GetFreeSpot();
+        ItemSpot targetSpot = GetFreeSpot();
 
-        if (targetspot == null)
+        if (targetSpot == null)
         {
             Debug.LogError("Targetspot is null");
             return;
@@ -153,6 +247,9 @@ public class ItemSpotsManager : MonoBehaviour
 
         CreateItemMergeData(item);
         
+        MoveItemToSpot(item,targetSpot, () => HandleFirstItemReachedSpot(item));
+        
+        /*
         targetspot.Populate(item);
         item.transform.localPosition = itemLocalPositionOnSpot;
         item.transform.localScale = itemLocalScalenOnSpot;
@@ -162,7 +259,7 @@ public class ItemSpotsManager : MonoBehaviour
         item.DisablePhysics();
 
         HandleFirstItemReachedSpot(item);
-
+        */
     }
 
     private void HandleFirstItemReachedSpot(Item item)
