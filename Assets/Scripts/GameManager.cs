@@ -73,6 +73,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void LoadLevel(Levels level)
+    {
+        currentSpawnableObjects = new List<SpawnableObject>(level.spawnableObjects);
+    }
+
     /*public GameObject[] objectPrefab;
     public Vector3[] spawnPosition;
     [Range(0f, 10f)] public float spawnTime = 3f;
