@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System.Linq;
 
 
 [System.Serializable]
@@ -29,9 +30,14 @@ public class Levels
     [Header("Spawnable Objects")]
     public SpawnableObject[] spawnableObjects;
 
+    [Header("Spawn Time")]
+    public float minSpawnTime = 1f;
+    public float maxSpawnTime = 3f;
+
     [Space(5)]
     [Header("Level Status")]
     public bool isLevelComplete;
+    public bool isLevelUnlocked;
 }
 
 [System.Serializable]
@@ -42,7 +48,6 @@ public class SpawnableObject
     [Space(5)]
     public bool isTargetObject;
     public int targetCount;
-
 }
 public class GameManager : MonoBehaviour
 {
@@ -51,8 +56,10 @@ public class GameManager : MonoBehaviour
     [Space(10)]
     [SerializeField]
     public List<LevelData> levelData = new List<LevelData>();
-    private List<Levels> allLevels = new List<Levels>();
-    private List<SpawnableObject> currentSpawnableObjects = new List<SpawnableObject>();
+    public List<Levels> allLevels = new List<Levels>();
+    public List<SpawnableObject> currentSpawnableObjects = new List<SpawnableObject>();
+
+    private GameObject currentLevelInstance;
 
 
     private void Awake()
@@ -76,34 +83,17 @@ public class GameManager : MonoBehaviour
     public void LoadLevel(Levels level)
     {
         currentSpawnableObjects = new List<SpawnableObject>(level.spawnableObjects);
+        currentLevelInstance = Instantiate(level.levelPrefab);//IMPORTANT
+        var levelManager = currentLevelInstance.GetComponentInChildren<LevelManager>();
+        levelManager.spawnableObjects = level.spawnableObjects.Select(obj => obj.objectPrefab).ToArray();
+        levelManager.minSpawnTime = level.minSpawnTime;
+        levelManager.maxSpawnTime = level.maxSpawnTime;
+
     }
-
-    /*public GameObject[] objectPrefab;
-    public Vector3[] spawnPosition;
-    [Range(0f, 10f)] public float spawnTime = 3f;
-    void Start()
+    public void DestroyCurrentLevel()
     {
-        InvokeRepeating("SpawnObject", spawnTime, spawnTime);
+        Destroy(currentLevelInstance);
+        currentLevelInstance = null;
     }
-
-
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            SpawnObject();
-        }
-    }
-
-    private void SpawnObject()
-    {
-        foreach (Vector3 spawnPosition in spawnPosition)
-        {
-            int randomIndex = Random.Range(0, objectPrefab.Length);
-            Instantiate(objectPrefab[randomIndex], spawnPosition, Quaternion.identity);
-        }
-
-    }*/
-
 
 }

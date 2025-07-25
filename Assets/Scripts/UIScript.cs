@@ -6,12 +6,23 @@ public class UIScript : MonoBehaviour
     [Header("Sections")]
     [SerializeField] private GameObject sectionPanelPrefab;
     [SerializeField] private Transform sectionPanelParent;
+    [SerializeField] private GameObject sectionContainer;
     [Header("Levels")]
     [SerializeField] private GameObject levelPanelPrefab;
     [SerializeField] private Transform levelPanelParent;
     [SerializeField] private GameObject levelContainer;
     [Header("Navigation")]
     [SerializeField] private Button backButton;
+    [SerializeField] private bool isOnGame = true;
+    [Header("Pause Menu")]
+    [SerializeField] private GameObject pauseMenuUI;
+    [SerializeField] private GameObject pauseMenuButton;
+    
+    void Awake()
+    {
+        pauseMenuButton.SetActive(false);
+        pauseMenuUI.SetActive(false);
+    }
     void Start()
     {
         SetupSectionPanel();
@@ -24,6 +35,7 @@ public class UIScript : MonoBehaviour
     }
     void SetupSectionPanel()
     {
+        sectionContainer.SetActive(true);
         foreach (var section in GameManager.Instance.levelData)
         {
             GameObject sectionPanel = Instantiate(sectionPanelPrefab, sectionPanelParent);
@@ -37,10 +49,10 @@ public class UIScript : MonoBehaviour
             sectionButtonUI.onClick.AddListener(() => SetupLevelPanel(currentSection));
         }
 
-        backButton.onClick.AddListener(ShowSections);
+        backButton.onClick.AddListener(CreateSections);
     }
 
-    void ShowSections()
+    void CreateSections()
     {
         levelContainer.SetActive(false);
         sectionPanelParent.gameObject.SetActive(true);
@@ -72,10 +84,15 @@ public class UIScript : MonoBehaviour
     }
     void LoadLevel(Levels levelToLoad)
     {
-        GameObject currentLevelInstance = Instantiate(levelToLoad.levelPrefab);
-
-        ClearLevelPanel();
+        pauseMenuButton.SetActive(true);
         levelContainer.SetActive(false);
+        sectionContainer.SetActive(false);
+        //pauseMenuIcon.SetActive(true);
+
+        
+
+        //isOnGame = true;//for pause menu MAYBE
+        ClearLevelPanel();
     }
 
     void ClearLevelPanel()
@@ -84,5 +101,27 @@ public class UIScript : MonoBehaviour
         {
             Destroy(child.gameObject);
         }
+    }
+
+    public void PauseGame()
+    {
+        Time.timeScale = 0;
+        pauseMenuUI.SetActive(true);
+    }
+    public void ResumeGame()
+    {
+        Time.timeScale = 1;
+        pauseMenuUI.SetActive(false);
+    }
+    public void ExitLevel()
+    {
+        Time.timeScale = 1;
+        pauseMenuUI.SetActive(false);
+        levelContainer.SetActive(false);
+        sectionContainer.SetActive(true);
+        pauseMenuButton.SetActive(false);
+        ClearLevelPanel();
+        GameManager.Instance.DestroyCurrentLevel();
+
     }
 }
