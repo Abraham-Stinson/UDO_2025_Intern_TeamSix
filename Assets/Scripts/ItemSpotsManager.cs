@@ -16,7 +16,14 @@ public class ItemSpotsManager : MonoBehaviour
     private bool isBusy;
     
     [Header("Data")]
-    private Dictionary<EItemName, ItemMergeData> itemMergeDataDictionnary = new Dictionary<EItemName, ItemMergeData>();
+    private Dictionary<EItemName, ItemMergeData> itemMergeDataDictionary = new Dictionary<EItemName, ItemMergeData>();
+    
+    [Header("Animation Settings")]
+    [SerializeField] private float animationDuration;
+    [SerializeField] private LeanTweenType animationEasing;
+
+    [Header("Actions")] 
+    public static Action<List<Item>> mergeStarted;
     
     private void Awake()
     {
@@ -51,7 +58,7 @@ public class ItemSpotsManager : MonoBehaviour
 
     private void HandleItemClicked(Item item)
     {
-        if (itemMergeDataDictionnary.ContainsKey(item.ItemName))
+        if (itemMergeDataDictionary.ContainsKey(item.ItemName))
             HandleItemMergeDataFound(item);
         else
          MoveItemToFirstFreeSpot(item);
@@ -61,14 +68,14 @@ public class ItemSpotsManager : MonoBehaviour
     {
         ItemSpot idealSpot = GetIdealSpotFor(item);
 
-        itemMergeDataDictionnary[item.ItemName].Add(item);
+        itemMergeDataDictionary[item.ItemName].Add(item);
 
         TryMoveToItemIdealSpot(item, idealSpot);
     }
 
     private ItemSpot GetIdealSpotFor(Item item)
     {
-        List<Item> items = itemMergeDataDictionnary[item.ItemName].items;
+        List<Item> items = itemMergeDataDictionary[item.ItemName].items;
         List<ItemSpot> itemSpots = new List<ItemSpot>();
 
         for (int i = 0; i < items.Count; i++)
@@ -98,26 +105,37 @@ public class ItemSpotsManager : MonoBehaviour
     private void MoveItemToSpot(Item item,ItemSpot idealSpot,Action completeCallback)
     {
         idealSpot.Populate(item);
-        item.transform.localPosition = itemLocalPositionOnSpot;
-        item.transform.localScale = itemLocalScalenOnSpot;
-        item.transform.localRotation=quaternion.identity;
+        // item.transform.localPosition = itemLocalPositionOnSpot;
+        // item.transform.localScale = itemLocalScalenOnSpot;
+        // item.transform.localRotation=quaternion.identity;
 
+       
+        LeanTween.moveLocal(item.gameObject, itemLocalPositionOnSpot, .15f)
+            .setEase(animationEasing);
+        LeanTween.scale(item.gameObject, itemLocalScalenOnSpot, animationDuration)
+            .setEase(animationEasing);;
+        LeanTween.rotateLocal(item.gameObject, Vector3.zero, animationDuration)
+            .setOnComplete(completeCallback);
+        
+        
         item.DisableShadows();
         item.DisablePhysics();
         
         
-        completeCallback?.Invoke();
+       
         //HandleItemReachedSpot(item,checkForMerge);
     }
 
     private void HandleItemReachedSpot(Item item,bool checkForMerge=true)
     {
+        item.Spot.BumpDown();
+        
         if (!checkForMerge)
             return;
         
-        if (itemMergeDataDictionnary[item.ItemName].CanMergeItems())
+        if (itemMergeDataDictionary[item.ItemName].CanMergeItems())
         {
-            MergeItems(itemMergeDataDictionnary[item.ItemName]);
+            MergeItems(itemMergeDataDictionary[item.ItemName]);
         }
         else
         {
@@ -131,17 +149,17 @@ public class ItemSpotsManager : MonoBehaviour
     private void MergeItems(ItemMergeData itemMergeData)
     {
         List<Item> items = itemMergeData.items;
-        itemMergeDataDictionnary.Remove(itemMergeData.itemName);
+        itemMergeDataDictionary.Remove(itemMergeData.itemName);
 
         for (int i = 0; i < items.Count; i++)
         {
             items[i].Spot.Clear();
-            Destroy(items[i].gameObject);
+            
         }
         //remove this line after moving the items to the left
         //isBusy = false;
         
-        if (itemMergeDataDictionnary.Count<=0)
+        if (itemMergeDataDictionary.Count<=0)
         {
             isBusy = false;
         }
@@ -150,6 +168,7 @@ public class ItemSpotsManager : MonoBehaviour
             MoveAllItemsToTheLeft(HandleAllItemsMovedToTheLeft);
         }
         
+        mergeStarted?.Invoke(items);
         
     }
 
@@ -264,6 +283,7 @@ public class ItemSpotsManager : MonoBehaviour
 
     private void HandleFirstItemReachedSpot(Item item)
     {
+        item.Spot.BumpDown();
         CheckForGameOver();
     }
 
@@ -276,7 +296,7 @@ public class ItemSpotsManager : MonoBehaviour
     }
     private void CreateItemMergeData(Item item)
     {
-        itemMergeDataDictionnary.Add(item.ItemName,new ItemMergeData(item));
+        itemMergeDataDictionary.Add(item.ItemName,new ItemMergeData(item));
     }
     
     private void StoreSports()
