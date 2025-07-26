@@ -73,6 +73,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd461eb0d3f29b847b9e5a20ea7b2184, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  itemName: 0
+  icon: {fileID: 89881996876820253, guid: 54d7f48ae17a46d419453569754766f9, type: 3}
   renderer: {fileID: 6830333893393348176}
   collider: {fileID: 1106299094161358216}
 --- !u!1 &4125544013011556445

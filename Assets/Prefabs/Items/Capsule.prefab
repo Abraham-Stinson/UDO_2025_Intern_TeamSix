@@ -74,6 +74,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemName: 3
+  icon: {fileID: 10911, guid: 0000000000000000f000000000000000, type: 0}
   renderer: {fileID: 2802820874411792547}
   collider: {fileID: 1727945539951107904}
 --- !u!1 &4859716738366045845
