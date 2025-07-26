@@ -18,13 +18,20 @@ public class InputManager : MonoBehaviour
    
     void Update()
     {
+
+        if (GameManager.instance.IsGame())
+        {
+            HandleControl();
+        }
+    }
+
+    private void HandleControl()
+    {
         if (Input.GetMouseButton(0))
             HandleDrag();
         else if (Input.GetMouseButtonUp(0))
             HandleMouseUp();
-        
     }
-
     private void HandleDrag()
     {
         Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out RaycastHit hit, 100);
