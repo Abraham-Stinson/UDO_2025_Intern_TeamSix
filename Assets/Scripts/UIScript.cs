@@ -36,7 +36,7 @@ public class UIScript : MonoBehaviour
     void SetupSectionPanel()
     {
         sectionContainer.SetActive(true);
-        foreach (var section in GameManager.Instance.levelData)
+        foreach (var section in GameManagerOLD.Instance.levelData)
         {
             GameObject sectionPanel = Instantiate(sectionPanelPrefab, sectionPanelParent);
             var sectionIconUI = sectionPanel.transform.Find("SectionIcon")?.GetComponent<Image>();
@@ -75,7 +75,7 @@ public class UIScript : MonoBehaviour
             var levelNameUI = levelPanel.transform.Find("LevelName")?.GetComponent<TextMeshProUGUI>();
             var levelButonUI = levelPanel.transform.Find("LevelButton")?.GetComponent<Button>();
             levelNameUI.text = level.levelName;
-            levelButonUI.onClick.AddListener(() => GameManager.Instance.LoadLevel(level));
+            levelButonUI.onClick.AddListener(() => GameManagerOLD.Instance.LoadLevel(level));
 
             Levels currentLevel = level;
             levelButonUI.onClick.AddListener(() => LoadLevel(currentLevel));
@@ -121,7 +121,7 @@ public class UIScript : MonoBehaviour
         sectionContainer.SetActive(true);
         pauseMenuButton.SetActive(false);
         ClearLevelPanel();
-        GameManager.Instance.DestroyCurrentLevel();
+        GameManagerOLD.Instance.DestroyCurrentLevel();
 
     }
 }

@@ -409,9 +409,13 @@ MonoBehaviour:
   - {fileID: 3633664968833274391}
   - {fileID: 3986619427509807678}
   - {fileID: 309582500776206557}
-  spawnableObjects: []
-  minSpawnTime: 0
-  maxSpawnTime: 0
+  spawnableObjects:
+  - {fileID: 1649385349981424341, guid: b31921ba6a4972a4a9a150dadeae0866, type: 3}
+  - {fileID: 4058752809052862049, guid: 621a0f8b7908ce2489ececfc4c1ce877, type: 3}
+  - {fileID: 1649385349981424341, guid: db85b5828731d1f40a2dc813a3e99325, type: 3}
+  - {fileID: 6606993241780559863, guid: 28d36d243446d8e418558c28e2771bd0, type: 3}
+  minSpawnTime: 2
+  maxSpawnTime: 3
 --- !u!1 &8646516275742766789
 GameObject:
   m_ObjectHideFlags: 0
@@ -655,7 +659,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6012bef9e8845ed40ae79f68491f5c35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bandSpeed: 10
+  bandSpeed: 4
   bandDirection: {x: -0, y: -0, z: -1}
 --- !u!4 &7967623619936218278 stripped
 Transform:

@@ -2,7 +2,7 @@ using UnityEditor.Search;
 using UnityEngine;
 
 
-public class LevelManager : MonoBehaviour
+public class LevelManagerOLD : MonoBehaviour
 {
     [Header("SpawnPoints")]
     [SerializeField] private Transform[] spawnPoints;

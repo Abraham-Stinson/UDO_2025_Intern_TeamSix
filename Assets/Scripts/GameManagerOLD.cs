@@ -49,9 +49,9 @@ public class SpawnableObject
     public bool isTargetObject;
     public int targetCount;
 }
-public class GameManager : MonoBehaviour
+public class GameManagerOLD : MonoBehaviour
 {
-    public static GameManager Instance { get; private set; }
+    public static GameManagerOLD Instance { get; private set; }
     [Header("Level System Configuration")]
     [Space(10)]
     [SerializeField]
@@ -84,8 +84,8 @@ public class GameManager : MonoBehaviour
     {
         currentSpawnableObjects = new List<SpawnableObject>(level.spawnableObjects);
         currentLevelInstance = Instantiate(level.levelPrefab);//IMPORTANT
-        var levelManager = currentLevelInstance.GetComponentInChildren<LevelManager>();
-        levelManager.spawnableObjects = level.spawnableObjects.Select(obj => obj.objectPrefab).ToArray();
+        var levelManager = currentLevelInstance.GetComponentInChildren<LevelManagerOLD>();
+       levelManager.spawnableObjects = level.spawnableObjects.Select(obj => obj.objectPrefab).ToArray();
         levelManager.minSpawnTime = level.minSpawnTime;
         levelManager.maxSpawnTime = level.maxSpawnTime;
 
