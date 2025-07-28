@@ -1943,10 +1943,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02a216127324f9842a5eedce29e96451, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  menuPanel: {fileID: 1144513659}
   gamePanel: {fileID: 803606666}
   levelCompletePanel: {fileID: 295927542}
   gameOverPanel: {fileID: 1968027401}
+  sectionSelectionPanel: {fileID: 0}
+  levelSelectionPanel: {fileID: 0}
+  pasueMenuPanel: {fileID: 0}
 --- !u!1 &916626857
 GameObject:
   m_ObjectHideFlags: 0
@@ -3436,8 +3438,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da0b407132d5a7843a9266bc2a9fd422, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levels:
-  - {fileID: 4027883770162325361, guid: 138f2bb84e906f44d92868e94f624252, type: 3}
+  sections:
+  - sectionName: "\u0130tfaiye"
+    sectionIcon: {fileID: 21300000, guid: 708a43fcfb7c5284c8bf1e15f82cb2ea, type: 3}
+    levels:
+    - {fileID: 0}
+    isUnlocked: 0
+    sectionColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1001 &1768089252
 PrefabInstance:
   m_ObjectHideFlags: 0
