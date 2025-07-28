@@ -82,8 +82,9 @@ MonoBehaviour:
   - itemPrefab: {fileID: 3247058783816055715, guid: 621a0f8b7908ce2489ececfc4c1ce877, type: 3}
     isGoal: 1
     amount: 6
-  spawnZone: {fileID: 5279611130783613974}
-  seed: 0
+  spawnPoints: []
+  minSpawnTime: 0
+  maxSpawnTime: 0
 --- !u!65 &5279611130783613974
 BoxCollider:
   m_ObjectHideFlags: 0

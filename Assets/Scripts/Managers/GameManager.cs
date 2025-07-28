@@ -26,7 +26,8 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-     SetGameState(EGameState.MENU);
+        SetSectionUI();
+        
     }
 
 
@@ -43,7 +44,13 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void StartGame()
+    public void SetSectionUI()
+    {
+        SetGameState(EGameState.SECTIONSELECTION);
+        SectionAndLevelUI.Instance.SetupSectionPanel();
+    }
+
+    /*public void StartGame()
     {
         SetGameState(EGameState.GAME);
     }
@@ -57,8 +64,8 @@ public class GameManager : MonoBehaviour
     {
         SceneManager.LoadScene(0);
 
-    }
-    
+    }*/
+
 
     public bool IsGame() => gameState == EGameState.GAME;
 }
