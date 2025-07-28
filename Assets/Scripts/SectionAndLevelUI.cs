@@ -132,6 +132,36 @@ public class SectionAndLevelUI : MonoBehaviour
     {
         pauseMenuButton.SetActive(true);
         ClearLevelPanel();
+        sectionPanelParent.gameObject.SetActive(false);
+        levelPanelParent.gameObject.SetActive(false);
+        
+        int sectionIndex = -1;
+        int levelIndex = -1;
+
+        GameSection[] sections = LevelManager.Instance.GetAllSections();
+
+        for (int s = 0; s < sections.Length; s++)
+        {
+            for (int l = 0; l < sections[s].levels.Length; l++)
+            {
+                if (sections[s].levels[l] == levelToLoad)
+                {
+                    sectionIndex = s;
+                    levelIndex = l;
+                    break;
+                }
+            }
+        }
+
+        if (sectionIndex != -1 && levelIndex != -1)
+        {
+            LevelManager.Instance.SelectLevel(sectionIndex, levelIndex);
+            GameManager.instance.SetGameState(EGameState.GAME); 
+        }
+        else
+        {
+            Debug.LogWarning("Level is not found in any section.");
+        }
     }
 
     void ClearLevelPanel()
@@ -161,4 +191,6 @@ public class SectionAndLevelUI : MonoBehaviour
         GameManagerOLD.Instance.DestroyCurrentLevel();*/
 
     }
+
+  
 }

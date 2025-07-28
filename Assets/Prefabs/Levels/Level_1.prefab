@@ -328,6 +328,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemplacer: {fileID: 557963257663168418}
+  duration: 40
 --- !u!1 &8315240269692054203
 GameObject:
   m_ObjectHideFlags: 0
