@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class GoalManager : MonoBehaviour
 {
+    public static GoalManager instance;
+    
     [Header("Elements")] 
     [SerializeField] private Transform goalCardParent;
     [SerializeField] private GoalCard goalCardPrefab;
@@ -13,16 +15,26 @@ public class GoalManager : MonoBehaviour
     private ItemLevelData[] goals;
 
     private List<GoalCard> goalCards = new List<GoalCard>();
+
+    public ItemLevelData[] Goals => goals;
     private void Awake()
     {
+        if (instance == null)
+            instance = this;
+        else
+            Destroy(gameObject);
+        
         LevelManager.levelSpawned += OnLevelSpawned;
         ItemSpotsManager.itemPickedUp += OnItemPickedUp;
+        PowerUpManager.itemPickedUp += OnItemPickedUp;
     }
 
     private void OnDestroy()
     {
         LevelManager.levelSpawned -= OnLevelSpawned;
         ItemSpotsManager.itemPickedUp -= OnItemPickedUp;
+        PowerUpManager.itemPickedUp -= OnItemPickedUp;
+
     }
 
    

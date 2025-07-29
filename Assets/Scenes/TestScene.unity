@@ -2036,7 +2036,7 @@ MonoBehaviour:
   - sectionName: Fabrika
     sectionIcon: {fileID: 21300000, guid: 708a43fcfb7c5284c8bf1e15f82cb2ea, type: 3}
     levels:
-    - {fileID: 4027883770162325361, guid: 138f2bb84e906f44d92868e94f624252, type: 3}
+    - {fileID: 4027883770162325361, guid: d940e2b5c52ae7f4a94dc608b5eb6cb9, type: 3}
     isUnlocked: 0
     sectionColor: {r: 0, g: 0, b: 0, a: 0}
   - sectionName: Otel

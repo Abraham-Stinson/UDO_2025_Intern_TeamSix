@@ -38,6 +38,8 @@ public class LevelManager : MonoBehaviour, IGameStateListener
     [Header("Data")]
     [SerializeField] public GameSection[] sections;
 
+    public Item[] Items => currentLevel.GetItems();
+
 
     private const string currentSectionKey = "CurrentSection";
     private const string currentLevelKey = "CurrentLevel";

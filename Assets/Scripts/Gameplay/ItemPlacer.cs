@@ -17,6 +17,11 @@ public class ItemPlacer : MonoBehaviour
     // bu sistem güzel çalışıyor ama bizim oyun için işe yarayacağını sanmıyorum düzenlememiz lazım ya da başka bir sistem yapmamız lazım 
     [SerializeField] private Transform[] spawnPoints;
 
+
+    [Header("Data")] 
+    private Item[] items;
+    
+
     public ItemLevelData[] GetGoals()
     {
         List<ItemLevelData> goals = new List<ItemLevelData>();
@@ -29,7 +34,13 @@ public class ItemPlacer : MonoBehaviour
             }
         }
         return goals.ToArray();
-
+    }
+    public Item[] GetItems()
+    {
+        if(items == null)
+            items= GetComponentsInChildren<Item>();
+        
+        return items;
     }
 
     [SerializeField] public float minSpawnTime;
