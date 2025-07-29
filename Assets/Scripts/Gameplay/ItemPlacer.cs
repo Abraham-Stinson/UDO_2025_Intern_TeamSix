@@ -57,14 +57,12 @@ public class ItemPlacer : MonoBehaviour
     {
         spawnTime = Random.Range(minSpawnTime, maxSpawnTime);
         ItemLevelData data = itemDatas[Random.Range(0, itemDatas.Count)];
-        foreach (Transform spawnPosition in spawnPoints)
+
+        foreach (Transform spawnPoint in spawnPoints)
         {
-            Vector3 _spawnPosition = new Vector3(spawnPosition.position.x, spawnPosition.position.y, spawnPosition.position.z);
-
-            Item itemInstance = Instantiate(data.itemPrefab, _spawnPosition, Quaternion.identity);
-            itemInstance.transform.rotation = Quaternion.Euler(Random.onUnitSphere * 360);
+            Item itemInstance = Instantiate(data.itemPrefab, spawnPoint.position, spawnPoint.rotation, transform);
+            itemInstance.transform.forward = spawnPoint.forward;
         }
-
     }
 }
 
