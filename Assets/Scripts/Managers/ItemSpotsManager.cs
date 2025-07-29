@@ -5,27 +5,27 @@ using System.Collections.Generic;
 
 public class ItemSpotsManager : MonoBehaviour
 {
-    [Header("Elements")] 
+    [Header("Elements")]
     [SerializeField] private Transform itemSpotsParent;
 
     private ItemSpot[] spots;
 
-    [Header("Settings")] 
+    [Header("Settings")]
     [SerializeField] private Vector3 itemLocalPositionOnSpot;
     [SerializeField] private Vector3 itemLocalScalenOnSpot;
     private bool isBusy;
-    
+
     [Header("Data")]
     private Dictionary<EItemName, ItemMergeData> itemMergeDataDictionary = new Dictionary<EItemName, ItemMergeData>();
-    
+
     [Header("Animation Settings")]
     [SerializeField] private float animationDuration;
     [SerializeField] private LeanTweenType animationEasing;
 
-    [Header("Actions")] 
+    [Header("Actions")]
     public static Action<List<Item>> mergeStarted;
     public static Action<Item> itemPickedUp;
-    
+
     private void Awake()
     {
         InputManager.itemClicked += OnItemClicked;
@@ -42,10 +42,10 @@ public class ItemSpotsManager : MonoBehaviour
     {
         if (isBusy)
         {
-         Debug.LogWarning("ItemSpotsManager is busy"); 
-         return;
+            Debug.LogWarning("ItemSpotsManager is busy");
+            return;
         }
-        
+
         if (!IsFreePotAvailable())
         {
             Debug.LogWarning("no free spots avaiable!");
@@ -53,9 +53,9 @@ public class ItemSpotsManager : MonoBehaviour
         }
 
         isBusy = true;
-        
+
         itemPickedUp?.Invoke(item);
-        
+
         HandleItemClicked(item);
     }
 
@@ -64,7 +64,7 @@ public class ItemSpotsManager : MonoBehaviour
         if (itemMergeDataDictionary.ContainsKey(item.ItemName))
             HandleItemMergeDataFound(item);
         else
-         MoveItemToFirstFreeSpot(item);
+            MoveItemToFirstFreeSpot(item);
     }
 
     public void HandleItemMergeDataFound(Item item)
@@ -85,8 +85,8 @@ public class ItemSpotsManager : MonoBehaviour
             itemSpots.Add(items[i].Spot);
 
         if (items.Count >= 2)
-            itemSpots.Sort((a,b) => b.transform.GetSiblingIndex().CompareTo(a.transform.GetSiblingIndex())); //burayı tam anlamadım tekrar bakıcam
-        
+            itemSpots.Sort((a, b) => b.transform.GetSiblingIndex().CompareTo(a.transform.GetSiblingIndex())); //burayı tam anlamadım tekrar bakıcam
+
         int idealSpotIndex = itemSpots[0].transform.GetSiblingIndex() + 1;
 
         return spots[idealSpotIndex];
@@ -105,37 +105,37 @@ public class ItemSpotsManager : MonoBehaviour
         MoveItemToSpot(item, targetSpot, () => HandleItemReachedSpot(item));
     }
 
-    private void MoveItemToSpot(Item item,ItemSpot idealSpot,Action completeCallback)
+    private void MoveItemToSpot(Item item, ItemSpot idealSpot, Action completeCallback)
     {
         idealSpot.Populate(item);
         // item.transform.localPosition = itemLocalPositionOnSpot;
         // item.transform.localScale = itemLocalScalenOnSpot;
         // item.transform.localRotation=quaternion.identity;
 
-       
+
         LeanTween.moveLocal(item.gameObject, itemLocalPositionOnSpot, .15f)
             .setEase(animationEasing);
         LeanTween.scale(item.gameObject, itemLocalScalenOnSpot, animationDuration)
-            .setEase(animationEasing);;
+            .setEase(animationEasing); ;
         LeanTween.rotateLocal(item.gameObject, Vector3.zero, animationDuration)
             .setOnComplete(completeCallback);
-        
-        
+
+
         item.DisableShadows();
         item.DisablePhysics();
-        
-        
-       
+
+
+
         //HandleItemReachedSpot(item,checkForMerge);
     }
 
-    private void HandleItemReachedSpot(Item item,bool checkForMerge=true)
+    private void HandleItemReachedSpot(Item item, bool checkForMerge = true)
     {
         item.Spot.BumpDown();
-        
+
         if (!checkForMerge)
             return;
-        
+
         if (itemMergeDataDictionary[item.ItemName].CanMergeItems())
         {
             MergeItems(itemMergeDataDictionary[item.ItemName]);
@@ -144,7 +144,7 @@ public class ItemSpotsManager : MonoBehaviour
         {
             CheckForGameOver();
         }
-        
+
 
 
     }
@@ -157,12 +157,12 @@ public class ItemSpotsManager : MonoBehaviour
         for (int i = 0; i < items.Count; i++)
         {
             items[i].Spot.Clear();
-            
+
         }
         //remove this line after moving the items to the left
         //isBusy = false;
-        
-        if (itemMergeDataDictionary.Count<=0)
+
+        if (itemMergeDataDictionary.Count <= 0)
         {
             isBusy = false;
         }
@@ -170,45 +170,45 @@ public class ItemSpotsManager : MonoBehaviour
         {
             MoveAllItemsToTheLeft(HandleAllItemsMovedToTheLeft);
         }
-        
+
         mergeStarted?.Invoke(items);
-        
+
     }
 
     private void MoveAllItemsToTheLeft(Action completeCallback)
     {
         bool callbackTriggered = false;
- 
+
         for (int i = 3; i < spots.Length; i++)
         {
             ItemSpot spot = spots[i];
- 
+
             if (spot.IsEmpty())
                 continue;
- 
+
             Item item = spot.Item;
             ItemSpot targetSpot = spots[i - 3];
- 
-            if(!targetSpot.IsEmpty())
+
+            if (!targetSpot.IsEmpty())
             {
                 Debug.LogWarning($"{targetSpot.name} is full");
                 isBusy = false;
                 return;
             }
- 
+
             spot.Clear();
- 
+
             completeCallback += () => HandleItemReachedSpot(item, false);
             MoveItemToSpot(item, targetSpot, completeCallback);
- 
+
             callbackTriggered = true;
         }
- 
+
         if (!callbackTriggered)
         {
             completeCallback?.Invoke();
         }
-    } 
+    }
 
     private void HandleAllItemsMovedToTheLeft()
     {
@@ -232,14 +232,14 @@ public class ItemSpotsManager : MonoBehaviour
             {
                 continue;
             }
-            
+
             if (spots[i].IsEmpty())
             {
                 continue;
             }
-            
+
             Item item = spots[i].Item;
-            
+
             spot.Clear();
 
             ItemSpot targetSpot = spots[i + 1];
@@ -250,10 +250,10 @@ public class ItemSpotsManager : MonoBehaviour
                 isBusy = false;
                 return;
             }
-            
+
             MoveItemToSpot(item, targetSpot, () => HandleItemReachedSpot(item, false));
         }
-        
+
         MoveItemToSpot(itemToPlace, idealSpot, () => HandleItemReachedSpot(itemToPlace));
     }
 
@@ -268,9 +268,9 @@ public class ItemSpotsManager : MonoBehaviour
         }
 
         CreateItemMergeData(item);
-        
-        MoveItemToSpot(item,targetSpot, () => HandleFirstItemReachedSpot(item));
-        
+
+        MoveItemToSpot(item, targetSpot, () => HandleFirstItemReachedSpot(item));
+
         /*
         targetspot.Populate(item);
         item.transform.localPosition = itemLocalPositionOnSpot;
@@ -293,16 +293,18 @@ public class ItemSpotsManager : MonoBehaviour
     private void CheckForGameOver()
     {
         if (GetFreeSpot() == null)
+        {
             GameManager.instance.SetGameState(EGameState.GAMEOVER);
-            //Debug.LogWarning("Game Over");
+            Debug.LogWarning("Game Over");
+        }
         else
             isBusy = false;
     }
     private void CreateItemMergeData(Item item)
     {
-        itemMergeDataDictionary.Add(item.ItemName,new ItemMergeData(item));
+        itemMergeDataDictionary.Add(item.ItemName, new ItemMergeData(item));
     }
-    
+
     private void StoreSports()
     {
         spots = new ItemSpot[itemSpotsParent.childCount];

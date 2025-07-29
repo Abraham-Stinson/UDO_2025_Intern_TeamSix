@@ -12,7 +12,7 @@ public class SectionAndLevelUI : MonoBehaviour
     public EGameState gameState;
 
     [Header("MainMenu")]
-    [SerializeField] private GameObject sectionPanelButton;
+    [SerializeField] private GameObject mainMenuScreenUI;
     [Header("Sections")]
     [SerializeField] private GameObject sectionPanelPrefab;
     [SerializeField] private Transform sectionPanelParent;
@@ -25,8 +25,10 @@ public class SectionAndLevelUI : MonoBehaviour
     [SerializeField] private Button backButton;
 
     [Header("Pause Menu")]
+    [SerializeField] private GameObject inGameScreenUI;
     [SerializeField] private GameObject pauseMenuUI;
     [SerializeField] private GameObject pauseMenuButton;
+    
     
     #endregion
 
@@ -39,6 +41,7 @@ public class SectionAndLevelUI : MonoBehaviour
     private void Start()
     {
         //InitializeSections();
+        
     }
     #endregion
 
@@ -68,17 +71,31 @@ public class SectionAndLevelUI : MonoBehaviour
     }*/
     #endregion
 
+    public void ShowMainMenu()
+    {
+        GameManager.instance.SetGameState(EGameState.MENU);
+    }
+
     #region Section Management
     public void SetupSectionPanel()
     {
-        sectionPanelButton.SetActive(false); // Section panel butonunu gizle
         if (!ValidateSectionComponents()) return;
 
-        sectionPanelParent.gameObject.SetActive(true); // Section paneli aç
-        backButton.gameObject.SetActive(true); // Back butonu göster
-        ClearLevelPanel();
-        CreateSectionPanels();
+        // Ana menüyü gizle ve section paneli göster
+        mainMenuScreenUI.SetActive(false);
+        sectionPanelParent.gameObject.SetActive(true);
+
+        // Eğer section panelin içeriği boşsa yeni içerik oluştur
+        if (sectionPanelParent.childCount == 0)
+        {
+            CreateSectionPanels();
+        }
+
+        // Back button'u göster ve event'ini ayarla
+        backButton.gameObject.SetActive(true);
         SetupBackButtonForSection();
+
+        GameManager.instance.SetGameState(EGameState.SECTIONSELECTION);
     }
 
     private bool ValidateSectionComponents()
@@ -108,6 +125,13 @@ public class SectionAndLevelUI : MonoBehaviour
 
     private void CreateSectionPanels()
     {
+        // Önceki içeriği temizle
+        foreach (Transform child in sectionPanelParent)
+        {
+            Destroy(child.gameObject);
+        }
+
+        // Yeni section panelleri oluştur
         foreach (var section in LevelManager.Instance.sections)
         {
             if (section == null) continue;
@@ -142,12 +166,11 @@ public class SectionAndLevelUI : MonoBehaviour
 
     private void OnSectionBackButtonPressed()
     {
-        sectionPanelButton.SetActive(true); // Section panel butonunu göster
-
-        sectionPanelParent.gameObject.SetActive(false); // Section paneli kapat
-        backButton.gameObject.SetActive(false); // Back butonu gizle
-        SetGameState(EGameState.MENU); // Menu state'ine geç
-        ClearSectionPanel(); // Section paneli temizle
+        // Section paneli gizle ama içeriğini silme
+        sectionPanelParent.gameObject.SetActive(false);
+        backButton.gameObject.SetActive(false);
+        mainMenuScreenUI.SetActive(true);
+        GameManager.instance.SetGameState(EGameState.MENU);
     }
 
     #endregion
@@ -155,7 +178,7 @@ public class SectionAndLevelUI : MonoBehaviour
     #region Level Management
     private void SetupLevelPanel(GameSection sectionData)
     {
-        sectionPanelButton.SetActive(false); // Section panel butonunu gizle
+        mainMenuScreenUI.SetActive(false); // Section panel butonunu gizle
         SetGameState(EGameState.LEVELSELECTION);
         ClearSectionPanel(); // Section paneli temizle
         CreateLevelPanel(sectionData);
@@ -183,11 +206,10 @@ public class SectionAndLevelUI : MonoBehaviour
 
     private void LoadLevel(Level levelToLoad)
     {
-        // UI elementlerini güncelle
-        levelPanelParent.gameObject.SetActive(false);  // Level seçme panelini kapat
+        /*// UI elementlerini güncelle
+        levelPanelParent.gameObject.SetActive(false);  // Level seçme panelini kapat*/
         backButton.gameObject.SetActive(false);         // Back butonunu kapat
-        pauseMenuButton.SetActive(true);                // Pause butonunu göster
-        
+        GameManager.instance.SetGameState(EGameState.GAME); // Oyun state'ini güncelle  
         // Temizlik ve level yükleme
         ClearLevelPanel();
         LevelManager.Instance.LoadLevel(levelToLoad);
@@ -230,23 +252,27 @@ public class SectionAndLevelUI : MonoBehaviour
 
     public void PauseGame()
     {
-        // Time.timeScale = 0;
-        // pauseMenuUI.SetActive(true);
+        InputManager.instance.enabled = false; // Inputları devre dışı bırak
+        Time.timeScale = 0;
+        pauseMenuUI.SetActive(true);
     }
 
     public void ResumeGame()
     {
-        // Time.timeScale = 1;
-        // pauseMenuUI.SetActive(false);
+        InputManager.instance.enabled = true; // Inputları aktİf et
+        Time.timeScale = 1;
+        pauseMenuUI.SetActive(false);
     }
 
     public void ExitLevel()
     {
-        // Time.timeScale = 1;
-        // pauseMenuUI.SetActive(false);
-        // pauseMenuButton.SetActive(false);
-        // ClearLevelPanel();
-        // GameManagerOLD.Instance.DestroyCurrentLevel();
+        InputManager.instance.enabled = true; // Inputları aktİf et
+        ShowMainMenu();
+        pauseMenuUI.SetActive(false);
+        Time.timeScale = 1;
+        GameManager.instance.SetGameState(EGameState.MENU);
+        ClearLevelPanel();
+        LevelManager.Instance.ExitLevel();
     }
     #endregion
 }

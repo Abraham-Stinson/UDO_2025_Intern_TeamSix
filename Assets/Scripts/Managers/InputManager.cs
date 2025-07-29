@@ -4,15 +4,20 @@ using UnityEditor;
 
 public class InputManager : MonoBehaviour
 {
+    public static InputManager instance { get; private set; }
     public static Action<Item> itemClicked;
 
     [Header("Settings")] 
     [SerializeField] private Material outlineMaterial;
     private Item currentItem;
     
-    void Start()
+    private void Awake()
     {
-        
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
     }
 
    

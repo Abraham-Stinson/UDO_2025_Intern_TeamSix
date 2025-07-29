@@ -26,8 +26,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        //SetSectionUI();
-        
+        SetGameState(EGameState.MENU);
     }
 
 

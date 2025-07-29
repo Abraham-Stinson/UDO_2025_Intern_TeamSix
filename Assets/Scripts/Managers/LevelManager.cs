@@ -98,6 +98,16 @@ public class LevelManager : MonoBehaviour, IGameStateListener
         // Event'leri tetikle
         levelSpawned?.Invoke(currentLevel);
         sectionChanged?.Invoke(currentSection);
+
+    }
+
+    public void DestroyCurrentLevel()
+    {
+        if (currentLevel != null)
+        {
+            Destroy(currentLevel.gameObject);
+            currentLevel = null;
+        }
     }
 
     private void LoadData()
@@ -254,5 +264,12 @@ public class LevelManager : MonoBehaviour, IGameStateListener
 
         currentLevel = levelToLoad;
         SpawnLevel();
+    }
+
+    public void ExitLevel()
+    {
+        DestroyCurrentLevel();
+        GameManager.instance.SetGameState(EGameState.MENU);
+        
     }
 }
