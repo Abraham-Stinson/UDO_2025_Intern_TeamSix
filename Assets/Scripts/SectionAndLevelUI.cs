@@ -1,25 +1,49 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+
 public class SectionAndLevelUI : MonoBehaviour
 {
+    #region Singleton
     public static SectionAndLevelUI Instance { get; private set; }
+    #endregion
+
+    #region Variables
     public EGameState gameState;
 
+    [Header("MainMenu")]
+    [SerializeField] private GameObject sectionPanelButton;
     [Header("Sections")]
     [SerializeField] private GameObject sectionPanelPrefab;
     [SerializeField] private Transform sectionPanelParent;
+
     [Header("Levels")]
     [SerializeField] private GameObject levelPanelPrefab;
     [SerializeField] private Transform levelPanelParent;
+
     [Header("Navigation")]
     [SerializeField] private Button backButton;
-    [SerializeField] private bool isOnGame = true;
+
     [Header("Pause Menu")]
     [SerializeField] private GameObject pauseMenuUI;
     [SerializeField] private GameObject pauseMenuButton;
+    
+    #endregion
 
-    void Awake()
+    #region Unity Methods
+    private void Awake()
+    {
+        InitializeSingleton();
+    }
+
+    private void Start()
+    {
+        //InitializeSections();
+    }
+    #endregion
+
+    #region Initialization Methods
+    private void InitializeSingleton()
     {
         if (Instance == null)
         {
@@ -31,9 +55,8 @@ public class SectionAndLevelUI : MonoBehaviour
         }
     }
 
-    void Start()
+    /*private void InitializeSections()
     {
-        // LevelManager'ın hazır olduğundan emin olalım
         if (LevelManager.Instance != null)
         {
             SetupSectionPanel();
@@ -42,99 +65,138 @@ public class SectionAndLevelUI : MonoBehaviour
         {
             Debug.LogError("LevelManager instance is null!");
         }
-    }
+    }*/
+    #endregion
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
+    #region Section Management
     public void SetupSectionPanel()
     {
-        // Null kontrolleri ekleyelim
+        sectionPanelButton.SetActive(false); // Section panel butonunu gizle
+        if (!ValidateSectionComponents()) return;
+
+        sectionPanelParent.gameObject.SetActive(true); // Section paneli aç
+        backButton.gameObject.SetActive(true); // Back butonu göster
+        ClearLevelPanel();
+        CreateSectionPanels();
+        SetupBackButtonForSection();
+    }
+
+    private bool ValidateSectionComponents()
+    {
         if (sectionPanelPrefab == null || sectionPanelParent == null)
         {
             Debug.LogError("Section panel prefab or parent is not assigned!");
-            return;
+            return false;
         }
 
         if (LevelManager.Instance == null || LevelManager.Instance.sections == null)
         {
             Debug.LogError("LevelManager or sections array is null!");
-            return;
+            return false;
         }
 
-        // Mevcut panelleri temizleyelim
+        return true;
+    }
+
+    private void ClearSectionPanel()
+    {
         foreach (Transform child in sectionPanelParent)
         {
             Destroy(child.gameObject);
         }
+    }
 
-        // Yeni panelleri oluşturalım
+    private void CreateSectionPanels()
+    {
         foreach (var section in LevelManager.Instance.sections)
         {
             if (section == null) continue;
-
-            GameObject sectionPanel = Instantiate(sectionPanelPrefab, sectionPanelParent);
-            var sectionIconUI = sectionPanel.transform.Find("SectionIcon")?.GetComponent<Image>();
-            var sectionLabelUI = sectionPanel.transform.Find("SectionLabel")?.GetComponent<TextMeshProUGUI>();
-            var sectionButtonUI = sectionPanel.transform.Find("SectionButton")?.GetComponent<Button>();
-
-            if (sectionIconUI != null) sectionIconUI.sprite = section.sectionIcon;
-            if (sectionLabelUI != null) sectionLabelUI.text = section.sectionName;
-
-            GameSection currentSection = section;
-            if (sectionButtonUI != null)
-            {
-                sectionButtonUI.onClick.AddListener(() => SetupLevelPanel(currentSection));
-            }
+            CreateSingleSectionPanel(section);
         }
+    }
 
+    private void CreateSingleSectionPanel(GameSection section)
+    {
+        GameObject sectionPanel = Instantiate(sectionPanelPrefab, sectionPanelParent);
+        
+        var sectionIconUI = sectionPanel.transform.Find("SectionIcon")?.GetComponent<Image>();
+        var sectionLabelUI = sectionPanel.transform.Find("SectionLabel")?.GetComponent<TextMeshProUGUI>();
+        var sectionButtonUI = sectionPanel.transform.Find("SectionButton")?.GetComponent<Button>();
+
+        if (sectionIconUI != null) sectionIconUI.sprite = section.sectionIcon;
+        if (sectionLabelUI != null) sectionLabelUI.text = section.sectionName;
+        if (sectionButtonUI != null)
+        {
+            sectionButtonUI.onClick.AddListener(() => SetupLevelPanel(section));
+        }
+    }
+
+    private void SetupBackButtonForSection()
+    {
         if (backButton != null)
         {
             backButton.onClick.RemoveAllListeners();
-            backButton.onClick.AddListener(CreateSections);
+            backButton.onClick.AddListener(OnSectionBackButtonPressed);
         }
     }
 
-    void CreateSections()
+    private void OnSectionBackButtonPressed()
     {
-        sectionPanelParent.gameObject.SetActive(true);
+        sectionPanelButton.SetActive(true); // Section panel butonunu göster
+
+        sectionPanelParent.gameObject.SetActive(false); // Section paneli kapat
+        backButton.gameObject.SetActive(false); // Back butonu gizle
+        SetGameState(EGameState.MENU); // Menu state'ine geç
+        ClearSectionPanel(); // Section paneli temizle
     }
 
-    void SetupLevelPanel(GameSection sectionData)
+    #endregion
+
+    #region Level Management
+    private void SetupLevelPanel(GameSection sectionData)
     {
+        sectionPanelButton.SetActive(false); // Section panel butonunu gizle
         SetGameState(EGameState.LEVELSELECTION);
-        ClearLevelPanel();
+        ClearSectionPanel(); // Section paneli temizle
         CreateLevelPanel(sectionData);
-
-    }
-    void SetGameState(EGameState newState)
-    {
-        gameState = newState;
-        GameManager.instance.SetGameState(newState);
+        SetupBackButtonForLevel(); // Level için back button
     }
 
-    void CreateLevelPanel(GameSection sectionData)
+    private void CreateLevelPanel(GameSection sectionData)
     {
         for (int i = 0; i < sectionData.levels.Length; i++)
         {
-            Level level = sectionData.levels[i];
-            GameObject levelPanel = Instantiate(levelPanelPrefab, levelPanelParent);
-            var levelNameUI = levelPanel.transform.Find("LevelName")?.GetComponent<TextMeshProUGUI>();
-            var levelButonUI = levelPanel.transform.Find("LevelButton")?.GetComponent<Button>();
-
-            if (levelNameUI != null) levelNameUI.text = level.name; // veya level'ın göstermek istediğiniz özelliği
-            if (levelButonUI != null) levelButonUI.onClick.AddListener(() => LoadLevel(level));
+            CreateSingleLevelPanel(sectionData.levels[i]);
         }
     }
-    void LoadLevel(Level levelToLoad)
+
+    private void CreateSingleLevelPanel(Level level)
     {
-        pauseMenuButton.SetActive(true);
-        ClearLevelPanel();
+        GameObject levelPanel = Instantiate(levelPanelPrefab, levelPanelParent);
+        
+        var levelNameUI = levelPanel.transform.Find("LevelName")?.GetComponent<TextMeshProUGUI>();
+        var levelButtonUI = levelPanel.transform.Find("LevelButton")?.GetComponent<Button>();
+
+        if (levelNameUI != null) levelNameUI.text = level.name;
+        if (levelButtonUI != null) levelButtonUI.onClick.AddListener(() => LoadLevel(level));
     }
 
-    void ClearLevelPanel()
+    private void LoadLevel(Level levelToLoad)
+    {
+        // UI elementlerini güncelle
+        levelPanelParent.gameObject.SetActive(false);  // Level seçme panelini kapat
+        backButton.gameObject.SetActive(false);         // Back butonunu kapat
+        pauseMenuButton.SetActive(true);                // Pause butonunu göster
+        
+        // Temizlik ve level yükleme
+        ClearLevelPanel();
+        LevelManager.Instance.LoadLevel(levelToLoad);
+        
+        // Game state'i güncelle
+        SetGameState(EGameState.GAME);
+    }
+
+    private void ClearLevelPanel()
     {
         foreach (Transform child in levelPanelParent)
         {
@@ -142,23 +204,49 @@ public class SectionAndLevelUI : MonoBehaviour
         }
     }
 
+    private void SetupBackButtonForLevel()
+    {
+        if (backButton != null)
+        {
+            backButton.onClick.RemoveAllListeners();
+            backButton.onClick.AddListener(OnLevelBackButtonPressed);
+        }
+    }
+
+    private void OnLevelBackButtonPressed()
+    {
+        ClearLevelPanel(); // Level paneli temizle
+        SetupSectionPanel(); // Section paneline geri dön
+        SetGameState(EGameState.SECTIONSELECTION); // Game state'i güncelle
+    }
+    #endregion
+
+    #region Game State Management
+    private void SetGameState(EGameState newState)
+    {
+        gameState = newState;
+        GameManager.instance.SetGameState(newState);
+    }
+
     public void PauseGame()
     {
-        /*Time.timeScale = 0;
-        pauseMenuUI.SetActive(true);*/
+        // Time.timeScale = 0;
+        // pauseMenuUI.SetActive(true);
     }
+
     public void ResumeGame()
     {
-        /*Time.timeScale = 1;
-        pauseMenuUI.SetActive(false);*/
+        // Time.timeScale = 1;
+        // pauseMenuUI.SetActive(false);
     }
+
     public void ExitLevel()
     {
-        /*Time.timeScale = 1;
-        pauseMenuUI.SetActive(false);
-        pauseMenuButton.SetActive(false);
-        ClearLevelPanel();
-        GameManagerOLD.Instance.DestroyCurrentLevel();*/
-
+        // Time.timeScale = 1;
+        // pauseMenuUI.SetActive(false);
+        // pauseMenuButton.SetActive(false);
+        // ClearLevelPanel();
+        // GameManagerOLD.Instance.DestroyCurrentLevel();
     }
+    #endregion
 }

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using NaughtyAttributes;
 using UnityEngine;
+using System.Linq;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -19,17 +20,14 @@ public class ItemPlacer : MonoBehaviour
 
     public ItemLevelData[] GetGoals()
     {
-        List<ItemLevelData> goals = new List<ItemLevelData>();
-
-        foreach (ItemLevelData data in itemDatas)
+        // Hedefleri tekrar etmeyecek şekilde al
+        HashSet<ItemLevelData> uniqueGoals = new HashSet<ItemLevelData>();
+        Debug.Log("Beni kaç kere çağırıyon amk");
+        for (int i = 0; i < itemDatas.Count; i++)
         {
-            if (data.isGoal)
-            {
-                goals.Add(data);
-            }
+            uniqueGoals.Add(itemDatas[i]);
         }
-        return goals.ToArray();
-
+        return uniqueGoals.ToArray();
     }
 
     [SerializeField] public float minSpawnTime;
@@ -45,15 +43,17 @@ public class ItemPlacer : MonoBehaviour
     void SpawnObjects()
     {
         spawnTime = Random.Range(minSpawnTime, maxSpawnTime);
-        ItemLevelData data = itemDatas[Random.Range(0, itemDatas.Count)];
+
+        // Her spawn point için ayrı rastgele item seç
         foreach (Transform spawnPosition in spawnPoints)
         {
-            Vector3 _spawnPosition = new Vector3(spawnPosition.position.x, spawnPosition.position.y, spawnPosition.position.z);
+            // Rastgele bir item seç
+            ItemLevelData randomData = itemDatas[Random.Range(0, itemDatas.Count)];
+            Vector3 _spawnPosition = spawnPosition.position;
 
-            Item itemInstance = Instantiate(data.itemPrefab, _spawnPosition, Quaternion.identity);
-            itemInstance.transform.rotation = Quaternion.Euler(Random.onUnitSphere * 360);
+            Item itemInstance = Instantiate(randomData.itemPrefab, _spawnPosition, Quaternion.identity);
+            itemInstance.transform.rotation = Quaternion.Euler(Vector3.zero); // Düz bir şekilde döndür
         }
-
     }
 }
 
@@ -89,15 +89,15 @@ public class ItemPlacer : MonoBehaviour
         
     }*/
 
-    /*private Vector3 GetSpawnPosition()
-    {
-        float x = Random.Range(-spawnZone.size.x / 2, spawnZone.size.x / 2);
-        float y = Random.Range(-spawnZone.size.y / 2, spawnZone.size.y / 2);
-        float z = Random.Range(-spawnZone.size.z / 2, spawnZone.size.z / 2);
+/*private Vector3 GetSpawnPosition()
+{
+    float x = Random.Range(-spawnZone.size.x / 2, spawnZone.size.x / 2);
+    float y = Random.Range(-spawnZone.size.y / 2, spawnZone.size.y / 2);
+    float z = Random.Range(-spawnZone.size.z / 2, spawnZone.size.z / 2);
 
-        Vector3 localPosition = spawnZone.center + new Vector3(x, y, z);
-        Vector3 spawnPosition = transform.TransformPoint(localPosition);
+    Vector3 localPosition = spawnZone.center + new Vector3(x, y, z);
+    Vector3 spawnPosition = transform.TransformPoint(localPosition);
 
-        return spawnPosition;
+    return spawnPosition;
 
-    }*/
+}*/

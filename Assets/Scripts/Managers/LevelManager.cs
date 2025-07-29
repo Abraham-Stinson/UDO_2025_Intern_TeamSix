@@ -61,13 +61,36 @@ public class LevelManager : MonoBehaviour, IGameStateListener
 
     private void SpawnLevel()
     {
+        // Null ve array length kontrolleri
+        if (sections == null || sections.Length == 0)
+        {
+            Debug.LogError("No sections defined!");
+            return;
+        }
+
+        if (currentSectionIndex >= sections.Length)
+        {
+            Debug.LogError($"Invalid section index: {currentSectionIndex}");
+            return;
+        }
+
         transform.Clear();
 
         // Current section'ı al
         currentSection = sections[currentSectionIndex];
 
+        if (currentSection.levels == null || currentSection.levels.Length == 0)
+        {
+            Debug.LogError($"No levels defined in section: {currentSection.sectionName}");
+            return;
+        }
+
         // Section içindeki level index'ini validate et
-        int validatedLevelIndex = currentLevelIndex % currentSection.levels.Length;
+        int validatedLevelIndex = currentLevelIndex;
+        if (currentSection.levels.Length > 0)
+        {
+            validatedLevelIndex = currentLevelIndex % currentSection.levels.Length;
+        }
 
         // Level'ı spawn et
         currentLevel = Instantiate(currentSection.levels[validatedLevelIndex], transform);
@@ -196,5 +219,40 @@ public class LevelManager : MonoBehaviour, IGameStateListener
     public static implicit operator LevelManager(GameSection v)
     {
         throw new NotImplementedException();
+    }
+
+    public void LoadLevel(Level levelToLoad)
+    {
+        if (levelToLoad == null)
+        {
+            Debug.LogError("Level to load is null!");
+            return;
+        }
+
+        // Geçerli level kontrolü
+        bool levelFound = false;
+        for (int i = 0; i < sections.Length; i++)
+        {
+            for (int j = 0; j < sections[i].levels.Length; j++)
+            {
+                if (sections[i].levels[j] == levelToLoad)
+                {
+                    currentSectionIndex = i;
+                    currentLevelIndex = j;
+                    levelFound = true;
+                    break;
+                }
+            }
+            if (levelFound) break;
+        }
+
+        if (!levelFound)
+        {
+            Debug.LogError("Level not found in any section!");
+            return;
+        }
+
+        currentLevel = levelToLoad;
+        SpawnLevel();
     }
 }

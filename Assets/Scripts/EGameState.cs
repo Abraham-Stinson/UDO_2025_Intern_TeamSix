@@ -2,12 +2,13 @@ using UnityEngine;
 
 public enum EGameState
 {
-    SECTIONSELECTION = 0,
-    LEVELSELECTION = 1,
-    GAME = 2,
-    PAUSEBUTTON = 3,
-    PAUSEMENU = 4,
-    LEVELCOMPLETE = 5,
-    GAMEOVER = 6
+    MENU = 0,
+    SECTIONSELECTION = 1,
+    LEVELSELECTION = 2,
+    GAME = 3,
+    PAUSEBUTTON = 4,
+    PAUSEMENU = 5,
+    LEVELCOMPLETE = 6,
+    GAMEOVER = 7
     
 }
