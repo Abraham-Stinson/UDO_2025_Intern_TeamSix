@@ -250,4 +250,9 @@ public class LevelManager : MonoBehaviour, IGameStateListener
         Destroy(currentLevel.gameObject);
         currentLevel = null;
     }
+
+    public void NextLevel()
+    {
+        
+    }
 }

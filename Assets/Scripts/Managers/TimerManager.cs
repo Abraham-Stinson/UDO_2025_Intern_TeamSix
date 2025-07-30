@@ -2,13 +2,14 @@ using System;
 using TMPro;
 using UnityEngine;
 
-public class TimerManager : MonoBehaviour,IGameStateListener
+public class TimerManager : MonoBehaviour, IGameStateListener
 {
     public static TimerManager instance;
-    
-    [Header("Elements")] 
+
+    [Header("Elements")]
     [SerializeField] private TextMeshProUGUI timerText;
-    private int currentTimer;
+    private float currentTimer; // Use float for more precise timing
+    private bool isTimerRunning;
 
     private void Awake()
     {
@@ -20,9 +21,8 @@ public class TimerManager : MonoBehaviour,IGameStateListener
         {
             Destroy(gameObject);
         }
-        
+
         LevelManager.levelSpawned += OnLevelSpawned;
-        
     }
 
     private void OnDestroy()
@@ -30,38 +30,43 @@ public class TimerManager : MonoBehaviour,IGameStateListener
         LevelManager.levelSpawned -= OnLevelSpawned;
     }
 
-
     private void OnLevelSpawned(Level level)
     {
         currentTimer = level.Duration;
-         UpdateTimerText();
-         StartTimer();
+        UpdateTimerText();
+        StartTimer();
     }
 
     private void StartTimer()
     {
-        InvokeRepeating("UpdateTimer",0,1);
+        isTimerRunning = true;
     }
 
-    private void UpdateTimer()
+    private void Update()
     {
-        currentTimer--;
-        UpdateTimerText();
+        if (isTimerRunning)
+        {
+            currentTimer -= Time.deltaTime; // Decrease timer by the time passed since last frame
 
-        if (currentTimer <= 0)
-            TimerFinished();
+            if (currentTimer <= 0)
+            {
+                currentTimer = 0; // Ensure timer doesn't go negative
+                TimerFinished();
+            }
+
+            UpdateTimerText();
+        }
     }
 
     private void UpdateTimerText()
     {
-        timerText.text = SecondToString(currentTimer);
-
+        timerText.text = SecondToString((int)currentTimer);
     }
 
     private void TimerFinished()
     {
+        isTimerRunning = false; // Stop the timer
         GameManager.instance.SetGameState(EGameState.GAMEOVER);
-        StopTimer();
         SectionAndLevelUI.Instance.ShowLoseScreen(1);
     }
 
@@ -72,19 +77,18 @@ public class TimerManager : MonoBehaviour,IGameStateListener
 
     public void GameStateChangedCallBack(EGameState gameState)
     {
-        if( gameState == EGameState.LEVELCOMPLETE || gameState == EGameState.GAMEOVER)
+        if (gameState == EGameState.LEVELCOMPLETE || gameState == EGameState.GAMEOVER)
             StopTimer();
     }
 
     private void StopTimer()
     {
-        //CancelInvoke("UpdateTimer");
-        CancelInvoke();
+        isTimerRunning = false; // Stop the timer
     }
 
     public void FreezeTimer()
     {
         StopTimer();
-        Invoke("StartTimer",5);
+        Invoke("StartTimer", 5);
     }
 }

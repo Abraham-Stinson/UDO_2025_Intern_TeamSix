@@ -11,7 +11,7 @@ public class ItemPlacer : MonoBehaviour
 {
     [Header("Elements")]
     [SerializeField] private List<ItemLevelData> itemDatas;
-    
+
     [Header("Settings")]
     [SerializeField] private float itemLifetime = 5f;
 
@@ -25,7 +25,7 @@ public class ItemPlacer : MonoBehaviour
 
     [Header("Data")]
     private Item[] items;
-    
+
     [Header("Actions")]
     public static Action<Item> OnItemSpawned;
 
@@ -66,15 +66,20 @@ public class ItemPlacer : MonoBehaviour
     void SpawnObjects()
     {
         spawnTime = Random.Range(minSpawnTime, maxSpawnTime);
-        ItemLevelData data = itemDatas[Random.Range(0, itemDatas.Count)];
 
         foreach (Transform spawnPoint in spawnPoints)
         {
-            Item itemInstance = Instantiate(data.itemPrefab, spawnPoint.position, spawnPoint.rotation, transform);
+            // Her spawn point için farklı random item seç
+            ItemLevelData randomData = itemDatas[Random.Range(0, itemDatas.Count)];
+
+            // Item'ı oluştur
+            Item itemInstance = Instantiate(randomData.itemPrefab, spawnPoint.position, spawnPoint.rotation, transform);
             itemInstance.transform.forward = spawnPoint.forward;
-            
+
+            // Event'i tetikle
             OnItemSpawned?.Invoke(itemInstance);
-            
+
+            // Belirli süre sonra yok et
             Destroy(itemInstance.gameObject, itemLifetime);
         }
     }

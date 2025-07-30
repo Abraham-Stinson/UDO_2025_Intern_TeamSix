@@ -10,13 +10,14 @@ public class GoalManager : MonoBehaviour
     [SerializeField] private Transform goalCardParent;
     [SerializeField] private GoalCard goalCardPrefab;
     
-    
     [Header("Data")] 
     private ItemLevelData[] goals;
 
     private List<GoalCard> goalCards = new List<GoalCard>();
+    private Level lastLoadedLevel; // Aynı level'ın tekrar yüklenmesini önlemek için
 
     public ItemLevelData[] Goals => goals;
+    
     private void Awake()
     {
         if (instance == null)
@@ -34,34 +35,64 @@ public class GoalManager : MonoBehaviour
         LevelManager.levelSpawned -= OnLevelSpawned;
         ItemSpotsManager.itemPickedUp -= OnItemPickedUp;
         PowerUpManager.itemPickedUp -= OnItemPickedUp;
-
     }
 
-   
     private void OnLevelSpawned(Level level)
     {
-        goals = level.GetGoals();
+        // Aynı level tekrar yükleniyorsa işlem yapma
+        if (lastLoadedLevel == level)
+        {
+            Debug.Log("Aynı level tekrar yüklendi, goals zaten mevcut!");
+            return;
+        }
 
+        lastLoadedLevel = level;
+        Debug.Log($"Yeni level yüklendi: {level.name}");
+        
+        goals = level.GetGoals();
         GenerateGoalCards();
     }
 
     private void GenerateGoalCards()
     {
+        // ÖNEMLİ: Önce eski goal card'ları temizle
+        ClearGoalCards();
+        
+        // Yeni goal card'ları oluştur
         for (int i = 0; i < goals.Length; i++)
             GenerateGoalCard(goals[i]);
+            
+        Debug.Log($"Goal cards oluşturuldu: {goalCards.Count} adet");
+    }
+
+    private void ClearGoalCards()
+    {
+        // Mevcut goal card'ları yok et
+        foreach (var card in goalCards)
+        {
+            if (card != null)
+                Destroy(card.gameObject);
+        }
+        
+        // Listeyi temizle
+        goalCards.Clear();
+        
+        Debug.Log("Eski goal cards temizlendi");
     }
 
     private void GenerateGoalCard(ItemLevelData goal)
     {
         GoalCard cardInstance = Instantiate(goalCardPrefab, goalCardParent);
         
-        cardInstance.Configure(goal.amount,goal.itemPrefab.Icon);
+        cardInstance.Configure(goal.amount, goal.itemPrefab.Icon);
         
         goalCards.Add(cardInstance);
     }
 
     private void OnItemPickedUp(Item item)
     {
+        if (goals == null || goals.Length == 0) return;
+
         for (int i = 0; i < goals.Length; i++)
         {
             if(!goals[i].itemPrefab.ItemName.Equals(item.ItemName))
@@ -73,7 +104,8 @@ public class GoalManager : MonoBehaviour
                 CompleteGoals(i);
             else
             {
-                goalCards[i].UpdateAmount(goals[i].amount);
+                if (i < goalCards.Count && goalCards[i] != null)
+                    goalCards[i].UpdateAmount(goals[i].amount);
             }
 
             break;
@@ -82,9 +114,10 @@ public class GoalManager : MonoBehaviour
 
     private void CompleteGoals(int goalIndex)
     {
-       Debug.Log("Goal Complate : " + goals[goalIndex].itemPrefab.ItemName);
+       Debug.Log("Goal Complete : " + goals[goalIndex].itemPrefab.ItemName);
        
-       goalCards[goalIndex].Complate();
+       if (goalIndex < goalCards.Count && goalCards[goalIndex] != null)
+           goalCards[goalIndex].Complate();
 
        CheckForLevelComplete();
     }
@@ -98,6 +131,13 @@ public class GoalManager : MonoBehaviour
         }
         
         GameManager.instance.SetGameState(EGameState.LEVELCOMPLETE);
-        // Debug.Log("Level Complete");
+    }
+
+    // Level değişiminde manuel temizleme için
+    public void ClearCurrentGoals()
+    {
+        ClearGoalCards();
+        goals = null;
+        lastLoadedLevel = null;
     }
 }
