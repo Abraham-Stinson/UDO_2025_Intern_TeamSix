@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using NaughtyAttributes;
 using UnityEngine;
+using Random = UnityEngine.Random;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -23,6 +25,9 @@ public class ItemPlacer : MonoBehaviour
 
     [Header("Data")]
     private Item[] items;
+    
+    [Header("Actions")]
+    public static Action<Item> OnItemSpawned;
 
     public ItemLevelData[] GetGoals()
     {
@@ -67,6 +72,8 @@ public class ItemPlacer : MonoBehaviour
         {
             Item itemInstance = Instantiate(data.itemPrefab, spawnPoint.position, spawnPoint.rotation, transform);
             itemInstance.transform.forward = spawnPoint.forward;
+            
+            OnItemSpawned?.Invoke(itemInstance);
             
             Destroy(itemInstance.gameObject, itemLifetime);
         }

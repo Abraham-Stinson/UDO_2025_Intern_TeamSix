@@ -97,7 +97,10 @@ public class PowerUpManager : MonoBehaviour
 
         ItemLevelData? greatesGoal = GetGreatesGoal(goals);
         if (greatesGoal == null)
+        {
+            isBusy = false;
             return;
+        }
 
         ItemLevelData goal = (ItemLevelData)greatesGoal;
 
@@ -121,8 +124,14 @@ public class PowerUpManager : MonoBehaviour
 
             }
         }
-
+        
         vacuumItemsToCollect = itemsToCollect.Count;
+        
+        if (vacuumItemsToCollect == 0)
+        {
+            isBusy = false;
+            return;
+        }
         
         for (int i = 0; i < itemsToCollect.Count; i++)
         {
@@ -134,12 +143,12 @@ public class PowerUpManager : MonoBehaviour
             points.Add(itemsToCollect[i].transform.position);
            // points.Add(itemsToCollect[i].transform.position);
             //bilerek 2 kere yazdık
-           points.Add(itemsToCollect[i].transform.position + Vector3.up );
+           points.Add(itemsToCollect[i].transform.position + Vector3.up*1.2f );
            
-            points.Add(vacuumSuckPosition.position + Vector3.up);
+            points.Add(vacuumSuckPosition.position + Vector3.up*1.2f);
             points.Add(vacuumSuckPosition.position);
             
-            LeanTween.moveSpline(itemsToCollect[i].gameObject, points.ToArray(), 0.5f)
+            LeanTween.moveSpline(itemsToCollect[i].gameObject, points.ToArray(), 0.7f)
                 .setOnComplete(() => ItemReachedVacuum(itemToCollect));
 
 
@@ -149,7 +158,7 @@ public class PowerUpManager : MonoBehaviour
                 .setOnComplete(() => ItemReachedVacuum(itemToCollect));
                 */
 
-            LeanTween.scale(itemsToCollect[i].gameObject, Vector3.zero, 0.5f);
+            LeanTween.scale(itemsToCollect[i].gameObject, Vector3.zero, 0.7f);
             
         }
         
@@ -196,6 +205,18 @@ public class PowerUpManager : MonoBehaviour
     {
         vacuum.UpdateVisuals(vacuumPUCount);
     }
+
+    #region Freeze
+
+    [Button]
+    public void FreezeGunPowerUp()
+    {
+        TimerManager.instance.FreezeTimer();
+    }
+
+    #endregion
+    
+    
     private void LoadData()
     {
         vacuumPUCount = PlayerPrefs.GetInt("VacuumCount", initialVacuumPUCount);

@@ -48,6 +48,8 @@ public class InputManager : MonoBehaviour
 
         //if (hit.collider.TryGetComponent(out Powerup powerup))
             powerupClicked?.Invoke(hit.collider.GetComponent<Powerup>());
+            
+            
 
     }
 
