@@ -28,8 +28,12 @@ public class SectionAndLevelUI : MonoBehaviour
     [SerializeField] private GameObject inGameScreenUI;
     [SerializeField] private GameObject pauseMenuUI;
     [SerializeField] private GameObject pauseMenuButton;
-    
-    
+
+    [Header("Lose Screen")]
+    [SerializeField] private GameObject[] loseWithTimeButtonUI;
+    [SerializeField] private GameObject[] loseWithSlotButtonUI;
+
+
     #endregion
 
     #region Unity Methods
@@ -41,7 +45,7 @@ public class SectionAndLevelUI : MonoBehaviour
     private void Start()
     {
         //InitializeSections();
-        
+
     }
     #endregion
 
@@ -142,7 +146,7 @@ public class SectionAndLevelUI : MonoBehaviour
     private void CreateSingleSectionPanel(GameSection section)
     {
         GameObject sectionPanel = Instantiate(sectionPanelPrefab, sectionPanelParent);
-        
+
         var sectionIconUI = sectionPanel.transform.Find("SectionIcon")?.GetComponent<Image>();
         var sectionLabelUI = sectionPanel.transform.Find("SectionLabel")?.GetComponent<TextMeshProUGUI>();
         var sectionButtonUI = sectionPanel.transform.Find("SectionButton")?.GetComponent<Button>();
@@ -196,7 +200,7 @@ public class SectionAndLevelUI : MonoBehaviour
     private void CreateSingleLevelPanel(Level level)
     {
         GameObject levelPanel = Instantiate(levelPanelPrefab, levelPanelParent);
-        
+
         var levelNameUI = levelPanel.transform.Find("LevelName")?.GetComponent<TextMeshProUGUI>();
         var levelButtonUI = levelPanel.transform.Find("LevelButton")?.GetComponent<Button>();
 
@@ -213,7 +217,7 @@ public class SectionAndLevelUI : MonoBehaviour
         // Temizlik ve level yükleme
         ClearLevelPanel();
         LevelManager.Instance.LoadLevel(levelToLoad);
-        
+
         // Game state'i güncelle
         SetGameState(EGameState.GAME);
     }
@@ -275,4 +279,32 @@ public class SectionAndLevelUI : MonoBehaviour
         LevelManager.Instance.ExitLevel();
     }
     #endregion
+    
+    public void ShowLoseScreen(int loseType)
+    {
+        if (loseType == 0)//slot ile kaybetme
+        {
+            LevelManager.Instance.DestroyCurrentLevel();
+            foreach (var button in loseWithSlotButtonUI)
+            {
+                button.SetActive(true);
+            }
+            foreach (var button in loseWithTimeButtonUI)
+            {
+                button.SetActive(false);
+            }
+        }
+        else if (loseType == 1)//zaman ile kaybetme
+        {
+            LevelManager.Instance.DestroyCurrentLevel();
+            foreach (var button in loseWithSlotButtonUI)
+            {
+                button.SetActive(false);
+            }
+            foreach (var button in loseWithTimeButtonUI)
+            {
+                button.SetActive(true);
+            }
+        }
+    }
 }

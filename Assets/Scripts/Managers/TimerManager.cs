@@ -51,6 +51,7 @@ public class TimerManager : MonoBehaviour,IGameStateListener
     {
         GameManager.instance.SetGameState(EGameState.GAMEOVER);
         StopTimer();
+        SectionAndLevelUI.Instance.ShowLoseScreen(1);
     }
 
     private string SecondToString(int seconds)

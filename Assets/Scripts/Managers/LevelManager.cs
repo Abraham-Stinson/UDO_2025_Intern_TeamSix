@@ -270,6 +270,5 @@ public class LevelManager : MonoBehaviour, IGameStateListener
     {
         DestroyCurrentLevel();
         GameManager.instance.SetGameState(EGameState.MENU);
-        
     }
 }

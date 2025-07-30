@@ -295,7 +295,8 @@ public class ItemSpotsManager : MonoBehaviour
         if (GetFreeSpot() == null)
         {
             GameManager.instance.SetGameState(EGameState.GAMEOVER);
-            Debug.LogWarning("Game Over");
+            SectionAndLevelUI.Instance.ShowLoseScreen(0);
+            LevelManager.Instance.DestroyCurrentLevel();
         }
         else
             isBusy = false;
