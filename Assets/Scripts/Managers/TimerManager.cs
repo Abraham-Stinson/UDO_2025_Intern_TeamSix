@@ -68,6 +68,7 @@ public class TimerManager : MonoBehaviour, IGameStateListener
         isTimerRunning = false; // Stop the timer
         GameManager.instance.SetGameState(EGameState.GAMEOVER);
         SectionAndLevelUI.Instance.ShowLoseScreen(1);
+
     }
 
     private string SecondToString(int seconds)

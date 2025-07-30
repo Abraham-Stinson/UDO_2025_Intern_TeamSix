@@ -284,7 +284,6 @@ public class SectionAndLevelUI : MonoBehaviour
     {
         if (loseType == 0)//slot ile kaybetme
         {
-            LevelManager.Instance.DestroyCurrentLevel();
             foreach (var button in loseWithSlotButtonUI)
             {
                 button.SetActive(true);
@@ -296,7 +295,6 @@ public class SectionAndLevelUI : MonoBehaviour
         }
         else if (loseType == 1)//zaman ile kaybetme
         {
-            LevelManager.Instance.DestroyCurrentLevel();
             foreach (var button in loseWithSlotButtonUI)
             {
                 button.SetActive(false);

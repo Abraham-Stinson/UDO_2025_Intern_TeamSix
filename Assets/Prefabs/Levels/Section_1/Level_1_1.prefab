@@ -143,12 +143,13 @@ MonoBehaviour:
   - itemPrefab: {fileID: 6870267299802983623, guid: db85b5828731d1f40a2dc813a3e99325, type: 3}
     isGoal: 1
     amount: 12
+  itemLifetime: 5
   spawnPoints:
   - {fileID: 3754744649086861253}
   - {fileID: 270248438452766615}
   - {fileID: 2308566356702880169}
   minSpawnTime: 1
-  maxSpawnTime: 3
+  maxSpawnTime: 2
 --- !u!1 &7384649991002138788
 GameObject:
   m_ObjectHideFlags: 0

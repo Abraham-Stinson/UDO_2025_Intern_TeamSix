@@ -126,11 +126,12 @@ public class GoalManager : MonoBehaviour
     {
         for (int i = 0; i < goals.Length; i++)
         {
-            if(goals[i].amount > 0)
+            if (goals[i].amount > 0)
                 return;
         }
-        
+
         GameManager.instance.SetGameState(EGameState.LEVELCOMPLETE);
+        LevelManager.Instance.DestroyCurrentLevel();
     }
 
     // Level değişiminde manuel temizleme için

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using NaughtyAttributes;
 using UnityEngine;
@@ -79,8 +80,19 @@ public class ItemPlacer : MonoBehaviour
             // Event'i tetikle
             OnItemSpawned?.Invoke(itemInstance);
 
-            // Belirli süre sonra yok et
-            Destroy(itemInstance.gameObject, itemLifetime);
+            // Belirli süre sonra yok et (sadece seçilmemiş item'lar için)
+            StartCoroutine(DestroyItemIfNotSelected(itemInstance, itemLifetime));
+        }
+    }
+
+    private IEnumerator DestroyItemIfNotSelected(Item item, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        
+        // Sadece seçilmemiş item'ları yok et
+        if (item != null && !item.IsSelected)
+        {
+            Destroy(item.gameObject);
         }
     }
 }

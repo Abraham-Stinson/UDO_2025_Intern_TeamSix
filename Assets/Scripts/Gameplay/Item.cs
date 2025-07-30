@@ -15,9 +15,18 @@ public class Item : MonoBehaviour
     [SerializeField] private Sprite icon;
     public Sprite Icon => icon;
 
+    // Flag to track if item is selected/placed in a spot
+    private bool isSelected = false;
+    public bool IsSelected => isSelected;
+
     public EItemName GetItemName()
     {
         return itemName;
+    }
+
+    public void SetSelected(bool selected)
+    {
+        isSelected = selected;
     }
 
     

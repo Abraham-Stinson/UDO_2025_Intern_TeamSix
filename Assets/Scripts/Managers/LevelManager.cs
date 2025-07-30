@@ -242,8 +242,8 @@ public class LevelManager : MonoBehaviour, IGameStateListener
 
     public void ExitLevel()
     {
-        DestroyCurrentLevel();
         GameManager.instance.SetGameState(EGameState.MENU);
+        DestroyCurrentLevel();
     }
     public void DestroyCurrentLevel()
     {
@@ -253,6 +253,8 @@ public class LevelManager : MonoBehaviour, IGameStateListener
 
     public void NextLevel()
     {
+        GameManager.instance.SetGameState(EGameState.GAME);
         
+        SpawnLevel();
     }
 }

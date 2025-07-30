@@ -54,6 +54,9 @@ public class ItemSpotsManager : MonoBehaviour
 
         isBusy = true;
 
+        // Mark item as selected so it won't be destroyed
+        item.SetSelected(true);
+
         itemPickedUp?.Invoke(item);
 
         HandleItemClicked(item);
