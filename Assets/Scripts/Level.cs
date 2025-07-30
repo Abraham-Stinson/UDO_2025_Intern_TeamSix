@@ -7,6 +7,7 @@ public class Level : MonoBehaviour
     [SerializeField] private ItemPlacer itemplacer;
 
     [Header("Settings")]
+    public string levelName;
     public int Duration => duration;
     [SerializeField] private int duration;
 

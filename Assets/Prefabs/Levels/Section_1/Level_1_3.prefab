@@ -107,6 +107,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemplacer: {fileID: 557963257663168418}
+  levelName: Solo
   duration: 40
 --- !u!1 &8315240269692054203
 GameObject:

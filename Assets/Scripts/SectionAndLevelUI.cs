@@ -204,7 +204,7 @@ public class SectionAndLevelUI : MonoBehaviour
         var levelNameUI = levelPanel.transform.Find("LevelName")?.GetComponent<TextMeshProUGUI>();
         var levelButtonUI = levelPanel.transform.Find("LevelButton")?.GetComponent<Button>();
 
-        if (levelNameUI != null) levelNameUI.text = level.name;
+        if (levelNameUI != null) levelNameUI.text = level.levelName;
         if (levelButtonUI != null) levelButtonUI.onClick.AddListener(() => LoadLevel(level));
     }
 

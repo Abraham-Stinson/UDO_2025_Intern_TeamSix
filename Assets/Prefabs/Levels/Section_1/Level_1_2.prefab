@@ -282,6 +282,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemplacer: {fileID: 557963257663168418}
+  levelName: "\u0130kizler"
   duration: 40
 --- !u!1001 &4493715874282349031
 PrefabInstance:
