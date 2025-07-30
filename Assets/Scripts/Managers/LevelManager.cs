@@ -21,10 +21,10 @@ public class LevelManager : MonoBehaviour, IGameStateListener
 {
     public static LevelManager Instance { get; private set; }
 
-    
+
     private List<Item> activeItems = new List<Item>();
-    
-  
+
+
     public Item[] Items => activeItems.ToArray();
 
     private void Awake()
@@ -40,15 +40,15 @@ public class LevelManager : MonoBehaviour, IGameStateListener
         }
         LoadData();
     }
-    
-    
+
+
     private void OnEnable()
     {
         ItemPlacer.OnItemSpawned += HandleItemSpawned;
         PowerUpManager.itemPickedUp += HandleItemRemoved;
     }
 
-   
+
     private void OnDisable()
     {
         ItemPlacer.OnItemSpawned -= HandleItemSpawned;
@@ -77,21 +77,21 @@ public class LevelManager : MonoBehaviour, IGameStateListener
     private void SpawnLevel()
     {
         transform.Clear();
-        
+
         activeItems.Clear();
 
         currentSection = sections[currentSectionIndex];
         int validatedLevelIndex = currentLevelIndex % currentSection.levels.Length;
         currentLevel = Instantiate(currentSection.levels[validatedLevelIndex], transform);
 
-      
+
         activeItems.AddRange(currentLevel.GetComponentsInChildren<Item>());
 
         levelSpawned?.Invoke(currentLevel);
         sectionChanged?.Invoke(currentSection);
     }
-    
-   
+
+
     private void HandleItemSpawned(Item newItem)
     {
         if (newItem != null && !activeItems.Contains(newItem))
@@ -100,10 +100,10 @@ public class LevelManager : MonoBehaviour, IGameStateListener
         }
     }
 
-   
+
     private void HandleItemRemoved(Item removedItem)
     {
-       
+
         activeItems.RemoveAll(item => item == null || item == removedItem);
     }
 
@@ -199,9 +199,55 @@ public class LevelManager : MonoBehaviour, IGameStateListener
             SaveData();
         }
     }
-    
+
     public static implicit operator LevelManager(GameSection v)
     {
         throw new NotImplementedException();
+    }
+
+    public void LoadLevel(Level levelToLoad)
+    {
+        if (levelToLoad == null)
+        {
+            Debug.LogError("Level to load is null!");
+            return;
+        }
+
+        // Geçerli level kontrolü
+        bool levelFound = false;
+        for (int i = 0; i < sections.Length; i++)
+        {
+            for (int j = 0; j < sections[i].levels.Length; j++)
+            {
+                if (sections[i].levels[j] == levelToLoad)
+                {
+                    currentSectionIndex = i;
+                    currentLevelIndex = j;
+                    levelFound = true;
+                    break;
+                }
+            }
+            if (levelFound) break;
+        }
+
+        if (!levelFound)
+        {
+            Debug.LogError("Level not found in any section!");
+            return;
+        }
+
+        currentLevel = levelToLoad;
+        SpawnLevel();
+    }
+
+    public void ExitLevel()
+    {
+        DestroyCurrentLevel();
+        GameManager.instance.SetGameState(EGameState.MENU);
+    }
+    public void DestroyCurrentLevel()
+    {
+        Destroy(currentLevel.gameObject);
+        currentLevel = null;
     }
 }

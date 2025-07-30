@@ -4,21 +4,30 @@ using UnityEditor;
 
 public class InputManager : MonoBehaviour
 {
+    public static InputManager instance;
     [Header(" Actions ")]
     public static Action<Item> itemClicked;
     public static Action<Powerup> powerupClicked;
 
-    [Header("Settings")] 
+    [Header("Settings")]
     [SerializeField] private Material outlineMaterial;
     [SerializeField] private LayerMask powerupLayer;
     private Item currentItem;
-    
+
+    void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+    }
     void Start()
     {
-        
+
     }
 
-   
+
     void Update()
     {
 
@@ -47,9 +56,9 @@ public class InputManager : MonoBehaviour
 
 
         //if (hit.collider.TryGetComponent(out Powerup powerup))
-            powerupClicked?.Invoke(hit.collider.GetComponent<Powerup>());
-            
-            
+        powerupClicked?.Invoke(hit.collider.GetComponent<Powerup>());
+
+
 
     }
 
@@ -59,8 +68,8 @@ public class InputManager : MonoBehaviour
 
         if (hit.collider == null)
         {
-            if (currentItem !=null)
-             DeselectionCurrentItem();
+            if (currentItem != null)
+                DeselectionCurrentItem();
             return;
         }
 
@@ -73,10 +82,10 @@ public class InputManager : MonoBehaviour
             DeselectionCurrentItem();
             return;
         }
-        Debug.Log("tıkladım "+hit.collider.name);
+        Debug.Log("tıkladım " + hit.collider.name);
 
         DeselectionCurrentItem();
-        
+
         currentItem = item;
         currentItem.Select(outlineMaterial);
     }
@@ -90,14 +99,14 @@ public class InputManager : MonoBehaviour
             currentItem = null;
         }
     }
-    
+
     private void HandleMouseUp()
     {
         if (currentItem == null)
             return;
-        
+
         currentItem.Deselect();
-        
+
         itemClicked?.Invoke(currentItem);
         currentItem = null;
 

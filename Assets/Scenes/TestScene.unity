@@ -514,6 +514,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   outlineMaterial: {fileID: 2100000, guid: 48e1810dd23d4f947a275e5532c57f21, type: 2}
+  powerupLayer:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!4 &286135955
 Transform:
   m_ObjectHideFlags: 0
@@ -1914,7 +1917,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 200, y: -400}
+  m_AnchoredPosition: {x: 0, y: -400}
   m_SizeDelta: {x: 200, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &750390324
@@ -2390,9 +2393,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02a216127324f9842a5eedce29e96451, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  menuPanel: {fileID: 2017226903}
+  menuPanel: {fileID: 0}
   gamePanel: {fileID: 803606666}
-  slotPanel: {fileID: 916626857}
+  slotPanel: {fileID: 0}
   levelCompletePanel: {fileID: 1968027401}
   gameOverPanel: {fileID: 295927542}
   sectionSelectionPanel: {fileID: 6953241928993722825}
@@ -2410,21 +2413,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameState: 0
-  mainMenuScreenUI: {fileID: 2017226903}
+  mainMenuScreenUI: {fileID: 0}
   sectionPanelPrefab: {fileID: 838273167118643585, guid: 14a0f5fdb7524fe438d7025a11ee6685, type: 3}
   sectionPanelParent: {fileID: 2124724789165761944}
   levelPanelPrefab: {fileID: 838273167118643585, guid: 69ac93d589f75ac42b36e6c67d78b083, type: 3}
   levelPanelParent: {fileID: 4378839615303980244}
   backButton: {fileID: 4320903896529126775}
-  inGameScreenUI: {fileID: 803606666}
+  inGameScreenUI: {fileID: 0}
   pauseMenuUI: {fileID: 1807973719}
   pauseMenuButton: {fileID: 1157394227}
-  loseWithTimeButtonUI:
-  - {fileID: 2141207533}
-  - {fileID: 1407017576}
-  loseWithSlotButtonUI:
-  - {fileID: 1360232890}
-  - {fileID: 1659133767}
+  loseWithTimeButtonUI: []
+  loseWithSlotButtonUI: []
 --- !u!1 &916626857
 GameObject:
   m_ObjectHideFlags: 0
@@ -3498,7 +3497,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1292916713
 RectTransform:
   m_ObjectHideFlags: 0
