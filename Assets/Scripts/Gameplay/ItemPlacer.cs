@@ -4,10 +4,14 @@ using UnityEngine;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
+
 public class ItemPlacer : MonoBehaviour
 {
     [Header("Elements")]
     [SerializeField] private List<ItemLevelData> itemDatas;
+    
+    [Header("Settings")]
+    [SerializeField] private float itemLifetime = 5f;
 
     /*[Header("Settings")] 
     [SerializeField] private BoxCollider spawnZone;
@@ -17,10 +21,8 @@ public class ItemPlacer : MonoBehaviour
     // bu sistem güzel çalışıyor ama bizim oyun için işe yarayacağını sanmıyorum düzenlememiz lazım ya da başka bir sistem yapmamız lazım 
     [SerializeField] private Transform[] spawnPoints;
 
-
-    [Header("Data")] 
+    [Header("Data")]
     private Item[] items;
-    
 
     public ItemLevelData[] GetGoals()
     {
@@ -35,11 +37,13 @@ public class ItemPlacer : MonoBehaviour
         }
         return goals.ToArray();
     }
+
     public Item[] GetItems()
     {
-        if(items == null)
-            items= GetComponentsInChildren<Item>();
-        
+        if (items == null)
+        {
+            items = GetComponentsInChildren<Item>();
+        }
         return items;
     }
 
@@ -47,6 +51,7 @@ public class ItemPlacer : MonoBehaviour
     [SerializeField] public float maxSpawnTime;
 
     private float spawnTime;
+
     void Start()
     {
         spawnTime = Random.Range(minSpawnTime, maxSpawnTime);
@@ -62,6 +67,8 @@ public class ItemPlacer : MonoBehaviour
         {
             Item itemInstance = Instantiate(data.itemPrefab, spawnPoint.position, spawnPoint.rotation, transform);
             itemInstance.transform.forward = spawnPoint.forward;
+            
+            Destroy(itemInstance.gameObject, itemLifetime);
         }
     }
 }
@@ -93,20 +100,18 @@ public class ItemPlacer : MonoBehaviour
                 itemInstance.transform.rotation=Quaternion.Euler(Random.onUnitSphere* 360);
             }
         }
-        
-            
-        
-    }*/
+    }
 
-    /*private Vector3 GetSpawnPosition()
-    {
-        float x = Random.Range(-spawnZone.size.x / 2, spawnZone.size.x / 2);
-        float y = Random.Range(-spawnZone.size.y / 2, spawnZone.size.y / 2);
-        float z = Random.Range(-spawnZone.size.z / 2, spawnZone.size.z / 2);
+#endif*/
 
-        Vector3 localPosition = spawnZone.center + new Vector3(x, y, z);
-        Vector3 spawnPosition = transform.TransformPoint(localPosition);
+/*private Vector3 GetSpawnPosition()
+{
+    float x = Random.Range(-spawnZone.size.x / 2, spawnZone.size.x / 2);
+    float y = Random.Range(-spawnZone.size.y / 2, spawnZone.size.y / 2);
+    float z = Random.Range(-spawnZone.size.z / 2, spawnZone.size.z / 2);
 
-        return spawnPosition;
+    Vector3 localPosition = spawnZone.center + new Vector3(x, y, z);
+    Vector3 spawnPosition = transform.TransformPoint(localPosition);
 
-    }*/
+    return spawnPosition;
+}*/

@@ -8,217 +8,204 @@ using UnityEngine;
 public class PowerUpManager : MonoBehaviour
 {
     public static PowerUpManager instance;
-    
-    [Header("Vacuum Elements")]
-    [SerializeField] private Transform vacuumSuckPosition;
-    [SerializeField] private TextMeshPro vacuumAmountText;
-    [SerializeField] private GameObject vacuumVideoIcon;
-    [SerializeField] private Animator vacuumAnimator;
-    
 
-    [Header("Settings")] 
-    private bool isBusy;
-    private int vacuumItemsToCollect;
-    private int vacuumCounter;
-    private bool isUsingPowerup;
-    
-    
-    [Header("Actions")] 
-    public static Action<Item> itemPickedUp;
-
-    [Header("Data")] 
-    [SerializeField] private int initialVacuumPUCount;
-    
-    [SerializeField] private Vacuum vacuumPowerup;
-    private int vacuumPUCount;
-    
-       private void Awake()
-        {
-            if (instance == null)
-                instance = this;
-            else
-                Destroy(gameObject);
-
-            LoadData();
-
-            Vacuum.started += OnVacuumStarted;
-            InputManager.powerupClicked += OnPowerupClicked;
-        }
-
-        private void OnDestroy()
-        {
-            Vacuum.started -= OnVacuumStarted;
-            InputManager.powerupClicked -= OnPowerupClicked;
-        }
-
-        private void OnPowerupClicked(Powerup clickedPowerup)
-        {
-            if (isUsingPowerup)
-                return;
-
-            int amount = 0;
-
-            switch (clickedPowerup.Type)
-            {
-                case EPowerupType.Vacuum:
-                    VacuumPowerupPressed();
-                    amount = vacuumPUCount;
-                    break;
-            }
-
-            clickedPowerup.UpdateVisuals(amount);
-        }
-
-        private void OnVacuumStarted()
-        {
-            StartCoroutine(VacuumCoroutine());            
-        }
-
-        IEnumerator VacuumCoroutine()
-        {
-           
-            Item[] items = LevelManager.Instance.Items;
-            ItemLevelData[] goals = GoalManager.instance.Goals;
-
-          
-            ItemLevelData greatestGoal = GetGreatestGoal(goals);
-
-         
-            List<Item> itemsToCollect = new List<Item>();
-
-            for (int i = 0; i < items.Length; i++)
-            {
-                if (items[i].name == greatestGoal.itemPrefab.name)
-                {
-                    itemsToCollect.Add(items[i]);
-
-                    if (itemsToCollect.Count >= 3)
-                        break;
-                }
-            }
-
-            Vector3 finalTargetPosition = vacuumSuckPosition.position;
-
-            int collectedItems = 0;
-            float timer = 0;
-            float animationDuration = .7f;
-            float delayBetweenItems = .3f;
-
-            LTBezierPath[] itemPaths = new LTBezierPath[3];
-
-          
-            for (int i = 0; i < itemsToCollect.Count; i++)
-            {
-                itemPaths[i] = new LTBezierPath();
-
-                Vector3 p0 = itemsToCollect[i].transform.position;
-                Vector3 p1 = finalTargetPosition;
-
-                Vector3 c0 = p0 + Vector3.up * 2;
-                Vector3 c1 = p1 + Vector3.up * 2;
-
-                itemPaths[i].setPoints(new Vector3[] {p0, c1, c0, p1});
-            }
-
-            while(collectedItems < 3)
-            {
-                for (int i = 0; i < itemsToCollect.Count; i++)
-                {
-                    Item item = itemsToCollect[i];
-
-                    if (item.transform.position == finalTargetPosition)
-                        continue;
-
-                    item.DisablePhysics();                    
-
-                    float percent = Mathf.Clamp01((timer - (i * delayBetweenItems)) / animationDuration);
-
-                    Vector3 targetPosition = itemPaths[i].point(percent);
-
-                    item.transform.position = targetPosition;
-
-                    // Multiplied percent by 1.1f to scale down faster
-                    item.transform.localScale = Vector3.Lerp(Vector3.one, Vector3.zero, percent * 1.1f);
+    [Header("Vacuum Elements")] 
+    [SerializeField] private Vacuum vacuum;
+     [SerializeField] private Transform vacuumSuckPosition;
+    // [SerializeField] private TextMeshPro vacuumAmountText;
+    // [SerializeField] private GameObject vacuumVideoIcon;
+    //[SerializeField] private Animator vacuumAnimator;
 
 
-                    if (item.transform.position == finalTargetPosition)
-                    {
-                        itemPickedUp?.Invoke(item);
-                        collectedItems++;
-                    }
-                }
+    [Header("Settings")]
+     private bool isBusy; 
+     private int vacuumItemsToCollect;
+     private int vacuumCounter;
+    //  private bool isUsingPowerup;
 
-                // If the item has reached, increase the collected items count
-                timer += Time.deltaTime;
-                yield return null;
-            }
 
-            for (int i = itemsToCollect.Count - 1; i >= 0; i--)
-                Destroy(itemsToCollect[i].gameObject);
+     [Header("Actions")]
+     public static Action<Item> itemPickedUp;
 
-            isUsingPowerup = false;
-        }
+     [Header("Data")]
+     [SerializeField] private int initialVacuumPUCount;
+    // [SerializeField] private Vacuum vacuumPowerup;
+      private int vacuumPUCount;
 
-        [Button]
-        public void VacuumPowerupPressed()
-        {
+
+    private void Awake()
+    {
+        LoadData();
         
-            if(vacuumPUCount <= 0)
-            {
-               
-                vacuumPUCount += 3;
-                SaveData();
-            }
-            else
-            {
-            
-                isUsingPowerup = true;
+        Vacuum.started += OnVacuumStarted;
+        InputManager.powerupClicked += OnPowerupClicked;
+    }
+
+    private void OnDestroy()
+    {
+        Vacuum.started -= OnVacuumStarted;
+        InputManager.powerupClicked -= OnPowerupClicked;
+    }
+
+    private void OnPowerupClicked(Powerup powerup)
+    {
+        if (isBusy)
+            return;
+
+        switch (powerup.Type)
+        {
+            case EPowerupType.Vacuum:
                 
-                vacuumPUCount--;
-                SaveData();
-
-                // Play the vac animation
-               vacuumAnimator.Play("VacuumActive");
-            }
+                HandleVacuumClicked();
+                UpdateVacuumVisuals();
+                break;
         }
+    }
 
-        private ItemLevelData GetGreatestGoal(ItemLevelData[] goals)
+    private void HandleVacuumClicked()
+    {
+        if (vacuumPUCount <= 0)
         {
-            int max = 0;
-            int goalIndex = -1;
+            // burada reklam gösteririz şimdilik powerup sayısını resetliyor
+            vacuumPUCount = 3;
+            SaveData();
+        }
+        else
+        {
+            isBusy = true;
 
-            for (int i = 0; i < goals.Length; i++)
+            vacuumPUCount--;
+            SaveData();
+            
+            vacuum.Play();
+        }
+        
+    }
+
+    private void OnVacuumStarted()
+    {
+        VacuumPowerup();
+    }
+
+
+    [Button]
+    private void VacuumPowerup()
+    {
+
+        Item[] items = LevelManager.Instance.Items;
+        ItemLevelData[] goals = GoalManager.instance.Goals;
+
+        ItemLevelData? greatesGoal = GetGreatesGoal(goals);
+        if (greatesGoal == null)
+            return;
+
+        ItemLevelData goal = (ItemLevelData)greatesGoal;
+
+       
+        vacuumCounter = 0;
+        
+        List<Item> itemsToCollect = new List<Item>();
+        for (int i = 0; i < items.Length; i++)
+        {
+            if (items[i] == null)
             {
-                if(goals[i].amount >= max)
-                {
-                    max = goals[i].amount;
-                    goalIndex = i;
-                }
+                continue;
             }
+            
+            if (items[i].ItemName == goal.itemPrefab.ItemName)
+            {
+                itemsToCollect.Add(items[i]);
+                
+                if(itemsToCollect.Count >= 3)
+                    break;
 
-            return goals[goalIndex];
-
-            // We could have written, only use if the array is small due to sorting
-            // return goals.OrderByDescending(g => g.amount).FirstOrDefault();
+            }
         }
-        private void UpdateVacuumVisuals()
+
+        vacuumItemsToCollect = itemsToCollect.Count;
+        
+        for (int i = 0; i < itemsToCollect.Count; i++)
         {
-            vacuumVideoIcon.SetActive(vacuumPUCount <= 0);
+            itemsToCollect[i].DisablePhysics();
 
-            if (vacuumPUCount <= 0)
-                vacuumAmountText.text = "";
-            else
-                vacuumAmountText.text = vacuumPUCount.ToString();
+            Item itemToCollect = itemsToCollect[i];
+
+            List<Vector3> points = new List<Vector3>();
+            points.Add(itemsToCollect[i].transform.position);
+           // points.Add(itemsToCollect[i].transform.position);
+            //bilerek 2 kere yazdık
+           points.Add(itemsToCollect[i].transform.position + Vector3.up );
+           
+            points.Add(vacuumSuckPosition.position + Vector3.up);
+            points.Add(vacuumSuckPosition.position);
+            
+            LeanTween.moveSpline(itemsToCollect[i].gameObject, points.ToArray(), 0.5f)
+                .setOnComplete(() => ItemReachedVacuum(itemToCollect));
+
+
+            /*
+            LeanTween.move(itemsToCollect[i].gameObject, vacuumSuckPosition.position, 0.5f)
+                .setEase(LeanTweenType.easeInCubic)
+                .setOnComplete(() => ItemReachedVacuum(itemToCollect));
+                */
+
+            LeanTween.scale(itemsToCollect[i].gameObject, Vector3.zero, 0.5f);
+            
         }
-
-        private void LoadData()
+        
+        for (int i = itemsToCollect.Count-1; i >= 0 ; i--)
         {
-            vacuumPUCount = PlayerPrefs.GetInt("VacuumCount", initialVacuumPUCount);
-            UpdateVacuumVisuals();           
+            itemPickedUp?.Invoke(itemsToCollect[i]);
+            //Destroy(itemsToCollect[i].gameObject);
         }
 
-        private void SaveData()
+    }
+
+    private void ItemReachedVacuum(Item item)
+    {
+        vacuumCounter++;
+
+        if (vacuumCounter >= vacuumItemsToCollect)
+            isBusy = false;
+        
+        Destroy(item.gameObject);
+    }
+
+    private ItemLevelData? GetGreatesGoal(ItemLevelData[] goals)
+    {
+        int max = 0;
+        int goalIndex = -1;
+        for (int i = 0; i < goals.Length; i++)
         {
-            PlayerPrefs.SetInt("VacuumCount", vacuumPUCount);
+            if (goals[i].amount >= max)
+            {
+                max = goals[i].amount;
+                goalIndex = i;
+            }
         }
+
+        if (goalIndex <= -1)
+            return null;
+
+
+        return goals[goalIndex];
+    }
+
+
+    private void UpdateVacuumVisuals()
+    {
+        vacuum.UpdateVisuals(vacuumPUCount);
+    }
+    private void LoadData()
+    {
+        vacuumPUCount = PlayerPrefs.GetInt("VacuumCount", initialVacuumPUCount);
+
+        UpdateVacuumVisuals();
+    }
+
+    private void SaveData()
+    {
+        PlayerPrefs.SetInt("VacuumCount",vacuumPUCount);
+    }
+
 }

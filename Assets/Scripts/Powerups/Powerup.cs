@@ -23,9 +23,7 @@ public abstract class Powerup : MonoBehaviour
     {
         videoIcon.SetActive(amount <= 0);
 
-        if (amount <= 0)
-            amountText.text = "";
-        else
-            amountText.text = amount.ToString();
+       amountText.gameObject.SetActive(amount > 0);
+       amountText.text = amount.ToString();
     }
 }
