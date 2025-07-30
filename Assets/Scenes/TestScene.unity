@@ -3065,8 +3065,13 @@ MonoBehaviour:
   inGameScreenUI: {fileID: 803606666}
   pauseMenuUI: {fileID: 1807973719}
   pauseMenuButton: {fileID: 1157394227}
-  loseWithTimeButtonUI: []
-  loseWithSlotButtonUI: []
+  loseWithTimeButtonUI:
+  - {fileID: 2141207533}
+  - {fileID: 1407017576}
+  loseWithSlotButtonUI:
+  - {fileID: 1360232890}
+  - {fileID: 1659133767}
+  backgroundImage: {fileID: 1790278356}
 --- !u!1 &916626857
 GameObject:
   m_ObjectHideFlags: 0
@@ -6408,6 +6413,7 @@ MonoBehaviour:
   sections:
   - sectionName: Fabrika
     sectionIcon: {fileID: 21300000, guid: 708a43fcfb7c5284c8bf1e15f82cb2ea, type: 3}
+    sectionBackground: {fileID: 21300000, guid: fb01d061a60d36149bd8d2bdc3b27165, type: 3}
     levels:
     - {fileID: 4027883770162325361, guid: d940e2b5c52ae7f4a94dc608b5eb6cb9, type: 3}
     - {fileID: 4027883770162325361, guid: 3feae8b8ef72e574c8111d77e8747892, type: 3}
@@ -6416,12 +6422,14 @@ MonoBehaviour:
     sectionColor: {r: 0, g: 0, b: 0, a: 0}
   - sectionName: Otel
     sectionIcon: {fileID: 21300000, guid: ffe979c3824eb68449ae7be824d016bd, type: 3}
+    sectionBackground: {fileID: 21300000, guid: c8652969c1fc6d945807029ad995e0f1, type: 3}
     levels:
     - {fileID: 4027883770162325361, guid: eac79d3d6928cac47be8443feb109562, type: 3}
     - {fileID: 4027883770162325361, guid: b8e02cc4c15529e40833c65aac226255, type: 3}
     - {fileID: 4027883770162325361, guid: 7c76573b8839cbc4583e9b2ce608e959, type: 3}
     isUnlocked: 0
     sectionColor: {r: 0, g: 0, b: 0, a: 0}
+  mainMenuBackground: {fileID: 21300000, guid: bdda162bdc539c2479397760b5e22708, type: 3}
 --- !u!1 &1760615232
 GameObject:
   m_ObjectHideFlags: 0

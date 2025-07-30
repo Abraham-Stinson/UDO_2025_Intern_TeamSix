@@ -5,6 +5,7 @@ using System.Collections.Generic;
 
 public class ItemSpotsManager : MonoBehaviour
 {
+    public static ItemSpotsManager Instance { get; private set; }
     [Header("Elements")]
     [SerializeField] private Transform itemSpotsParent;
 
@@ -28,6 +29,16 @@ public class ItemSpotsManager : MonoBehaviour
 
     private void Awake()
     {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+            return;
+        }
+
         InputManager.itemClicked += OnItemClicked;
 
         StoreSports();
@@ -340,5 +351,52 @@ public class ItemSpotsManager : MonoBehaviour
         }
 
         return false;
+    }
+
+    /// <summary>
+    /// Tüm spotları temizler ve item'ları yok eder
+    /// </summary>
+    public void ClearAllSpots()
+    {
+        for (int i = 0; i < spots.Length; i++)
+        {
+            if (!spots[i].IsEmpty())
+            {
+                Item item = spots[i].Item;
+                spots[i].Clear();
+                
+                // Item'ı yok et
+                if (item != null)
+                {
+                    Destroy(item.gameObject);
+                }
+            }
+        }
+
+        // Merge data dictionary'sini de temizle
+        itemMergeDataDictionary.Clear();
+        
+        // Busy durumunu sıfırla
+        isBusy = false;
+    }
+
+    /// <summary>
+    /// Tüm spotları temizler ama item'ları yok etmez (sadece spot'lardan çıkarır)
+    /// </summary>
+    public void ClearAllSpotsWithoutDestroyingItems()
+    {
+        for (int i = 0; i < spots.Length; i++)
+        {
+            if (!spots[i].IsEmpty())
+            {
+                spots[i].Clear();
+            }
+        }
+
+        // Merge data dictionary'sini de temizle
+        itemMergeDataDictionary.Clear();
+        
+        // Busy durumunu sıfırla
+        isBusy = false;
     }
 }

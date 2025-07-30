@@ -33,6 +33,9 @@ public class SectionAndLevelUI : MonoBehaviour
     [SerializeField] private GameObject[] loseWithTimeButtonUI;
     [SerializeField] private GameObject[] loseWithSlotButtonUI;
 
+    [Header("Background")]
+    public Image backgroundImage; 
+
 
     #endregion
 
@@ -213,7 +216,7 @@ public class SectionAndLevelUI : MonoBehaviour
         /*// UI elementlerini güncelle
         levelPanelParent.gameObject.SetActive(false);  // Level seçme panelini kapat*/
         backButton.gameObject.SetActive(false);         // Back butonunu kapat
-        GameManager.instance.SetGameState(EGameState.GAME); // Oyun state'ini güncelle  
+        
         // Temizlik ve level yükleme
         ClearLevelPanel();
         LevelManager.Instance.LoadLevel(levelToLoad);

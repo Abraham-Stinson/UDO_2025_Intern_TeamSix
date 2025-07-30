@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 [System.Serializable]
 public class GameSection
@@ -8,6 +9,7 @@ public class GameSection
     [Header("Section Info")]
     public string sectionName;
     public Sprite sectionIcon;
+    public Sprite sectionBackground;
 
     [Header("Levels")]
     public Level[] levels;
@@ -74,13 +76,16 @@ public class LevelManager : MonoBehaviour, IGameStateListener
     public static Action<Level> levelSpawned;
     public static Action<GameSection> sectionChanged;
 
+    [Header("MainMenuBackground")]
+    [SerializeField] private Sprite mainMenuBackground;
+
     private void SpawnLevel()
     {
         transform.Clear();
 
         activeItems.Clear();
-
         currentSection = sections[currentSectionIndex];
+        SectionAndLevelUI.Instance.backgroundImage.sprite = currentSection.sectionBackground;
         int validatedLevelIndex = currentLevelIndex % currentSection.levels.Length;
         currentLevel = Instantiate(currentSection.levels[validatedLevelIndex], transform);
 
@@ -244,17 +249,28 @@ public class LevelManager : MonoBehaviour, IGameStateListener
     {
         GameManager.instance.SetGameState(EGameState.MENU);
         DestroyCurrentLevel();
+        SectionAndLevelUI.Instance.backgroundImage.sprite = mainMenuBackground;
     }
     public void DestroyCurrentLevel()
     {
-        Destroy(currentLevel.gameObject);
-        currentLevel = null;
+        if (ItemSpotsManager.Instance != null)
+        {
+            ItemSpotsManager.Instance.ClearAllSpots();
+        }
+        if (currentLevel != null)
+        {
+            Destroy(currentLevel.gameObject);
+            currentLevel = null;
+        }
     }
 
     public void NextLevel()
     {
+        if (ItemSpotsManager.Instance != null)
+        {
+            ItemSpotsManager.Instance.ClearAllSpots();
+        }
         GameManager.instance.SetGameState(EGameState.GAME);
-        
         SpawnLevel();
     }
 }
