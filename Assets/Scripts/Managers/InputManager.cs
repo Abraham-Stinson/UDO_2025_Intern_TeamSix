@@ -4,20 +4,18 @@ using UnityEditor;
 
 public class InputManager : MonoBehaviour
 {
-    public static InputManager instance { get; private set; }
+    [Header(" Actions ")]
     public static Action<Item> itemClicked;
+    public static Action<Powerup> powerupClicked;
 
     [Header("Settings")] 
     [SerializeField] private Material outlineMaterial;
+    [SerializeField] private LayerMask powerupLayer;
     private Item currentItem;
     
-    private void Awake()
+    void Start()
     {
-        if (instance == null)
-        {
-            instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
+        
     }
 
    
@@ -32,11 +30,29 @@ public class InputManager : MonoBehaviour
 
     private void HandleControl()
     {
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButtonDown(0))
+            HandleMouseDown();
+        else if (Input.GetMouseButton(0))
             HandleDrag();
         else if (Input.GetMouseButtonUp(0))
             HandleMouseUp();
     }
+
+    private void HandleMouseDown()
+    {
+        Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out RaycastHit hit, 100, powerupLayer);
+
+        if (hit.collider == null)
+            return;
+
+
+        //if (hit.collider.TryGetComponent(out Powerup powerup))
+            powerupClicked?.Invoke(hit.collider.GetComponent<Powerup>());
+            
+            
+
+    }
+
     private void HandleDrag()
     {
         Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out RaycastHit hit, 100);

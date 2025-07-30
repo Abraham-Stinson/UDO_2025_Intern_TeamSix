@@ -1,14 +1,19 @@
+using System;
 using System.Collections.Generic;
 using NaughtyAttributes;
 using UnityEngine;
-using System.Linq;
+using Random = UnityEngine.Random;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
+
 public class ItemPlacer : MonoBehaviour
 {
     [Header("Elements")]
     [SerializeField] private List<ItemLevelData> itemDatas;
+    
+    [Header("Settings")]
+    [SerializeField] private float itemLifetime = 5f;
 
     /*[Header("Settings")] 
     [SerializeField] private BoxCollider spawnZone;
@@ -18,22 +23,40 @@ public class ItemPlacer : MonoBehaviour
     // bu sistem güzel çalışıyor ama bizim oyun için işe yarayacağını sanmıyorum düzenlememiz lazım ya da başka bir sistem yapmamız lazım 
     [SerializeField] private Transform[] spawnPoints;
 
+    [Header("Data")]
+    private Item[] items;
+    
+    [Header("Actions")]
+    public static Action<Item> OnItemSpawned;
+
     public ItemLevelData[] GetGoals()
     {
-        // Hedefleri tekrar etmeyecek şekilde al
-        HashSet<ItemLevelData> uniqueGoals = new HashSet<ItemLevelData>();
-        Debug.Log("Beni kaç kere çağırıyon amk");
-        for (int i = 0; i < itemDatas.Count; i++)
+        List<ItemLevelData> goals = new List<ItemLevelData>();
+
+        foreach (ItemLevelData data in itemDatas)
         {
-            uniqueGoals.Add(itemDatas[i]);
+            if (data.isGoal)
+            {
+                goals.Add(data);
+            }
         }
-        return uniqueGoals.ToArray();
+        return goals.ToArray();
+    }
+
+    public Item[] GetItems()
+    {
+        if (items == null)
+        {
+            items = GetComponentsInChildren<Item>();
+        }
+        return items;
     }
 
     [SerializeField] public float minSpawnTime;
     [SerializeField] public float maxSpawnTime;
 
     private float spawnTime;
+
     void Start()
     {
         spawnTime = Random.Range(minSpawnTime, maxSpawnTime);
@@ -43,16 +66,16 @@ public class ItemPlacer : MonoBehaviour
     void SpawnObjects()
     {
         spawnTime = Random.Range(minSpawnTime, maxSpawnTime);
+        ItemLevelData data = itemDatas[Random.Range(0, itemDatas.Count)];
 
-        // Her spawn point için ayrı rastgele item seç
-        foreach (Transform spawnPosition in spawnPoints)
+        foreach (Transform spawnPoint in spawnPoints)
         {
-            // Rastgele bir item seç
-            ItemLevelData randomData = itemDatas[Random.Range(0, itemDatas.Count)];
-            Vector3 _spawnPosition = spawnPosition.position;
-
-            Item itemInstance = Instantiate(randomData.itemPrefab, _spawnPosition, Quaternion.identity);
-            itemInstance.transform.rotation = Quaternion.Euler(Vector3.zero); // Düz bir şekilde döndür
+            Item itemInstance = Instantiate(data.itemPrefab, spawnPoint.position, spawnPoint.rotation, transform);
+            itemInstance.transform.forward = spawnPoint.forward;
+            
+            OnItemSpawned?.Invoke(itemInstance);
+            
+            Destroy(itemInstance.gameObject, itemLifetime);
         }
     }
 }
@@ -84,10 +107,9 @@ public class ItemPlacer : MonoBehaviour
                 itemInstance.transform.rotation=Quaternion.Euler(Random.onUnitSphere* 360);
             }
         }
-        
-            
-        
-    }*/
+    }
+
+#endif*/
 
 /*private Vector3 GetSpawnPosition()
 {
@@ -99,5 +121,4 @@ public class ItemPlacer : MonoBehaviour
     Vector3 spawnPosition = transform.TransformPoint(localPosition);
 
     return spawnPosition;
-
 }*/

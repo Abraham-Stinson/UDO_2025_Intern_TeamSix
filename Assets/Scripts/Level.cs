@@ -15,4 +15,9 @@ public class Level : MonoBehaviour
     public ItemLevelData[] GetGoals()
         => itemplacer.GetGoals();
 
+
+    public Item[] GetItems()
+    {
+        return itemplacer.GetItems();
+    }
 }

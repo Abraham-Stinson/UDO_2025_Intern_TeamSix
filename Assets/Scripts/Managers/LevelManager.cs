@@ -1,10 +1,10 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
 public class GameSection
 {
-    
     [Header("Section Info")]
     public string sectionName;
     public Sprite sectionIcon;
@@ -21,6 +21,12 @@ public class LevelManager : MonoBehaviour, IGameStateListener
 {
     public static LevelManager Instance { get; private set; }
 
+    
+    private List<Item> activeItems = new List<Item>();
+    
+  
+    public Item[] Items => activeItems.ToArray();
+
     private void Awake()
     {
         if (Instance == null)
@@ -34,10 +40,24 @@ public class LevelManager : MonoBehaviour, IGameStateListener
         }
         LoadData();
     }
+    
+    
+    private void OnEnable()
+    {
+        ItemPlacer.OnItemSpawned += HandleItemSpawned;
+        PowerUpManager.itemPickedUp += HandleItemRemoved;
+    }
+
+   
+    private void OnDisable()
+    {
+        ItemPlacer.OnItemSpawned -= HandleItemSpawned;
+        PowerUpManager.itemPickedUp -= HandleItemRemoved;
+    }
+
 
     [Header("Data")]
     [SerializeField] public GameSection[] sections;
-
 
     private const string currentSectionKey = "CurrentSection";
     private const string currentLevelKey = "CurrentLevel";
@@ -54,68 +74,43 @@ public class LevelManager : MonoBehaviour, IGameStateListener
     public static Action<Level> levelSpawned;
     public static Action<GameSection> sectionChanged;
 
-    private void Start()
-    {
-        // SpawnLevel();
-    }
-
     private void SpawnLevel()
     {
-        // Null ve array length kontrolleri
-        if (sections == null || sections.Length == 0)
-        {
-            Debug.LogError("No sections defined!");
-            return;
-        }
-
-        if (currentSectionIndex >= sections.Length)
-        {
-            Debug.LogError($"Invalid section index: {currentSectionIndex}");
-            return;
-        }
-
         transform.Clear();
+        
+        activeItems.Clear();
 
-        // Current section'ı al
         currentSection = sections[currentSectionIndex];
-
-        if (currentSection.levels == null || currentSection.levels.Length == 0)
-        {
-            Debug.LogError($"No levels defined in section: {currentSection.sectionName}");
-            return;
-        }
-
-        // Section içindeki level index'ini validate et
-        int validatedLevelIndex = currentLevelIndex;
-        if (currentSection.levels.Length > 0)
-        {
-            validatedLevelIndex = currentLevelIndex % currentSection.levels.Length;
-        }
-
-        // Level'ı spawn et
+        int validatedLevelIndex = currentLevelIndex % currentSection.levels.Length;
         currentLevel = Instantiate(currentSection.levels[validatedLevelIndex], transform);
 
-        // Event'leri tetikle
+      
+        activeItems.AddRange(currentLevel.GetComponentsInChildren<Item>());
+
         levelSpawned?.Invoke(currentLevel);
         sectionChanged?.Invoke(currentSection);
-
+    }
+    
+   
+    private void HandleItemSpawned(Item newItem)
+    {
+        if (newItem != null && !activeItems.Contains(newItem))
+        {
+            activeItems.Add(newItem);
+        }
     }
 
-    public void DestroyCurrentLevel()
+   
+    private void HandleItemRemoved(Item removedItem)
     {
-        if (currentLevel != null)
-        {
-            Destroy(currentLevel.gameObject);
-            currentLevel = null;
-        }
+       
+        activeItems.RemoveAll(item => item == null || item == removedItem);
     }
 
     private void LoadData()
     {
         currentSectionIndex = PlayerPrefs.GetInt(currentSectionKey, 0);
         currentLevelIndex = PlayerPrefs.GetInt(currentLevelKey, 0);
-
-        // Unlocked sections'ları yükle
         LoadUnlockedSections();
     }
 
@@ -123,18 +118,14 @@ public class LevelManager : MonoBehaviour, IGameStateListener
     {
         PlayerPrefs.SetInt(currentSectionKey, currentSectionIndex);
         PlayerPrefs.SetInt(currentLevelKey, currentLevelIndex);
-
-        // Unlocked sections'ları kaydet
         SaveUnlockedSections();
     }
 
     private void LoadUnlockedSections()
     {
-        // İlk section her zaman açık
         if (sections.Length > 0)
             sections[0].isUnlocked = true;
 
-        // Diğer section'ların unlock durumunu yükle
         for (int i = 1; i < sections.Length; i++)
         {
             sections[i].isUnlocked = PlayerPrefs.GetInt($"Section_{i}_Unlocked", 0) == 1;
@@ -159,43 +150,27 @@ public class LevelManager : MonoBehaviour, IGameStateListener
         {
             currentLevelIndex++;
 
-            // Eğer current section'daki tüm leveller bittiyse bir sonraki section'a geç
             if (currentLevelIndex >= sections[currentSectionIndex].levels.Length)
             {
                 currentLevelIndex = 0;
                 currentSectionIndex++;
 
-                // Yeni section'ı unlock et
                 if (currentSectionIndex < sections.Length)
                 {
                     sections[currentSectionIndex].isUnlocked = true;
                 }
                 else
                 {
-                    // Tüm section'lar bitti, başa dön veya özel bir durum
                     currentSectionIndex = 0;
                 }
             }
-
             SaveData();
         }
     }
 
-    // Utility methods
-    public GameSection GetCurrentSection()
-    {
-        return sections[currentSectionIndex];
-    }
-
-    public Level GetCurrentLevel()
-    {
-        return currentLevel;
-    }
-
-    public GameSection[] GetAllSections()
-    {
-        return sections;
-    }
+    public GameSection GetCurrentSection() => sections[currentSectionIndex];
+    public Level GetCurrentLevel() => currentLevel;
+    public GameSection[] GetAllSections() => sections;
 
     public bool IsSectionUnlocked(int sectionIndex)
     {
@@ -213,7 +188,6 @@ public class LevelManager : MonoBehaviour, IGameStateListener
         }
     }
 
-    // Manuel section/level seçimi için (level selection UI için)
     public void SelectLevel(int sectionIndex, int levelIndex)
     {
         if (sectionIndex >= 0 && sectionIndex < sections.Length &&
@@ -225,50 +199,9 @@ public class LevelManager : MonoBehaviour, IGameStateListener
             SaveData();
         }
     }
-
+    
     public static implicit operator LevelManager(GameSection v)
     {
         throw new NotImplementedException();
-    }
-
-    public void LoadLevel(Level levelToLoad)
-    {
-        if (levelToLoad == null)
-        {
-            Debug.LogError("Level to load is null!");
-            return;
-        }
-
-        // Geçerli level kontrolü
-        bool levelFound = false;
-        for (int i = 0; i < sections.Length; i++)
-        {
-            for (int j = 0; j < sections[i].levels.Length; j++)
-            {
-                if (sections[i].levels[j] == levelToLoad)
-                {
-                    currentSectionIndex = i;
-                    currentLevelIndex = j;
-                    levelFound = true;
-                    break;
-                }
-            }
-            if (levelFound) break;
-        }
-
-        if (!levelFound)
-        {
-            Debug.LogError("Level not found in any section!");
-            return;
-        }
-
-        currentLevel = levelToLoad;
-        SpawnLevel();
-    }
-
-    public void ExitLevel()
-    {
-        DestroyCurrentLevel();
-        GameManager.instance.SetGameState(EGameState.MENU);
     }
 }
