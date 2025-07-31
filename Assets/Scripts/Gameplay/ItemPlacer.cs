@@ -18,7 +18,7 @@ public class ItemPlacer : MonoBehaviour
     
     [SerializeField] private Transform[] spawnPoints;
 
-    [SerializeField]  private MeshRenderer meshRenderer;
+    [SerializeField] private MeshRenderer[] meshRenderers;
     [SerializeField]  private float materialSpeed;
     private float yOffset;
 
@@ -65,8 +65,15 @@ public class ItemPlacer : MonoBehaviour
 
     private void FixedUpdate()
     {
-        yOffset -= Time.fixedDeltaTime*materialSpeed;
-        meshRenderer.material.mainTextureOffset = new Vector2(0, yOffset);
+        yOffset -= Time.fixedDeltaTime * materialSpeed;
+
+        foreach (var renderer in meshRenderers)
+        {
+            if (renderer != null)
+            {
+                renderer.material.mainTextureOffset = new Vector2(0, yOffset);
+            }
+        }
     }
 
     void SpawnObjects()

@@ -143,9 +143,9 @@ public class PowerUpManager : MonoBehaviour
             points.Add(itemsToCollect[i].transform.position);
            // points.Add(itemsToCollect[i].transform.position);
             //bilerek 2 kere yazdık
-           points.Add(itemsToCollect[i].transform.position + Vector3.up*1.2f );
+           points.Add(itemsToCollect[i].transform.position + Vector3.up );
            
-            points.Add(vacuumSuckPosition.position + Vector3.up*1.2f);
+            points.Add(vacuumSuckPosition.position + Vector3.up);
             points.Add(vacuumSuckPosition.position);
             
             LeanTween.moveSpline(itemsToCollect[i].gameObject, points.ToArray(), 0.7f)
