@@ -59,7 +59,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 48
   m_CollisionDetection: 0
 --- !u!114 &1834094540570177299
 MonoBehaviour:
@@ -73,8 +73,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd461eb0d3f29b847b9e5a20ea7b2184, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemName: 0
-  icon: {fileID: 0}
+  itemName: 14
+  icon: {fileID: 21300000, guid: 3ad6b7aee63c6764c923e2b10f10aed6, type: 3}
   renderer: {fileID: 4598593067218613742}
   collider: {fileID: 2053685831641957558}
 --- !u!1001 &7228024624112642333
@@ -103,31 +103,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8676846089048405793, guid: cda8c7d0921a51d4c9980c4fee70b8eb, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.5
+      value: 0.70710677
       objectReference: {fileID: 0}
     - target: {fileID: 8676846089048405793, guid: cda8c7d0921a51d4c9980c4fee70b8eb, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.5
+      value: -0.70710677
       objectReference: {fileID: 0}
     - target: {fileID: 8676846089048405793, guid: cda8c7d0921a51d4c9980c4fee70b8eb, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8676846089048405793, guid: cda8c7d0921a51d4c9980c4fee70b8eb, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8676846089048405793, guid: cda8c7d0921a51d4c9980c4fee70b8eb, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
+      value: -90
       objectReference: {fileID: 0}
     - target: {fileID: 8676846089048405793, guid: cda8c7d0921a51d4c9980c4fee70b8eb, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 8676846089048405793, guid: cda8c7d0921a51d4c9980c4fee70b8eb, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
+      value: -90
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

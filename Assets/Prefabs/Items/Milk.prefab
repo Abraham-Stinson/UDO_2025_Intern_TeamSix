@@ -59,7 +59,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 48
   m_CollisionDetection: 0
 --- !u!114 &1646251970770064205
 MonoBehaviour:
@@ -73,8 +73,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd461eb0d3f29b847b9e5a20ea7b2184, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemName: 0
-  icon: {fileID: 0}
+  itemName: 10
+  icon: {fileID: 21300000, guid: 39426d1405530c64e941e3aeb63045c7, type: 3}
   renderer: {fileID: 2703600856454779011}
   collider: {fileID: 3254158092130105076}
 --- !u!1001 &4987208612930874542
