@@ -86,7 +86,7 @@ public class ItemPlacer : MonoBehaviour
             ItemLevelData randomData = itemDatas[Random.Range(0, itemDatas.Count)];
             
             Item itemInstance = Instantiate(randomData.itemPrefab, spawnPoint.position, spawnPoint.rotation, transform);
-            itemInstance.transform.forward = spawnPoint.forward;
+            itemInstance.transform.rotation = Random.rotation;
             
             OnItemSpawned?.Invoke(itemInstance);
             
