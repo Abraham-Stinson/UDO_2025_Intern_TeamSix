@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -17,6 +18,8 @@ public class GameSection
     [Header("Section Settings")]
     public bool isUnlocked = false;
     public Color sectionColor = Color.white;
+    
+    
 }
 
 public class LevelManager : MonoBehaviour, IGameStateListener
@@ -28,6 +31,8 @@ public class LevelManager : MonoBehaviour, IGameStateListener
 
 
     public Item[] Items => activeItems.ToArray();
+
+    
 
     private void Awake()
     {
@@ -78,13 +83,17 @@ public class LevelManager : MonoBehaviour, IGameStateListener
 
     [Header("MainMenuBackground")]
     [SerializeField] private Sprite mainMenuBackground;
+    [Header("In Game Level Data")]
+    [SerializeField] private TextMeshProUGUI levelDataText;
 
     private void SpawnLevel()
     {
         transform.Clear();
 
         activeItems.Clear();
+        levelDataText.text = currentLevel.levelName; // item data write on the ui text
         currentSection = sections[currentSectionIndex];
+        
         SectionAndLevelUI.Instance.backgroundImage.sprite = currentSection.sectionBackground;
         int validatedLevelIndex = currentLevelIndex % currentSection.levels.Length;
         currentLevel = Instantiate(currentSection.levels[validatedLevelIndex], transform);
