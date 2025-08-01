@@ -150,15 +150,29 @@ MonoBehaviour:
     isGoal: 1
     amount: 6
   itemLifetime: 10
-  spawnPoints:
-  - {fileID: 3754744649086861253}
-  - {fileID: 3504947812309832040}
-  meshRenderers:
-  - {fileID: 5252886192915982226}
-  - {fileID: 6023949471693992999}
-  materialSpeed: 0.4
-  minSpawnTime: 0.9
-  maxSpawnTime: 1
+  beltConfigs:
+  - name: Conveyor1
+    spawnPoints:
+    - {fileID: 3754744649086861253}
+    minSpawnTime: 0.8
+    maxSpawnTime: 0.8
+    materialSpeed: 0.5
+    yOffset: 0
+    meshRenderers:
+    - {fileID: 5252886192915982226}
+    currentSpawnTime: 0
+    nextSpawnTime: 0
+  - name: Conveyor2
+    spawnPoints:
+    - {fileID: 3504947812309832040}
+    minSpawnTime: 0.8
+    maxSpawnTime: 0.8
+    materialSpeed: 0.5
+    yOffset: 0
+    meshRenderers:
+    - {fileID: 6023949471693992999}
+    currentSpawnTime: 0
+    nextSpawnTime: 0
 --- !u!1 &7810991015039636143
 GameObject:
   m_ObjectHideFlags: 0
@@ -364,6 +378,10 @@ PrefabInstance:
     - target: {fileID: 633938465367640820, guid: efaa665c21512074bbd9d9c9685c48b0, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 904889033415553348, guid: efaa665c21512074bbd9d9c9685c48b0, type: 3}
+      propertyPath: bandSpeed
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4484325077453695170, guid: efaa665c21512074bbd9d9c9685c48b0, type: 3}
       propertyPath: m_LocalScale.x

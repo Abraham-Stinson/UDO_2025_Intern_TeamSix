@@ -222,16 +222,13 @@ MonoBehaviour:
     amount: 6
   - itemPrefab: {fileID: 3523645745253868210, guid: d63b0a56548cb1f45aea57f8caac3284, type: 3}
     isGoal: 1
-    amount: 3
+    amount: 9
   - itemPrefab: {fileID: 8090276944035416031, guid: 4d166fb606aaefa4ca1ae89693c51ce3, type: 3}
     isGoal: 0
     amount: 6
   - itemPrefab: {fileID: 2384869602991582187, guid: 06e0e184550becb418a83a6914690fb9, type: 3}
-    isGoal: 1
-    amount: 9
-  - itemPrefab: {fileID: 3340342673077839141, guid: 59c45c2faed8e3a4c84007594d36c44e, type: 3}
     isGoal: 0
-    amount: 12
+    amount: 9
   - itemPrefab: {fileID: 3725669006305352525, guid: dbae42fd359007c4187100fb7e342347, type: 3}
     isGoal: 0
     amount: 6
@@ -239,20 +236,49 @@ MonoBehaviour:
     isGoal: 0
     amount: 6
   - itemPrefab: {fileID: 1834094540570177299, guid: c20d63cedd4409a40bcf0af2f90e601f, type: 3}
+    isGoal: 0
+    amount: 6
+  - itemPrefab: {fileID: 1646251970770064205, guid: f87e996eb435ea8499615e899334c006, type: 3}
+    isGoal: 1
+    amount: 12
+  - itemPrefab: {fileID: 2506220803314214347, guid: a04b79edd01be6941b8ecf47f1fcbc49, type: 3}
     isGoal: 1
     amount: 6
   itemLifetime: 10
-  spawnPoints:
-  - {fileID: 3754744649086861253}
-  - {fileID: 3504947812309832040}
-  - {fileID: 9123946013326379316}
-  meshRenderers:
-  - {fileID: 5252886192915982226}
-  - {fileID: 6023949471693992999}
-  - {fileID: 2590964007664867098}
-  materialSpeed: 0.4
-  minSpawnTime: 0.9
-  maxSpawnTime: 1
+  beltConfigs:
+  - name: Conveyor1
+    spawnPoints:
+    - {fileID: 3754744649086861253}
+    minSpawnTime: 0.6
+    maxSpawnTime: 0.6
+    materialSpeed: 0.5
+    yOffset: 0
+    meshRenderers:
+    - {fileID: 5252886192915982226}
+    currentSpawnTime: 0
+    nextSpawnTime: 0
+  - name: Conveyor2
+    spawnPoints:
+    - {fileID: 3504947812309832040}
+    minSpawnTime: 0.6
+    maxSpawnTime: 0.6
+    materialSpeed: 0.5
+    yOffset: 0
+    meshRenderers:
+    - {fileID: 6023949471693992999}
+    currentSpawnTime: 0
+    nextSpawnTime: 0
+  - name: Conveyor3
+    spawnPoints:
+    - {fileID: 9123946013326379316}
+    minSpawnTime: 0.6
+    maxSpawnTime: 0.6
+    materialSpeed: 0.5
+    yOffset: 0
+    meshRenderers:
+    - {fileID: 2590964007664867098}
+    currentSpawnTime: 0
+    nextSpawnTime: 0
 --- !u!1 &7810991015039636143
 GameObject:
   m_ObjectHideFlags: 0
@@ -392,7 +418,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemplacer: {fileID: 557963257663168418}
   levelName: Level 5
-  duration: 120
+  duration: 90
 --- !u!1001 &489412382942832559
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -460,6 +486,10 @@ PrefabInstance:
     - target: {fileID: 633938465367640820, guid: efaa665c21512074bbd9d9c9685c48b0, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 904889033415553348, guid: efaa665c21512074bbd9d9c9685c48b0, type: 3}
+      propertyPath: bandSpeed
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4484325077453695170, guid: efaa665c21512074bbd9d9c9685c48b0, type: 3}
       propertyPath: m_LocalScale.x
@@ -552,6 +582,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 904889033415553348, guid: efaa665c21512074bbd9d9c9685c48b0, type: 3}
+      propertyPath: bandSpeed
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4484325077453695170, guid: efaa665c21512074bbd9d9c9685c48b0, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.38350415
@@ -642,6 +676,10 @@ PrefabInstance:
     - target: {fileID: 633938465367640820, guid: efaa665c21512074bbd9d9c9685c48b0, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 904889033415553348, guid: efaa665c21512074bbd9d9c9685c48b0, type: 3}
+      propertyPath: bandSpeed
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4484325077453695170, guid: efaa665c21512074bbd9d9c9685c48b0, type: 3}
       propertyPath: m_LocalScale.x

@@ -26,6 +26,8 @@ public class ItemSpotsManager : MonoBehaviour
     [Header("Actions")]
     public static Action<List<Item>> mergeStarted;
     public static Action<Item> itemPickedUp;
+    
+    public static Action itemPlaced;
 
     private void Awake()
     {
@@ -122,6 +124,7 @@ public class ItemSpotsManager : MonoBehaviour
     private void MoveItemToSpot(Item item, ItemSpot idealSpot, Action completeCallback)
     {
         idealSpot.Populate(item);
+        itemPlaced?.Invoke();
         // item.transform.localPosition = itemLocalPositionOnSpot;
         // item.transform.localScale = itemLocalScalenOnSpot;
         // item.transform.localRotation=quaternion.identity;
