@@ -91,14 +91,14 @@ public class LevelManager : MonoBehaviour, IGameStateListener
         transform.Clear();
 
         activeItems.Clear();
-        levelDataText.text = currentLevel.levelName; // item data write on the ui text
+        
         currentSection = sections[currentSectionIndex];
         
         SectionAndLevelUI.Instance.backgroundImage.sprite = currentSection.sectionBackground;
         int validatedLevelIndex = currentLevelIndex % currentSection.levels.Length;
         currentLevel = Instantiate(currentSection.levels[validatedLevelIndex], transform);
 
-
+        levelDataText.text = currentLevel.levelName; // item data write on the ui text
         activeItems.AddRange(currentLevel.GetComponentsInChildren<Item>());
 
         levelSpawned?.Invoke(currentLevel);
