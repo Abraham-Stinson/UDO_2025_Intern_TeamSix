@@ -3475,7 +3475,7 @@ MonoBehaviour:
     - {fileID: 4027883770162325361, guid: 7c76573b8839cbc4583e9b2ce608e959, type: 3}
     isUnlocked: 1
     sectionColor: {r: 1, g: 1, b: 1, a: 0}
-  mainMenuBackground: {fileID: 21300000, guid: bdda162bdc539c2479397760b5e22708, type: 3}
+  mainMenuBackground: {fileID: 21300000, guid: 201af391c87cf4e7d8de699ba935aba6, type: 3}
 --- !u!1 &1790278354
 GameObject:
   m_ObjectHideFlags: 0
@@ -3533,7 +3533,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: fb01d061a60d36149bd8d2bdc3b27165, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 201af391c87cf4e7d8de699ba935aba6, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
