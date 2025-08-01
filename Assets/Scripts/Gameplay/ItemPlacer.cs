@@ -4,9 +4,25 @@ using System.Collections.Generic;
 using NaughtyAttributes;
 using UnityEngine;
 using Random = UnityEngine.Random;
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
+
+
+[System.Serializable]
+public class BeltSpawnConfig
+{
+    public string name;
+    public Transform[] spawnPoints;
+    public float minSpawnTime = 1f;
+    public float maxSpawnTime = 3f;
+    public float materialSpeed;
+    [HideInInspector] public float yOffset;
+    public MeshRenderer[] meshRenderers;
+    [HideInInspector] public float currentSpawnTime = 0f;
+    [HideInInspector] public float nextSpawnTime = 0f;
+}
 
 public class ItemPlacer : MonoBehaviour
 {
@@ -15,12 +31,13 @@ public class ItemPlacer : MonoBehaviour
 
     [Header("Settings")]
     [SerializeField] private float itemLifetime = 5f;
-    
-    [SerializeField] private Transform[] spawnPoints;
 
-    [SerializeField] private MeshRenderer[] meshRenderers;
-    [SerializeField]  private float materialSpeed;
-    private float yOffset;
+    
+
+  
+
+    [Header("Belt Configurations")]
+    [SerializeField] private List<BeltSpawnConfig> beltConfigs = new();
 
     [Header("Data")]
     private Item[] items;
@@ -31,13 +48,10 @@ public class ItemPlacer : MonoBehaviour
     public ItemLevelData[] GetGoals()
     {
         List<ItemLevelData> goals = new List<ItemLevelData>();
-
         foreach (ItemLevelData data in itemDatas)
         {
             if (data.isGoal)
-            {
                 goals.Add(data);
-            }
         }
         return goals.ToArray();
     }
@@ -45,51 +59,63 @@ public class ItemPlacer : MonoBehaviour
     public Item[] GetItems()
     {
         if (items == null)
-        {
             items = GetComponentsInChildren<Item>();
-        }
         return items;
     }
 
-    [SerializeField] public float minSpawnTime;
-    [SerializeField] public float maxSpawnTime;
-
-    private float spawnTime;
-
     void Start()
     {
-        spawnTime = Random.Range(minSpawnTime, maxSpawnTime);
-        materialSpeed = 1f / spawnTime; 
-        InvokeRepeating("SpawnObjects", minSpawnTime, spawnTime);
+        foreach (var belt in beltConfigs)
+        {
+            belt.currentSpawnTime = 0f;
+            belt.nextSpawnTime = Random.Range(belt.minSpawnTime, belt.maxSpawnTime);
+        }
+
+        
     }
 
-    private void FixedUpdate()
+    void Update()
     {
-        yOffset -= Time.fixedDeltaTime * materialSpeed;
-
-        foreach (var renderer in meshRenderers)
+        for (int i = 0; i < beltConfigs.Count; i++)
         {
-            if (renderer != null)
+            var belt = beltConfigs[i];
+            belt.currentSpawnTime += Time.deltaTime;
+
+            if (belt.currentSpawnTime >= belt.nextSpawnTime)
             {
-                renderer.material.mainTextureOffset = new Vector2(0, yOffset);
+                SpawnObjectsForBelt(belt);
+                belt.currentSpawnTime = 0f;
+                belt.nextSpawnTime = Random.Range(belt.minSpawnTime, belt.maxSpawnTime);
             }
         }
     }
 
-    void SpawnObjects()
+    private void FixedUpdate()
     {
-        spawnTime = Random.Range(minSpawnTime, maxSpawnTime);
-
-        foreach (Transform spawnPoint in spawnPoints)
+        foreach (var belt in beltConfigs)
         {
-           
+            belt.yOffset -= Time.fixedDeltaTime * belt.materialSpeed;
+
+            foreach (var renderer in belt.meshRenderers)
+            {
+                if (renderer != null)
+                {
+                    renderer.material.mainTextureOffset = new Vector2(0, belt.yOffset);
+                }
+            }
+        }
+    }
+
+    private void SpawnObjectsForBelt(BeltSpawnConfig belt)
+    {
+        foreach (Transform spawnPoint in belt.spawnPoints)
+        {
             ItemLevelData randomData = itemDatas[Random.Range(0, itemDatas.Count)];
-            
+
             Item itemInstance = Instantiate(randomData.itemPrefab, spawnPoint.position, spawnPoint.rotation, transform);
             itemInstance.transform.forward = spawnPoint.forward;
-            
+
             OnItemSpawned?.Invoke(itemInstance);
-            
             StartCoroutine(DestroyItemIfNotSelected(itemInstance, itemLifetime));
         }
     }
@@ -97,7 +123,7 @@ public class ItemPlacer : MonoBehaviour
     private IEnumerator DestroyItemIfNotSelected(Item item, float delay)
     {
         yield return new WaitForSeconds(delay);
-        
+
         if (item != null && !item.IsSelected)
         {
             Destroy(item.gameObject);

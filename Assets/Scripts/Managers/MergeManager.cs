@@ -17,6 +17,8 @@ public class MergeManager : MonoBehaviour
   [Header(" Effects")] 
   [SerializeField] private ParticleSystem mergeParticles;
   
+  public static event Action merged;
+  
   private void Awake()
   {
     ItemSpotsManager.mergeStarted += OnMergeStarted;
@@ -61,5 +63,7 @@ public class MergeManager : MonoBehaviour
       */
       
     }
+    merged?.Invoke();
+
   }
 }
