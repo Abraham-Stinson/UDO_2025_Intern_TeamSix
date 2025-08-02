@@ -1,3 +1,4 @@
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -34,7 +35,7 @@ public class SectionAndLevelUI : MonoBehaviour
     [SerializeField] private GameObject[] loseWithSlotButtonUI;
 
     [Header("Background")]
-    public Image backgroundImage; 
+    public Image backgroundImage;
 
 
     #endregion
@@ -216,14 +217,15 @@ public class SectionAndLevelUI : MonoBehaviour
         // Health kontrolü - eğer health 0 veya daha az ise level yükleme
         if (HealthManager.health <= 0)
         {
+            WarningMesageUI("health");
             Debug.LogWarning("Health is 0 or less, cannot load level!");
             return;
         }
-        
+
         /*// UI elementlerini güncelle
         levelPanelParent.gameObject.SetActive(false);  // Level seçme panelini kapat*/
         backButton.gameObject.SetActive(false);         // Back butonunu kapat
-        
+
         // Temizlik ve level yükleme
         ClearLevelPanel();
         LevelManager.Instance.LoadLevel(levelToLoad);
@@ -289,7 +291,7 @@ public class SectionAndLevelUI : MonoBehaviour
         LevelManager.Instance.ExitLevel();
     }
     #endregion
-    
+
     public void ShowLoseScreen(int loseType)
     {
         if (loseType == 0)//slot ile kaybetme
@@ -322,6 +324,7 @@ public class SectionAndLevelUI : MonoBehaviour
         // Health kontrolü - eğer health 0 veya daha az ise restart yapma
         if (HealthManager.health <= 0)
         {
+            WarningMesageUI("health");
             Debug.LogWarning("Health is 0 or less, cannot restart level!");
             return;
         }
@@ -341,5 +344,30 @@ public class SectionAndLevelUI : MonoBehaviour
 
         // Mevcut seviyeyi tekrar başlat
         LevelManager.Instance.RestartCurrentLevel();
+    }
+
+    [Header("Warning Message Content")]
+    [SerializeField] private TextMeshProUGUI warningMessageText;
+    public void WarningMesageUI(string typeOfWarning)
+    {
+        if (typeOfWarning == "health")
+        {
+            warningMessageText.text = "Not enough health please wait for gain health or buy on market";
+        }
+        else if (typeOfWarning == "money")
+        {
+            warningMessageText.text = "Not enough money";
+        }
+        else if (typeOfWarning == "overHealth")
+        {
+            warningMessageText.text = "The amount of healt you want to buy exceeds the maximum amount of health.";
+        }
+        StartCoroutine(WaitForMessageDisapear());
+        ShowMainMenu();
+    }
+
+    IEnumerator WaitForMessageDisapear()
+    {
+        yield return new WaitForSeconds(4f);
     }
 }

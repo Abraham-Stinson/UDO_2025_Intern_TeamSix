@@ -152,6 +152,7 @@ MonoBehaviour:
   itemplacer: {fileID: 557963257663168418}
   levelName: Level 18
   duration: 85
+  rewardCoin: 500
 --- !u!1001 &4820333371237917110
 PrefabInstance:
   m_ObjectHideFlags: 0

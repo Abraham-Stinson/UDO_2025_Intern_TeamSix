@@ -152,6 +152,7 @@ MonoBehaviour:
   itemplacer: {fileID: 557963257663168418}
   levelName: Level 1
   duration: 120
+  rewardCoin: 100
 --- !u!1 &9097429620623110421
 GameObject:
   m_ObjectHideFlags: 0

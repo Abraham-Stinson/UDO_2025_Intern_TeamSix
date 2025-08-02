@@ -10,6 +10,8 @@ public class Level : MonoBehaviour
     public string levelName;
     public int Duration => duration;
     [SerializeField] private int duration;
+    [Header("Reward")]
+    public int rewardCoin=100;
 
     
 

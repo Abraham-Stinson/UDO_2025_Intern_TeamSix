@@ -104,6 +104,7 @@ MonoBehaviour:
     - {fileID: 5252886192915982226}
     currentSpawnTime: 0
     nextSpawnTime: 0
+  goalItemWeightMultiplier: 2
 --- !u!1 &7238823553350497125
 GameObject:
   m_ObjectHideFlags: 0
@@ -241,6 +242,7 @@ MonoBehaviour:
   itemplacer: {fileID: 557963257663168418}
   levelName: Level 2
   duration: 120
+  rewardCoin: 200
 --- !u!1001 &2140867824838210586
 PrefabInstance:
   m_ObjectHideFlags: 0

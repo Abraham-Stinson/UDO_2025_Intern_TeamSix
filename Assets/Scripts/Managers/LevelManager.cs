@@ -91,11 +91,12 @@ public class LevelManager : MonoBehaviour, IGameStateListener
         // Health kontrolü - eğer health 0 veya daha az ise level spawn etme
         if (HealthManager.health <= 0)
         {
+            SectionAndLevelUI.Instance.WarningMesageUI("health");
             Debug.LogWarning("Health is 0 or less, cannot spawn level!");
             GameManager.instance.SetGameState(EGameState.MENU);
             return;
         }
-        
+
         // Health'i azalt
         HealthManager.instance.ReduceHealth(1);
 
@@ -172,6 +173,10 @@ public class LevelManager : MonoBehaviour, IGameStateListener
         }
         else if (gameState == EGameState.LEVELCOMPLETE)
         {
+            int rewardAmount = currentLevel.rewardCoin;
+            MoneyManager.instance.IncreaseMoney(rewardAmount);
+            Debug.Log($"Level completed! Money increased by {rewardAmount}. Current money: {MoneyManager.instance.money}");
+
             currentLevelIndex++;
 
             if (currentLevelIndex >= sections[currentSectionIndex].levels.Length)
@@ -300,7 +305,7 @@ public class LevelManager : MonoBehaviour, IGameStateListener
         {
             ItemSpotsManager.Instance.ClearAllSpots();
         }
-        
+
         // Mevcut seviyeyi tekrar başlat (level index'ini değiştirmeden)
         GameManager.instance.SetGameState(EGameState.GAME);
     }

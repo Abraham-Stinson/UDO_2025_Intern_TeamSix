@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class GoalManager : MonoBehaviour
 {
@@ -132,7 +133,6 @@ public class GoalManager : MonoBehaviour
             if (goals[i].amount > 0)
                 return;
         }
-
         GameManager.instance.SetGameState(EGameState.LEVELCOMPLETE);
         LevelManager.Instance.DestroyCurrentLevel();
     }
