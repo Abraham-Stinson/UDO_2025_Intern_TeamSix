@@ -97,6 +97,9 @@ public class GoalManager : MonoBehaviour
         {
             if(!goals[i].itemPrefab.ItemName.Equals(item.ItemName))
                 continue;
+            
+            if (goals[i].amount <= 0)
+                return;
 
             goals[i].amount--;
 

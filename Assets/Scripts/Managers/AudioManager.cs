@@ -25,6 +25,7 @@ public class AudioManager : MonoBehaviour
 
         MergeManager.merged -= PlayItemsMerged;
 
+       
         GoalCard.complete -= PlayCardComplete;
     }
 
