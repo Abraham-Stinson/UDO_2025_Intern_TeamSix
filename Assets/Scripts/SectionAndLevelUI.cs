@@ -340,8 +340,8 @@ public class SectionAndLevelUI : MonoBehaviour
             button.SetActive(false);
         }
 
-        // Health'i azalt
-        HealthManager.instance.ReduceHealth(1);
+        // Health azaltma işlemini kaldırdık çünkü RestartCurrentLevel() zaten SpawnLevel() çağırıyor
+        // ve SpawnLevel() içinde health azaltılıyor
 
         // Mevcut seviyeyi tekrar başlat
         LevelManager.Instance.RestartCurrentLevel();
