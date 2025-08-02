@@ -39,17 +39,77 @@ public class InputManager : MonoBehaviour
 
     private void HandleControl()
     {
-        if (Input.GetMouseButtonDown(0))
-            HandleMouseDown();
-        else if (Input.GetMouseButton(0))
-            HandleDrag();
-        else if (Input.GetMouseButtonUp(0))
-            HandleMouseUp();
+#if UNITY_EDITOR || UNITY_STANDALONE
+        if (Input.GetMouseButtonDown(0)) HandleMouseDown();
+        else if (Input.GetMouseButton(0)) HandleDrag();
+        else if (Input.GetMouseButtonUp(0)) HandleMouseUp();
+#else
+    if (Input.touchCount > 0)
+    {
+        Touch touch = Input.GetTouch(0);
+
+        if (touch.phase == TouchPhase.Began)
+            HandleTouchDown(touch.position);
+        else if (touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary)
+            HandleTouchDrag(touch.position);
+        else if (touch.phase == TouchPhase.Ended)
+            HandleTouchUp();
+    }
+#endif
     }
 
+    #region Mobile Input
+
+    private void HandleTouchDown(Vector2 touchPosition)
+    {
+        Ray ray = Camera.main.ScreenPointToRay(touchPosition);
+        if (Physics.Raycast(ray, out RaycastHit hit, 400, powerupLayer))
+        {
+            powerupClicked?.Invoke(hit.collider.GetComponent<Powerup>());
+        }
+    }
+
+    private void HandleTouchDrag(Vector2 touchPosition)
+    {
+        Ray ray = Camera.main.ScreenPointToRay(touchPosition);
+        if (Physics.Raycast(ray, out RaycastHit hit, 100))
+        {
+            if (hit.collider.transform.parent == null)
+                return;
+
+            if (hit.collider.transform.parent.TryGetComponent(out Item item))
+            {
+                DeselectionCurrentItem();
+                currentItem = item;
+                currentItem.Select(outlineMaterial);
+            }
+            else
+            {
+                DeselectionCurrentItem();
+            }
+        }
+        else
+        {
+            DeselectionCurrentItem();
+        }
+    }
+
+    private void HandleTouchUp()
+    {
+        if (currentItem == null)
+            return;
+
+        currentItem.Deselect();
+        itemClicked?.Invoke(currentItem);
+        currentItem = null;
+    }
+
+    #endregion
+   
+    
     private void HandleMouseDown()
     {
-        Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out RaycastHit hit, 100, powerupLayer);
+        Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out RaycastHit hit, 400, powerupLayer);
 
         if (hit.collider == null)
             return;

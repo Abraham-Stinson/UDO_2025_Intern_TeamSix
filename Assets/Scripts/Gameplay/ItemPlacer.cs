@@ -31,10 +31,7 @@ public class ItemPlacer : MonoBehaviour
 
     [Header("Settings")]
     [SerializeField] private float itemLifetime = 5f;
-
     
-
-  
 
     [Header("Belt Configurations")]
     [SerializeField] private List<BeltSpawnConfig> beltConfigs = new();
@@ -45,6 +42,10 @@ public class ItemPlacer : MonoBehaviour
     [Header("Actions")]
     public static Action<Item> OnItemSpawned;
 
+    
+    [Header("Spawn Odds")]
+    [SerializeField, Min(1)] private int goalItemWeightMultiplier = 2;
+    
     public ItemLevelData[] GetGoals()
     {
         List<ItemLevelData> goals = new List<ItemLevelData>();
@@ -108,9 +109,19 @@ public class ItemPlacer : MonoBehaviour
 
     private void SpawnObjectsForBelt(BeltSpawnConfig belt)
     {
+        List<ItemLevelData> weightedList = new List<ItemLevelData>();
+
+        foreach (var data in itemDatas)
+        {
+            int weight = data.isGoal ? goalItemWeightMultiplier : 1;
+
+            for (int i = 0; i < weight; i++)
+                weightedList.Add(data);
+        }
+        
         foreach (Transform spawnPoint in belt.spawnPoints)
         {
-            ItemLevelData randomData = itemDatas[Random.Range(0, itemDatas.Count)];
+            ItemLevelData randomData = weightedList[Random.Range(0, weightedList.Count)];
 
             Item itemInstance = Instantiate(randomData.itemPrefab, spawnPoint.position, spawnPoint.rotation, transform);
             itemInstance.transform.forward = spawnPoint.forward;
