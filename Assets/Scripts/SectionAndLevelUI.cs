@@ -1,5 +1,6 @@
 using System.Collections;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -348,8 +349,10 @@ public class SectionAndLevelUI : MonoBehaviour
 
     [Header("Warning Message Content")]
     [SerializeField] private TextMeshProUGUI warningMessageText;
+    [SerializeField] private GameObject warningMessagePanel;
     public void WarningMesageUI(string typeOfWarning)
     {
+        warningMessagePanel.SetActive(true);
         if (typeOfWarning == "health")
         {
             warningMessageText.text = "Not enough health please wait for gain health or buy on market";
@@ -362,6 +365,11 @@ public class SectionAndLevelUI : MonoBehaviour
         {
             warningMessageText.text = "The amount of healt you want to buy exceeds the maximum amount of health.";
         }
+        if (backButton.gameObject.activeSelf)
+        {
+            Debug.Log("BACK BUTON AÇIK KAPATILDI");
+            backButton.gameObject.SetActive(false);
+        }
         StartCoroutine(WaitForMessageDisapear());
         ShowMainMenu();
     }
@@ -369,5 +377,6 @@ public class SectionAndLevelUI : MonoBehaviour
     IEnumerator WaitForMessageDisapear()
     {
         yield return new WaitForSeconds(4f);
+        warningMessagePanel.SetActive(false);
     }
 }

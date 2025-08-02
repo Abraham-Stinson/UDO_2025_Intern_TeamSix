@@ -11,11 +11,11 @@ public class HealthUIManager : MonoBehaviour
     public TextMeshProUGUI timerText; // "09:45" şeklinde süre gösterimi
     public GameObject timerPanel; // Timer gösterilecek panel (opsiyonel)
     
-    [Header("Bar Colors")]
+    /*[Header("Bar Colors")]
     public Color fullHealthColor = Color.green;
     public Color lowHealthColor = Color.red;
     public Color mediumHealthColor = Color.yellow;
-    
+    */
     void Start()
     {
         if (healthBar == null)
@@ -42,7 +42,7 @@ public class HealthUIManager : MonoBehaviour
         healthBar.fillAmount = healthPercentage;
         
         // Health bar rengini güncelle
-        UpdateHealthBarColor(healthPercentage);
+        //UpdateHealthBarColor(healthPercentage);
 
         // Health text güncelle
         if (healthText != null)
@@ -54,7 +54,7 @@ public class HealthUIManager : MonoBehaviour
         UpdateTimer();
     }
 
-    void UpdateHealthBarColor(float percentage)
+    /*void UpdateHealthBarColor(float percentage)
     {
         Color targetColor;
         
@@ -75,7 +75,7 @@ public class HealthUIManager : MonoBehaviour
         }
 
         healthBar.color = targetColor;
-    }
+    }*/
 
     void UpdateTimer()
     {
