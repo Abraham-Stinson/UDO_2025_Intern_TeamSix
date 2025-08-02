@@ -69,9 +69,13 @@ public class MoneyManager : MonoBehaviour
 
     public void BuyHealthWithMoney(int healthAmount, int moneyAmount)
     {
-        if (money <= 0 || money < moneyAmount)
+        if (money == 0 || money < moneyAmount)
         {
             SectionAndLevelUI.Instance.WarningMesageUI("money");
+            return;
+        }
+        else if (healthAmount>=10||HealthManager.health+healthAmount>10) {
+            SectionAndLevelUI.Instance.WarningMesageUI("overHealth");
             return;
         }
 
