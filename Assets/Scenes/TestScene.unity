@@ -1393,7 +1393,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 10
   minHealth: 0
-  regenIntervalMinutes: 1
+  regenIntervalMinutes: 5
 --- !u!1 &612351031
 GameObject:
   m_ObjectHideFlags: 0
