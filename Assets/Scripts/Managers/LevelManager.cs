@@ -18,8 +18,8 @@ public class GameSection
     [Header("Section Settings")]
     public bool isUnlocked = false;
     public Color sectionColor = Color.white;
-    
-    
+
+
 }
 
 public class LevelManager : MonoBehaviour, IGameStateListener
@@ -32,7 +32,7 @@ public class LevelManager : MonoBehaviour, IGameStateListener
 
     public Item[] Items => activeItems.ToArray();
 
-    
+
 
     private void Awake()
     {
@@ -88,12 +88,22 @@ public class LevelManager : MonoBehaviour, IGameStateListener
 
     private void SpawnLevel()
     {
+        // Health kontrolü - eğer health 0 veya daha az ise level spawn etme
+        if (HealthManager.health <= 0)
+        {
+            Debug.LogWarning("Health is 0 or less, cannot spawn level!");
+            GameManager.instance.SetGameState(EGameState.MENU);
+            return;
+        }
+        
+        // Health'i azalt
+        HealthManager.instance.ReduceHealth(1);
+
         transform.Clear();
 
         activeItems.Clear();
-        
         currentSection = sections[currentSectionIndex];
-        
+
         SectionAndLevelUI.Instance.backgroundImage.sprite = currentSection.sectionBackground;
         int validatedLevelIndex = currentLevelIndex % currentSection.levels.Length;
         currentLevel = Instantiate(currentSection.levels[validatedLevelIndex], transform);
@@ -251,7 +261,7 @@ public class LevelManager : MonoBehaviour, IGameStateListener
         }
 
         currentLevel = levelToLoad;
-        SpawnLevel();
+        // SpawnLevel() çağrısını kaldırıyoruz çünkü GameStateChangedCallBack'te çağrılacak
     }
 
     public void ExitLevel()
@@ -279,7 +289,19 @@ public class LevelManager : MonoBehaviour, IGameStateListener
         {
             ItemSpotsManager.Instance.ClearAllSpots();
         }
+        // SpawnLevel() çağrısını kaldırıyoruz çünkü GameStateChangedCallBack'te çağrılacak
         GameManager.instance.SetGameState(EGameState.GAME);
-        SpawnLevel();
+    }
+
+    // Mevcut seviyeyi tekrar başlatma methodu
+    public void RestartCurrentLevel()
+    {
+        if (ItemSpotsManager.Instance != null)
+        {
+            ItemSpotsManager.Instance.ClearAllSpots();
+        }
+        
+        // Mevcut seviyeyi tekrar başlat (level index'ini değiştirmeden)
+        GameManager.instance.SetGameState(EGameState.GAME);
     }
 }

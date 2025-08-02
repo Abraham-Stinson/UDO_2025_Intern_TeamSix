@@ -213,6 +213,13 @@ public class SectionAndLevelUI : MonoBehaviour
 
     private void LoadLevel(Level levelToLoad)
     {
+        // Health kontrolü - eğer health 0 veya daha az ise level yükleme
+        if (HealthManager.health <= 0)
+        {
+            Debug.LogWarning("Health is 0 or less, cannot load level!");
+            return;
+        }
+        
         /*// UI elementlerini güncelle
         levelPanelParent.gameObject.SetActive(false);  // Level seçme panelini kapat*/
         backButton.gameObject.SetActive(false);         // Back butonunu kapat
@@ -307,5 +314,32 @@ public class SectionAndLevelUI : MonoBehaviour
                 button.SetActive(true);
             }
         }
+    }
+
+    // Lose panelinden seviyeyi tekrar başlatma methodu
+    public void RestartLevel()
+    {
+        // Health kontrolü - eğer health 0 veya daha az ise restart yapma
+        if (HealthManager.health <= 0)
+        {
+            Debug.LogWarning("Health is 0 or less, cannot restart level!");
+            return;
+        }
+
+        // Lose screen'i kapat
+        foreach (var button in loseWithSlotButtonUI)
+        {
+            button.SetActive(false);
+        }
+        foreach (var button in loseWithTimeButtonUI)
+        {
+            button.SetActive(false);
+        }
+
+        // Health'i azalt
+        HealthManager.instance.ReduceHealth(1);
+
+        // Mevcut seviyeyi tekrar başlat
+        LevelManager.Instance.RestartCurrentLevel();
     }
 }
