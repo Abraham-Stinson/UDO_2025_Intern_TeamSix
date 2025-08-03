@@ -18,7 +18,31 @@ public enum EItemName
    bottle=13,
    Meat=14,
    Waterm=15,
-   Toma=16
+   Toma=16,
+   Green_Chips,
+   Green_Yellow_Chips,
+   Orange_Chips,
+   Orange_White_Chips,
+   Yellow_Orange_Chips,
+   Red_Chips,
+   Yellow_Chips,
+   Orange_Yellow_Chips,
+   Orange_Red_chips,
+   Yellow_White_orange_chips,
+   Blue_Bottle,
+   Purple_Bottle,
+   Red_Bottle,
+   Yellow_Bottle,
+   Blue_coca,
+   Purple_Coca,
+   Red_Coca,
+   Yellow_Coca,
+   Eggplant,
+   Eggs,
+   Green_Pepper,
+   Red_Pepper,
+   Yellow_Pepper,
+   
    
    
 }
