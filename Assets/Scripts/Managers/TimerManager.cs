@@ -1,6 +1,9 @@
 using System;
+using Microsoft.Unity.VisualStudio.Editor;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
+using Image = UnityEngine.UI.Image;
 
 public class TimerManager : MonoBehaviour, IGameStateListener
 {
@@ -8,7 +11,10 @@ public class TimerManager : MonoBehaviour, IGameStateListener
 
     [Header("Elements")]
     [SerializeField] private TextMeshProUGUI timerText;
+    [SerializeField] private Image timeFillImage;
+    
     private float currentTimer; // Use float for more precise timing
+    private float maxTimer; // Başlangıç timer değerini saklamak için
     private bool isTimerRunning;
 
     private void Awake()
@@ -33,7 +39,8 @@ public class TimerManager : MonoBehaviour, IGameStateListener
     private void OnLevelSpawned(Level level)
     {
         currentTimer = level.Duration;
-        UpdateTimerText();
+        maxTimer = level.Duration; // Maksimum süreyi kaydet
+        UpdateTimerDisplay();
         StartTimer();
     }
 
@@ -54,13 +61,31 @@ public class TimerManager : MonoBehaviour, IGameStateListener
                 TimerFinished();
             }
 
-            UpdateTimerText();
+            UpdateTimerDisplay();
         }
+    }
+
+    private void UpdateTimerDisplay()
+    {
+        // Timer text'ini güncelle
+        UpdateTimerText();
+        // Fill image'ı güncelle
+        UpdateTimerFill();
     }
 
     private void UpdateTimerText()
     {
         timerText.text = SecondToString((int)currentTimer);
+    }
+
+    private void UpdateTimerFill()
+    {
+        if (timeFillImage != null && maxTimer > 0)
+        {
+            // Fill amount'u kalan sürenin oranına göre ayarla (0 ile 1 arasında)
+            float fillAmount = currentTimer / maxTimer;
+            timeFillImage.fillAmount = fillAmount;
+        }
     }
 
     private void TimerFinished()
@@ -69,7 +94,6 @@ public class TimerManager : MonoBehaviour, IGameStateListener
         GameManager.instance.SetGameState(EGameState.GAMEOVER);
         
         SectionAndLevelUI.Instance.ShowLoseScreen(1);
-
     }
 
     private string SecondToString(int seconds)

@@ -178,6 +178,7 @@ public class LevelManager : MonoBehaviour, IGameStateListener
         {
             int rewardAmount = currentLevel.rewardCoin;
             MoneyManager.instance.IncreaseMoney(rewardAmount);
+            SectionAndLevelUI.Instance.ShowRewardOnWinUI(rewardAmount);
             Debug.Log($"Level completed! Money increased by {rewardAmount}. Current money: {MoneyManager.instance.money}");
 
             currentLevelIndex++;

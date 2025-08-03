@@ -292,7 +292,7 @@ public class SectionAndLevelUI : MonoBehaviour
         LevelManager.Instance.ExitLevel();
     }
     #endregion
-    
+
     public static event System.Action GameOver;
 
     public void ShowLoseScreen(int loseType)
@@ -319,7 +319,7 @@ public class SectionAndLevelUI : MonoBehaviour
                 button.SetActive(true);
             }
         }
-        
+
         GameOver?.Invoke();
     }
 
@@ -382,5 +382,12 @@ public class SectionAndLevelUI : MonoBehaviour
     {
         yield return new WaitForSeconds(4f);
         warningMessagePanel.SetActive(false);
+    }
+
+    [Header ("Reward Coin Text On Win Screen")]
+    [SerializeField] private TextMeshProUGUI rewardText;
+    public void ShowRewardOnWinUI(int reward)
+    {
+        rewardText.text = reward.ToString();
     }
 }
