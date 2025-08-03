@@ -91,20 +91,20 @@ public class Item : MonoBehaviour
         renderer.materials = new Material[] { baseMaterial };
     }
     
-    private void OnValidate()
-    {
-        if (!Application.isPlaying)
-        {
-            foreach (EItemName name in System.Enum.GetValues(typeof(EItemName)))
-            {
-                if (gameObject.name.ToLower().Contains(name.ToString().ToLower()))
-                {
-                    itemName = name;
-                    break;
-                }
-            }
-        }
-    }
+    // private void OnValidate()
+    // {
+    //     if (!Application.isPlaying)
+    //     {
+    //         foreach (EItemName name in System.Enum.GetValues(typeof(EItemName)))
+    //         {
+    //             if (gameObject.name.ToLower().Contains(name.ToString().ToLower()))
+    //             {
+    //                 itemName = name;
+    //                 break;
+    //             }
+    //         }
+    //     }
+    // }
 
     private void OnDrawGizmos()
     {

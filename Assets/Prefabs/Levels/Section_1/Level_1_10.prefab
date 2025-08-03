@@ -423,6 +423,18 @@ MonoBehaviour:
   - itemPrefab: {fileID: 1455115268067317176, guid: 0faa66188050cbc479a7cde81b47bb0b, type: 3}
     isGoal: 1
     amount: 9
+  - itemPrefab: {fileID: 6526741879594047200, guid: 7928de776ecb9454e8ead3461e9d7361, type: 3}
+    isGoal: 0
+    amount: 9
+  - itemPrefab: {fileID: 2696893262302379070, guid: 02868d7ac62f0aa4a95cf4637087d57e, type: 3}
+    isGoal: 0
+    amount: 9
+  - itemPrefab: {fileID: 1951049057774233685, guid: a7447cb3b74ba6a4aa9901d64eff5184, type: 3}
+    isGoal: 0
+    amount: 9
+  - itemPrefab: {fileID: 6313428524739467097, guid: 45948b4f6e6d9924fb93ba60c68b341c, type: 3}
+    isGoal: 0
+    amount: 9
   itemLifetime: 10
   beltConfigs:
   - name: Conveyor1
