@@ -2,9 +2,6 @@ using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
-
-    public static AudioManager instance;
-    
     [Header(" SFX ")]
     [SerializeField] private AudioSource itemSelected;
     [SerializeField] private AudioSource itemPlaced;
@@ -12,18 +9,9 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioSource cardComplete;
     [SerializeField] private AudioSource levelComplete;
     [SerializeField] private AudioSource gameOver;
-    [SerializeField] private AudioSource vacuumActivated;
-    [SerializeField] private AudioSource freezeActivated;
-    [SerializeField] private AudioSource springeActivated;
 
     private void Awake()
     {
-        if (instance == null)
-            instance = this;
-        else
-            Destroy(gameObject);
-        
-        
         ItemSpotsManager.itemPickedUp += PlayItemSelected;
         ItemSpotsManager.itemPlaced     += PlayItemPlaced;
 
@@ -78,19 +66,7 @@ public class AudioManager : MonoBehaviour
     {
         PlaySource(gameOver);
     }
-    public void PlayVacuum()
-    {
-        PlaySource(vacuumActivated);
-    }
-    public void PlayFreeze()
-    {
-        PlaySource(freezeActivated);
-    }
 
-    public void PlaySpring()
-    {
-        PlaySource(springeActivated);
-    }
     private void PlaySource(AudioSource source, float pitch)
     {
         source.pitch = pitch;

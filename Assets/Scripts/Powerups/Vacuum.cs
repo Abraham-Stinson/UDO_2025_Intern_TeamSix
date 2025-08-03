@@ -17,7 +17,6 @@ public class Vacuum : Powerup
     public void Play()
     {
         animator.Play("VacuumActive");
-        AudioManager.instance.PlayVacuum();
     }
     
     

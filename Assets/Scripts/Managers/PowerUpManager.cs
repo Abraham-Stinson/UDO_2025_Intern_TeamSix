@@ -170,7 +170,7 @@ public class PowerUpManager : MonoBehaviour
     }
     private IEnumerator ResetBusyAfterDelay()
     {
-        yield return new WaitForSeconds(1f); 
+        yield return new WaitForSeconds(2f); 
         isBusy = false;
     }
     
@@ -192,8 +192,6 @@ public class PowerUpManager : MonoBehaviour
 
        
         vacuumCounter = 0;
-        
-        
         
         List<Item> itemsToCollect = new List<Item>();
         for (int i = 0; i < items.Length; i++)
@@ -347,7 +345,6 @@ public class PowerUpManager : MonoBehaviour
     public void FreezeGunPowerUp()
     {
         TimerManager.instance.FreezeTimer();
-
     }
 
     #endregion

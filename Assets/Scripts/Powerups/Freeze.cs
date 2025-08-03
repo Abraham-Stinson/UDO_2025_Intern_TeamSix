@@ -16,7 +16,5 @@ public class Freeze : Powerup
     public void Play()
     {
         animator.Play("FreezeActive");
-        AudioManager.instance.PlayFreeze();
-
     }
 }

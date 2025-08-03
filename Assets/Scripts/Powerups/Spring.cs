@@ -16,6 +16,5 @@ public class Spring : Powerup
     public void Play()
     {
         animator.Play("SpringActive");
-        AudioManager.instance.PlaySpring();
     }
 }
