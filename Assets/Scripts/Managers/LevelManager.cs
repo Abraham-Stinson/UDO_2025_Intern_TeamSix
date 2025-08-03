@@ -32,6 +32,7 @@ public class LevelManager : MonoBehaviour, IGameStateListener
 
     public Item[] Items => activeItems.ToArray();
 
+    public Transform itemParent => currentLevel.ItemParent;
 
 
     private void Awake()

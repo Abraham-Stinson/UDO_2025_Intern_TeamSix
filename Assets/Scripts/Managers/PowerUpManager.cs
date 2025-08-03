@@ -16,6 +16,12 @@ public class PowerUpManager : MonoBehaviour
     // [SerializeField] private GameObject vacuumVideoIcon;
     //[SerializeField] private Animator vacuumAnimator;
 
+    [Header("Freeze Elements")]
+    [SerializeField] private Freeze freeze;
+
+    [Header("Spring Elements")] 
+    [SerializeField] private Spring spring;
+    
 
     [Header("Settings")]
      private bool isBusy; 
@@ -26,11 +32,15 @@ public class PowerUpManager : MonoBehaviour
 
      [Header("Actions")]
      public static Action<Item> itemPickedUp;
+     public static Action<Item> itemBackToGame;
 
      [Header("Data")]
      [SerializeField] private int initialVacuumPUCount;
+    
     // [SerializeField] private Vacuum vacuumPowerup;
       private int vacuumPUCount;
+      private int freezePUCount;
+      private int springPUCount;
 
 
     private void Awake()
@@ -38,14 +48,22 @@ public class PowerUpManager : MonoBehaviour
         LoadData();
         
         Vacuum.started += OnVacuumStarted;
+        Freeze.started += OnFreezeStarted;
         InputManager.powerupClicked += OnPowerupClicked;
+        Spring.started += OnSpringStarted;
     }
 
     private void OnDestroy()
     {
         Vacuum.started -= OnVacuumStarted;
+        Freeze.started -= OnFreezeStarted;
         InputManager.powerupClicked -= OnPowerupClicked;
+        Spring.started -= OnSpringStarted;
+
     }
+
+   
+
 
     private void OnPowerupClicked(Powerup powerup)
     {
@@ -59,9 +77,62 @@ public class PowerUpManager : MonoBehaviour
                 HandleVacuumClicked();
                 UpdateVacuumVisuals();
                 break;
+            
+            case EPowerupType.Freeze:
+                HandleFreezeClicked(); 
+                UpdateFreezeVisuals();
+                break;
+            
+            case EPowerupType.Spring:
+                HandleSpringClicked();
+                UpdateSpringVisuals();
+                break;
+            
         }
     }
 
+  
+
+    private void HandleSpringClicked()
+    {
+        if (springPUCount <= 0)
+        {
+
+            springPUCount = 3;
+            SaveData();
+        }
+        else
+        {
+            isBusy = true;
+
+            springPUCount--;
+            SaveData();
+            spring.Play();
+            StartCoroutine(ResetBusyAfterDelay());
+        }
+    }
+
+    [Button]
+    public void SpringPowerup()
+    {
+        ItemSpot spot = ItemSpotsManager.Instance.GetRandomOccupiedSpot();
+        if(spot == null)
+            return;
+        
+        isBusy = true;
+
+        Item itemToRelease = spot.Item;
+        
+        spot.Clear();
+        itemToRelease.UnassignSpot();
+        itemToRelease.EnablePhysics();
+        itemToRelease.transform.parent = LevelManager.Instance.itemParent;
+        itemToRelease.transform.localPosition = Vector3.up * 3;
+        itemToRelease.transform.localScale = Vector3.one;
+        
+        itemBackToGame?.Invoke(itemToRelease);
+    }
+    
     private void HandleVacuumClicked()
     {
         if (vacuumPUCount <= 0)
@@ -83,11 +154,20 @@ public class PowerUpManager : MonoBehaviour
         
     }
 
+    private void OnSpringStarted()
+    {
+        SpringPowerup();
+    }
+    
     private void OnVacuumStarted()
     {
         VacuumPowerup();
     }
 
+    private void OnFreezeStarted()
+    {
+        FreezeGunPowerUp();
+    }
     private IEnumerator ResetBusyAfterDelay()
     {
         yield return new WaitForSeconds(2f); 
@@ -195,6 +275,42 @@ public class PowerUpManager : MonoBehaviour
         vacuumItemsToCollect = 0;
     }
     
+    private void HandleFreezeClicked()
+    {
+        if (freezePUCount <= 0)
+        {
+
+            freezePUCount = 3;
+            SaveData();
+        }
+        else
+        {
+            isBusy = true;
+
+            freezePUCount--;
+            SaveData();
+            freeze.Play();
+            StartCoroutine(ResetBusyAfterDelay());
+        }
+    }
+    
+   
+    
+    private void UpdateFreezeVisuals()
+    {
+       freeze.UpdateVisuals(freezePUCount);
+    }
+    
+    private void UpdateSpringVisuals()
+    {
+        spring.UpdateVisuals(springPUCount);
+    }
+
+    
+   
+    
+    
+    
     private ItemLevelData? GetGreatesGoal(ItemLevelData[] goals)
     {
         int max = 0;
@@ -220,6 +336,8 @@ public class PowerUpManager : MonoBehaviour
     {
         vacuum.UpdateVisuals(vacuumPUCount);
     }
+    
+    
 
     #region Freeze
 

@@ -2,6 +2,7 @@ using System;
 using Unity.Mathematics;
 using UnityEngine;
 using System.Collections.Generic;
+using Random = UnityEngine.Random;
 
 public class ItemSpotsManager : MonoBehaviour
 {
@@ -43,13 +44,28 @@ public class ItemSpotsManager : MonoBehaviour
         }
 
         InputManager.itemClicked += OnItemClicked;
+        PowerUpManager.itemBackToGame += OnItemBackToGame;
 
         StoreSports();
     }
 
+   
+
     private void OnDestroy()
     {
         InputManager.itemClicked -= OnItemClicked;
+        PowerUpManager.itemBackToGame -= OnItemBackToGame;
+    }
+    
+    private void OnItemBackToGame(Item releasedItem)
+    {
+        if(!itemMergeDataDictionary.ContainsKey(releasedItem.ItemName))
+            return;
+        
+        itemMergeDataDictionary[releasedItem.ItemName].Remove(releasedItem);
+
+        if (itemMergeDataDictionary[releasedItem.ItemName].items.Count <= 0)
+            itemMergeDataDictionary.Remove(releasedItem.ItemName);
     }
 
     private void OnItemClicked(Item item)
@@ -362,9 +378,7 @@ public class ItemSpotsManager : MonoBehaviour
         return false;
     }
 
-    /// <summary>
-    /// Tüm spotları temizler ve item'ları yok eder
-    /// </summary>
+   
     public void ClearAllSpots()
     {
         for (int i = 0; i < spots.Length; i++)
@@ -382,16 +396,14 @@ public class ItemSpotsManager : MonoBehaviour
             }
         }
 
-        // Merge data dictionary'sini de temizle
+      
         itemMergeDataDictionary.Clear();
         
-        // Busy durumunu sıfırla
+       
         isBusy = false;
     }
 
-    /// <summary>
-    /// Tüm spotları temizler ama item'ları yok etmez (sadece spot'lardan çıkarır)
-    /// </summary>
+   
     public void ClearAllSpotsWithoutDestroyingItems()
     {
         for (int i = 0; i < spots.Length; i++)
@@ -402,10 +414,27 @@ public class ItemSpotsManager : MonoBehaviour
             }
         }
 
-        // Merge data dictionary'sini de temizle
+      
         itemMergeDataDictionary.Clear();
         
-        // Busy durumunu sıfırla
+       
         isBusy = false;
+    }
+
+    public ItemSpot GetRandomOccupiedSpot()
+    {
+        List<ItemSpot> occupiedSpots = new List<ItemSpot>();
+        for (int i = 0; i < spots.Length; i++)
+        {
+            if(spots[i].IsEmpty())
+                continue;
+            
+            occupiedSpots.Add(spots[i]);
+        }
+
+        if (occupiedSpots.Count <= 0)
+            return null;
+
+        return occupiedSpots[Random.Range(0, occupiedSpots.Count)];
     }
 }

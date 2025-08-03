@@ -6,6 +6,8 @@ public class Level : MonoBehaviour
     [Header("Elements")] 
     [SerializeField] private ItemPlacer itemplacer;
 
+    public Transform ItemParent => itemplacer.transform;
+
     [Header("Settings")]
     public string levelName;
     public int Duration => duration;

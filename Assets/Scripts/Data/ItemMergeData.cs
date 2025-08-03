@@ -18,6 +18,11 @@ public struct ItemMergeData
       items.Add(item);
    }
 
+   public void Remove(Item item)
+   {
+      items.Remove(item);
+   }
+
    public bool CanMergeItems()
    {
       return items.Count >= 3;

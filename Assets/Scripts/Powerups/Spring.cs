@@ -1,6 +1,6 @@
 using UnityEngine;
 using System;
-public class Freeze : Powerup
+public class Spring : Powerup
 {
     [Header("Elements")] 
     [SerializeField] private Animator animator;
@@ -15,6 +15,6 @@ public class Freeze : Powerup
 
     public void Play()
     {
-        animator.Play("FreezeActive");
+        animator.Play("SpringActive");
     }
 }

@@ -55,15 +55,29 @@ public class Item : MonoBehaviour
 
     public void AssignSpot(ItemSpot spot)
         => this.spot = spot;
+
+    public void UnassignSpot()
+        => spot = null;
     public void DisableShadows()
     {
         renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+    }
+
+    public void EnableShadows()
+    {
+        renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
     }
 
     public void DisablePhysics()
     {
         GetComponent<Rigidbody>().isKinematic = true;
         collider.enabled = false;
+    }
+
+    public void EnablePhysics()
+    {
+        GetComponent<Rigidbody>().isKinematic = false;
+        collider.enabled = true;
     }
 
 

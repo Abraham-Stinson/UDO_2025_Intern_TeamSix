@@ -31,6 +31,8 @@ public class GoalManager : MonoBehaviour
         LevelManager.levelSpawned += OnLevelSpawned;
         ItemSpotsManager.itemPickedUp += OnItemPickedUp;
         PowerUpManager.itemPickedUp += OnItemPickedUp;
+        PowerUpManager.itemBackToGame += OnItemBackToGame;
+
     }
 
     private void OnDestroy()
@@ -38,6 +40,20 @@ public class GoalManager : MonoBehaviour
         LevelManager.levelSpawned -= OnLevelSpawned;
         ItemSpotsManager.itemPickedUp -= OnItemPickedUp;
         PowerUpManager.itemPickedUp -= OnItemPickedUp;
+        PowerUpManager.itemBackToGame -= OnItemBackToGame;
+
+    }
+
+    private void OnItemBackToGame(Item releasedItem)
+    {
+        for (int i = 0; i < goals.Length; i++)
+        {
+            if(goals[i].itemPrefab.ItemName != releasedItem.ItemName)
+                continue;
+
+            goals[i].amount++;
+            goalCards[i].UpdateAmount(goals[i].amount);
+        }
     }
 
     private void OnLevelSpawned(Level level)
