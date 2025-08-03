@@ -46,6 +46,11 @@ public class ItemPlacer : MonoBehaviour
     [Header("Spawn Odds")]
     [SerializeField, Min(1)] private int goalItemWeightMultiplier = 2;
     
+    [Header("Spawn Offset")]
+    [SerializeField] private float maxHorizontalOffset = 0.1f;
+    [SerializeField] private float maxDepthOffset = 0.1f;
+    [SerializeField] private float maxYRotationOffset = 90f;
+    
     public ItemLevelData[] GetGoals()
     {
         List<ItemLevelData> goals = new List<ItemLevelData>();
@@ -114,17 +119,29 @@ public class ItemPlacer : MonoBehaviour
         foreach (var data in itemDatas)
         {
             int weight = data.isGoal ? goalItemWeightMultiplier : 1;
-
             for (int i = 0; i < weight; i++)
                 weightedList.Add(data);
         }
-        
+
         foreach (Transform spawnPoint in belt.spawnPoints)
         {
             ItemLevelData randomData = weightedList[Random.Range(0, weightedList.Count)];
 
-            Item itemInstance = Instantiate(randomData.itemPrefab, spawnPoint.position, spawnPoint.rotation, transform);
-            itemInstance.transform.forward = spawnPoint.forward;
+          
+            Vector3 offset = new Vector3(
+                Random.Range(-maxHorizontalOffset, maxHorizontalOffset),
+                0f,
+                Random.Range(-maxDepthOffset, maxDepthOffset)
+            );
+
+            // Rastgele ufak Y rotasyonu (örneğin ±3 derece)
+            Quaternion randomRotation = Quaternion.Euler(0f, Random.Range(-10, 45), 0f);
+
+  
+            Vector3 spawnPosition = spawnPoint.position + offset;
+            Quaternion spawnRotation = spawnPoint.rotation * randomRotation;
+
+            Item itemInstance = Instantiate(randomData.itemPrefab, spawnPosition, spawnRotation, transform);
 
             OnItemSpawned?.Invoke(itemInstance);
             StartCoroutine(DestroyItemIfNotSelected(itemInstance, itemLifetime));
