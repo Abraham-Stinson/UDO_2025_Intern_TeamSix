@@ -140,13 +140,11 @@ MonoBehaviour:
   - itemPrefab: {fileID: 6870267299802983623, guid: b31921ba6a4972a4a9a150dadeae0866, type: 3}
     isGoal: 1
     amount: 12
-  numberOfGoals: 1
-  spawnPoints:
-  - {fileID: 3754744649086861253}
-  - {fileID: 270248438452766615}
-  - {fileID: 2308566356702880169}
-  minSpawnTime: 1
-  maxSpawnTime: 3
+  itemLifetime: 5
+  beltConfigs: []
+  goalItemWeightMultiplier: 2
+  maxHorizontalOffset: 0.1
+  maxDepthOffset: 0.1
 --- !u!1 &7384649991002138788
 GameObject:
   m_ObjectHideFlags: 0
@@ -285,7 +283,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemplacer: {fileID: 557963257663168418}
+  levelName: 
   duration: 40
+  rewardCoin: 100
 --- !u!1 &8315240269692054203
 GameObject:
   m_ObjectHideFlags: 0
