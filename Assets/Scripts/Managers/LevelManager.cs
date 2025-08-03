@@ -242,6 +242,12 @@ public class LevelManager : MonoBehaviour, IGameStateListener
         }
     }
 
+    // Seçilen level'ı PlayerPrefs'e kaydet
+    public void SaveSelectedLevel()
+    {
+        SaveData();
+    }
+
     public static implicit operator LevelManager(GameSection v)
     {
         throw new NotImplementedException();

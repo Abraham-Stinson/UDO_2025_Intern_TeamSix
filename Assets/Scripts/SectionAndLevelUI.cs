@@ -215,21 +215,21 @@ public class SectionAndLevelUI : MonoBehaviour
 
     private void LoadLevel(Level levelToLoad)
     {
-        // Health kontrolü - eğer health 0 veya daha az ise level yükleme
+        // Health kontrolü
         if (HealthManager.health <= 0)
         {
             WarningMesageUI("health");
-            Debug.LogWarning("Health is 0 or less, cannot load level!");
             return;
         }
 
-        /*// UI elementlerini güncelle
-        levelPanelParent.gameObject.SetActive(false);  // Level seçme panelini kapat*/
-        backButton.gameObject.SetActive(false);         // Back butonunu kapat
+        backButton.gameObject.SetActive(false);
 
         // Temizlik ve level yükleme
         ClearLevelPanel();
         LevelManager.Instance.LoadLevel(levelToLoad);
+        
+        // Seçilen level'ı PlayerPrefs'e kaydet
+        LevelManager.Instance.SaveSelectedLevel();
 
         // Game state'i güncelle
         SetGameState(EGameState.GAME);
