@@ -140,9 +140,10 @@ public class SectionAndLevelUI : MonoBehaviour
             Destroy(child.gameObject);
         }
 
-        // Yeni section panelleri oluştur
-        foreach (var section in LevelManager.Instance.sections)
+        // Yeni section panelleri oluştur (sondan başa doğru)
+        for (int i = LevelManager.Instance.sections.Length - 1; i >= 0; i--)
         {
+            var section = LevelManager.Instance.sections[i];
             if (section == null) continue;
             CreateSingleSectionPanel(section);
         }
