@@ -138,11 +138,28 @@ public class GoalManager : MonoBehaviour
     {
        Debug.Log("Goal Complete : " + goals[goalIndex].itemPrefab.ItemName);
        
+       // Check if this is the last goal (only 1 goal left)
+       int remainingGoals = 0;
+       for (int i = 0; i < goals.Length; i++)
+       {
+           if (goals[i].amount > 0)
+               remainingGoals++;
+       }
+       
+       // If this is the last goal, stop the timer immediately
+       if (remainingGoals == 0)
+       {
+           if (TimerManager.instance != null)
+           {
+               TimerManager.instance.StopTimer();
+           }
+       }
+       
        if (goalIndex < goalCards.Count && goalCards[goalIndex] != null)
        {
            var card = goalCards[goalIndex];
            card.Complate();
-           
+
            card.onCompleteAnimationFinished = () => {
                CheckForLevelComplete();
            };

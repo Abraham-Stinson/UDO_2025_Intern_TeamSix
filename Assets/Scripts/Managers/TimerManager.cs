@@ -113,7 +113,7 @@ public class TimerManager : MonoBehaviour, IGameStateListener
             
     }
 
-    private void StopTimer()
+    public void StopTimer()
     {
         isTimerRunning = false; // Stop the timer
     }
