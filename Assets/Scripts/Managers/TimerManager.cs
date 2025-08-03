@@ -12,10 +12,11 @@ public class TimerManager : MonoBehaviour, IGameStateListener
     [Header("Elements")]
     [SerializeField] private TextMeshProUGUI timerText;
     [SerializeField] private Image timeFillImage;
-    
+
     private float currentTimer; // Use float for more precise timing
     private float maxTimer; // Başlangıç timer değerini saklamak için
     private bool isTimerRunning;
+    [SerializeField] private float masscotDisapearPercent = 20f;
 
     private void Awake()
     {
@@ -71,6 +72,8 @@ public class TimerManager : MonoBehaviour, IGameStateListener
         UpdateTimerText();
         // Fill image'ı güncelle
         UpdateTimerFill();
+        //Masscot
+        CheckMasscotMustBeActive();
     }
 
     private void UpdateTimerText()
@@ -92,7 +95,7 @@ public class TimerManager : MonoBehaviour, IGameStateListener
     {
         isTimerRunning = false; // Stop the timer
         GameManager.instance.SetGameState(EGameState.GAMEOVER);
-        
+
         SectionAndLevelUI.Instance.ShowLoseScreen(1);
     }
 
@@ -104,7 +107,11 @@ public class TimerManager : MonoBehaviour, IGameStateListener
     public void GameStateChangedCallBack(EGameState gameState)
     {
         if (gameState == EGameState.LEVELCOMPLETE || gameState == EGameState.GAMEOVER)
+        {
+            SectionAndLevelUI.Instance.ShowAnxiousMasscot(false);
             StopTimer();
+        }
+            
     }
 
     private void StopTimer()
@@ -116,5 +123,17 @@ public class TimerManager : MonoBehaviour, IGameStateListener
     {
         StopTimer();
         Invoke("StartTimer", 5);
+    }
+    private void CheckMasscotMustBeActive()
+    {
+        float timePercent = (currentTimer / maxTimer) * 100;
+        if (timePercent > masscotDisapearPercent)
+        {
+            return;
+        }
+        else
+        {
+            SectionAndLevelUI.Instance.ShowAnxiousMasscot(true);
+        }
     }
 }

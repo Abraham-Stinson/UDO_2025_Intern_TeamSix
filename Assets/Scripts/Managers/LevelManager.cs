@@ -89,20 +89,15 @@ public class LevelManager : MonoBehaviour, IGameStateListener
 
     private void SpawnLevel()
     {
-        // Health kontrolü - eğer health 0 veya daha az ise level spawn etme
+        // Health kontrolü
         if (HealthManager.health <= 0)
         {
             SectionAndLevelUI.Instance.WarningMesageUI("health");
-            Debug.LogWarning("Health is 0 or less, cannot spawn level!");
             GameManager.instance.SetGameState(EGameState.MENU);
             return;
         }
 
-        // Health'i azalt
-        HealthManager.instance.ReduceHealth(1);
-
         transform.Clear();
-
         activeItems.Clear();
         currentSection = sections[currentSectionIndex];
 
@@ -110,8 +105,11 @@ public class LevelManager : MonoBehaviour, IGameStateListener
         int validatedLevelIndex = currentLevelIndex % currentSection.levels.Length;
         currentLevel = Instantiate(currentSection.levels[validatedLevelIndex], transform);
 
-        levelDataText.text = currentLevel.levelName; // item data write on the ui text
+        levelDataText.text = currentLevel.levelName;
         activeItems.AddRange(currentLevel.GetComponentsInChildren<Item>());
+
+        // LevelSystem'i güncelle
+        LevelSystem.Instance?.OnLevelStarted();
 
         levelSpawned?.Invoke(currentLevel);
         sectionChanged?.Invoke(currentSection);
@@ -172,14 +170,15 @@ public class LevelManager : MonoBehaviour, IGameStateListener
         {
             SpawnLevel();
             PowerUpManager.instance?.ResetPowerupState();
-            
         }
         else if (gameState == EGameState.LEVELCOMPLETE)
         {
+            // LevelSystem'i güncelle
+            LevelSystem.Instance?.OnLevelCompleted();
+
             int rewardAmount = currentLevel.rewardCoin;
             MoneyManager.instance.IncreaseMoney(rewardAmount);
             SectionAndLevelUI.Instance.ShowRewardOnWinUI(rewardAmount);
-            Debug.Log($"Level completed! Money increased by {rewardAmount}. Current money: {MoneyManager.instance.money}");
 
             currentLevelIndex++;
 
@@ -199,11 +198,21 @@ public class LevelManager : MonoBehaviour, IGameStateListener
             }
             SaveData();
         }
+        else if (gameState == EGameState.GAMEOVER)
+        {
+            // LevelSystem'i güncelle
+            LevelSystem.Instance?.OnLevelFailed();
+
+            // Level kaybedildiğinde health azalt
+            HealthManager.instance.ReduceHealth(1);
+        }
     }
 
     public GameSection GetCurrentSection() => sections[currentSectionIndex];
     public Level GetCurrentLevel() => currentLevel;
     public GameSection[] GetAllSections() => sections;
+    public int GetCurrentLevelIndex() => currentLevelIndex;
+    public int GetCurrentSectionIndex() => currentSectionIndex;
 
     public bool IsSectionUnlocked(int sectionIndex)
     {
@@ -311,6 +320,43 @@ public class LevelManager : MonoBehaviour, IGameStateListener
         }
 
         // Mevcut seviyeyi tekrar başlat (level index'ini değiştirmeden)
+        GameManager.instance.SetGameState(EGameState.GAME);
+    }
+
+    // Anamenüdeki "Son Level" butonu için metod
+    public void PlayLastLevel()
+    {
+        // Health kontrolü
+        if (HealthManager.health <= 0)
+        {
+            SectionAndLevelUI.Instance.WarningMesageUI("health");
+            return;
+        }
+
+        if (sections.Length == 0) return;
+
+        // İlk section'ın ilk levelını varsayılan olarak ayarla
+        currentSectionIndex = 0;
+        currentLevelIndex = 0;
+        
+        // Eğer daha önce level oynandıysa, kaydedilen section ve level'ı yükle
+        if (PlayerPrefs.HasKey(currentSectionKey) && PlayerPrefs.HasKey(currentLevelKey))
+        {
+            currentSectionIndex = PlayerPrefs.GetInt(currentSectionKey, 0);
+            currentLevelIndex = PlayerPrefs.GetInt(currentLevelKey, 0);
+        }
+
+        // Section ve level index'lerinin geçerli olduğundan emin ol
+        if (currentSectionIndex >= sections.Length)
+            currentSectionIndex = 0;
+        
+        if (currentLevelIndex >= sections[currentSectionIndex].levels.Length)
+            currentLevelIndex = 0;
+
+        // LevelSystem'i güncelle
+        LevelSystem.Instance?.UpdateLevelInfo();
+        
+        // Oyunu başlat
         GameManager.instance.SetGameState(EGameState.GAME);
     }
 }

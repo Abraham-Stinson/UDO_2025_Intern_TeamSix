@@ -326,13 +326,8 @@ public class SectionAndLevelUI : MonoBehaviour
     // Lose panelinden seviyeyi tekrar başlatma methodu
     public void RestartLevel()
     {
-        // Health kontrolü - eğer health 0 veya daha az ise restart yapma
-        if (HealthManager.health <= 0)
-        {
-            WarningMesageUI("health");
-            Debug.LogWarning("Health is 0 or less, cannot restart level!");
-            return;
-        }
+        // Health kontrolünü kaldırdık çünkü artık level başlatırken health azaltmıyoruz
+        // Health sadece level kaybedildiğinde azalacak
 
         // Lose screen'i kapat
         foreach (var button in loseWithSlotButtonUI)
@@ -343,9 +338,6 @@ public class SectionAndLevelUI : MonoBehaviour
         {
             button.SetActive(false);
         }
-
-        // Health azaltma işlemini kaldırdık çünkü RestartCurrentLevel() zaten SpawnLevel() çağırıyor
-        // ve SpawnLevel() içinde health azaltılıyor
 
         // Mevcut seviyeyi tekrar başlat
         LevelManager.Instance.RestartCurrentLevel();
@@ -384,10 +376,20 @@ public class SectionAndLevelUI : MonoBehaviour
         warningMessagePanel.SetActive(false);
     }
 
-    [Header ("Reward Coin Text On Win Screen")]
+    [Header("Reward Coin Text On Win Screen")]
     [SerializeField] private TextMeshProUGUI rewardText;
     public void ShowRewardOnWinUI(int reward)
     {
         rewardText.text = reward.ToString();
     }
+    [Header("Masscot Emotions ")]
+    [SerializeField] private GameObject anxiousMasscot;
+    public void ShowAnxiousMasscot(bool isActive)
+    {
+        anxiousMasscot.SetActive(isActive);
+        Animator animator = anxiousMasscot.GetComponent<Animator>();
+        animator.Play("AxiousMasscot");
+    }
+
+    
 }
