@@ -89,6 +89,8 @@ public class LevelManager : MonoBehaviour, IGameStateListener
 
     private void SpawnLevel()
     {
+        transform.Clear();
+        activeItems.Clear();
         // Health kontrolü
         if (HealthManager.health <= 0)
         {
@@ -97,8 +99,8 @@ public class LevelManager : MonoBehaviour, IGameStateListener
             return;
         }
 
-        transform.Clear();
-        activeItems.Clear();
+        
+        SectionAndLevelUI.Instance.ShowAnxiousMasscot(false);
         currentSection = sections[currentSectionIndex];
 
         SectionAndLevelUI.Instance.backgroundImage.sprite = currentSection.sectionBackground;
