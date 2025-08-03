@@ -108,16 +108,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemDatas:
   - itemPrefab: {fileID: 3725669006305352525, guid: dbae42fd359007c4187100fb7e342347, type: 3}
-    isGoal: 1
+    isGoal: 0
     amount: 15
   - itemPrefab: {fileID: 1455115268067317176, guid: 0faa66188050cbc479a7cde81b47bb0b, type: 3}
-    isGoal: 1
+    isGoal: 0
     amount: 15
   - itemPrefab: {fileID: 3523645745253868210, guid: d63b0a56548cb1f45aea57f8caac3284, type: 3}
     isGoal: 1
     amount: 15
   - itemPrefab: {fileID: 1646251970770064205, guid: f87e996eb435ea8499615e899334c006, type: 3}
     isGoal: 0
+    amount: 15
+  - itemPrefab: {fileID: 8759003444529238541, guid: 8c9d4552bd239db4280478e621879ea5, type: 3}
+    isGoal: 0
+    amount: 15
+  - itemPrefab: {fileID: 3340342673077839141, guid: 59c45c2faed8e3a4c84007594d36c44e, type: 3}
+    isGoal: 0
+    amount: 15
+  - itemPrefab: {fileID: 2568016887884707429, guid: 877838444db56b544b860cf36d40b162, type: 3}
+    isGoal: 1
     amount: 15
   itemLifetime: 10
   beltConfigs:

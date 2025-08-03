@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 3650370698514270393}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.52, y: -1.59, z: 0.72}
+  m_LocalPosition: {x: 4.52, y: -1.603, z: 0.72}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -76,25 +76,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemDatas:
+  - itemPrefab: {fileID: 1646251970770064205, guid: f87e996eb435ea8499615e899334c006, type: 3}
+    isGoal: 1
+    amount: 90
+  - itemPrefab: {fileID: 3340342673077839141, guid: 59c45c2faed8e3a4c84007594d36c44e, type: 3}
+    isGoal: 1
+    amount: 90
   - itemPrefab: {fileID: 3725669006305352525, guid: dbae42fd359007c4187100fb7e342347, type: 3}
     isGoal: 1
-    amount: 15
-  - itemPrefab: {fileID: 1455115268067317176, guid: 0faa66188050cbc479a7cde81b47bb0b, type: 3}
+    amount: 90
+  - itemPrefab: {fileID: 2506220803314214347, guid: a04b79edd01be6941b8ecf47f1fcbc49, type: 3}
     isGoal: 1
-    amount: 15
-  - itemPrefab: {fileID: 3523645745253868210, guid: d63b0a56548cb1f45aea57f8caac3284, type: 3}
+    amount: 90
+  - itemPrefab: {fileID: 8759003444529238541, guid: 8c9d4552bd239db4280478e621879ea5, type: 3}
     isGoal: 1
-    amount: 15
-  - itemPrefab: {fileID: 1646251970770064205, guid: f87e996eb435ea8499615e899334c006, type: 3}
-    isGoal: 0
-    amount: 15
+    amount: 90
   itemLifetime: 10
   beltConfigs:
   - name: Conveyor1
     spawnPoints:
     - {fileID: 4356878527489753274}
-    minSpawnTime: 0.5
-    maxSpawnTime: 0.5
+    minSpawnTime: 0.6
+    maxSpawnTime: 1.5
     materialSpeed: 0.5
     yOffset: 0
     meshRenderers:

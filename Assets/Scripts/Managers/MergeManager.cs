@@ -28,7 +28,7 @@ public class MergeManager : MonoBehaviour
   {
     for (int i = 0; i < items.Count; i++)
     {
-      Vector3 targetPos = items[i].transform.position + items[i].transform.up * goUpDistance;
+      Vector3 targetPos = items[i].transform.position + Vector3.up * goUpDistance;
       Action callback = null;
 
       if (i == 0)

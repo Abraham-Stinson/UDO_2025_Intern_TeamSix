@@ -505,6 +505,12 @@ MonoBehaviour:
   - itemPrefab: {fileID: 2506220803314214347, guid: a04b79edd01be6941b8ecf47f1fcbc49, type: 3}
     isGoal: 1
     amount: 6
+  - itemPrefab: {fileID: 2568016887884707429, guid: 877838444db56b544b860cf36d40b162, type: 3}
+    isGoal: 0
+    amount: 6
+  - itemPrefab: {fileID: 5194177359271444889, guid: 9c0df03bfa78a734b92b279d785554a8, type: 3}
+    isGoal: 0
+    amount: 6
   itemLifetime: 10
   beltConfigs:
   - name: Conveyor1

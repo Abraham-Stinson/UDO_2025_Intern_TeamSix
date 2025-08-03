@@ -62,17 +62,31 @@ public class InputManager : MonoBehaviour
 
     private void HandleTouchDown(Vector2 touchPosition)
     {
+        
         Ray ray = Camera.main.ScreenPointToRay(touchPosition);
         if (Physics.Raycast(ray, out RaycastHit hit, 400, powerupLayer))
         {
             powerupClicked?.Invoke(hit.collider.GetComponent<Powerup>());
+            return; 
+        }
+        if (Physics.Raycast(ray, out hit, 400))
+        {
+            if (hit.collider.transform.parent != null &&
+                hit.collider.transform.parent.TryGetComponent(out Item item))
+            {
+                DeselectionCurrentItem();
+                currentItem = item;
+                currentItem.Select(outlineMaterial);
+                itemClicked?.Invoke(currentItem);
+                currentItem = null;
+            }
         }
     }
 
     private void HandleTouchDrag(Vector2 touchPosition)
     {
         Ray ray = Camera.main.ScreenPointToRay(touchPosition);
-        if (Physics.Raycast(ray, out RaycastHit hit, 100))
+        if (Physics.Raycast(ray, out RaycastHit hit, 400))
         {
             if (hit.collider.transform.parent == null)
                 return;
@@ -124,7 +138,7 @@ public class InputManager : MonoBehaviour
 
     private void HandleDrag()
     {
-        Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out RaycastHit hit, 100);
+        Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out RaycastHit hit, 400);
 
         if (hit.collider == null)
         {

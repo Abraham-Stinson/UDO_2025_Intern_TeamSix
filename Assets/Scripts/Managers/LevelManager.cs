@@ -170,6 +170,8 @@ public class LevelManager : MonoBehaviour, IGameStateListener
         if (gameState == EGameState.GAME)
         {
             SpawnLevel();
+            PowerUpManager.instance?.ResetPowerupState();
+            
         }
         else if (gameState == EGameState.LEVELCOMPLETE)
         {

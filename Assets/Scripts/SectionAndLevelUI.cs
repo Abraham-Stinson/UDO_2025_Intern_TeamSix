@@ -292,6 +292,8 @@ public class SectionAndLevelUI : MonoBehaviour
         LevelManager.Instance.ExitLevel();
     }
     #endregion
+    
+    public static event System.Action GameOver;
 
     public void ShowLoseScreen(int loseType)
     {
@@ -317,6 +319,8 @@ public class SectionAndLevelUI : MonoBehaviour
                 button.SetActive(true);
             }
         }
+        
+        GameOver?.Invoke();
     }
 
     // Lose panelinden seviyeyi tekrar başlatma methodu

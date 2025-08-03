@@ -78,6 +78,7 @@ public class PowerUpManager : MonoBehaviour
             SaveData();
             
             vacuum.Play();
+            StartCoroutine(ResetBusyAfterDelay());
         }
         
     }
@@ -87,7 +88,12 @@ public class PowerUpManager : MonoBehaviour
         VacuumPowerup();
     }
 
-
+    private IEnumerator ResetBusyAfterDelay()
+    {
+        yield return new WaitForSeconds(2f); 
+        isBusy = false;
+    }
+    
     [Button]
     private void VacuumPowerup()
     {
@@ -169,6 +175,8 @@ public class PowerUpManager : MonoBehaviour
         }
 
     }
+    
+  
 
     private void ItemReachedVacuum(Item item)
     {
@@ -180,6 +188,13 @@ public class PowerUpManager : MonoBehaviour
         Destroy(item.gameObject);
     }
 
+    public void ResetPowerupState()
+    {
+        isBusy = false;
+        vacuumCounter = 0;
+        vacuumItemsToCollect = 0;
+    }
+    
     private ItemLevelData? GetGreatesGoal(ItemLevelData[] goals)
     {
         int max = 0;

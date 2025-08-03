@@ -7,6 +7,8 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioSource itemPlaced;
     [SerializeField] private AudioSource itemsMerged;
     [SerializeField] private AudioSource cardComplete;
+    [SerializeField] private AudioSource levelComplete;
+    [SerializeField] private AudioSource gameOver;
 
     private void Awake()
     {
@@ -16,6 +18,9 @@ public class AudioManager : MonoBehaviour
         MergeManager.merged += PlayItemsMerged;
 
         GoalCard.complete += PlayCardComplete;
+        GoalManager.levelCompleted += PlayLevelComplete;
+        SectionAndLevelUI.GameOver += PlayGameOver;
+
     }
 
     private void OnDestroy()
@@ -27,6 +32,9 @@ public class AudioManager : MonoBehaviour
 
        
         GoalCard.complete -= PlayCardComplete;
+        
+        GoalManager.levelCompleted -= PlayLevelComplete;
+        SectionAndLevelUI.GameOver -= PlayGameOver;
     }
 
     private void PlayItemSelected(Item unused)
@@ -47,6 +55,16 @@ public class AudioManager : MonoBehaviour
     private void PlayCardComplete()
     {
         PlaySource(cardComplete);
+    }
+
+    private void PlayLevelComplete()
+    {
+        PlaySource(levelComplete);
+    }
+
+    private void PlayGameOver()
+    {
+        PlaySource(gameOver);
     }
 
     private void PlaySource(AudioSource source, float pitch)

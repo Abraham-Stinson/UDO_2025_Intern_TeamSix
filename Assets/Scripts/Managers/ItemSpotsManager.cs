@@ -28,6 +28,7 @@ public class ItemSpotsManager : MonoBehaviour
     public static Action<Item> itemPickedUp;
     
     public static Action itemPlaced;
+    public static event Action gameOver;
 
     private void Awake()
     {
@@ -130,14 +131,19 @@ public class ItemSpotsManager : MonoBehaviour
         // item.transform.localRotation=quaternion.identity;
 
 
-        LeanTween.moveLocal(item.gameObject, itemLocalPositionOnSpot, .15f)
+        LeanTween.moveLocal(item.gameObject, item.LocalOffsetOnSpot, .15f)
             .setEase(animationEasing);
         LeanTween.scale(item.gameObject, itemLocalScalenOnSpot, animationDuration)
-            .setEase(animationEasing); ;
-        LeanTween.rotateLocal(item.gameObject, Vector3.zero, animationDuration)
+            .setEase(animationEasing);
+        
+        Vector3 targetRotation = item.ApplyCustomRotationOnPlace ? item.CustomRotationEuler : Vector3.zero;
+        
+        LeanTween.rotateLocal(item.gameObject, targetRotation, animationDuration)
             .setOnComplete(completeCallback);
 
 
+        item.Deselect();
+        
         item.DisableShadows();
         item.DisablePhysics();
 

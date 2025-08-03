@@ -74,7 +74,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemName: 16
-  icon: {fileID: 21300000, guid: 9feb54ca9a7a5e844a9c5343189a424a, type: 3}
+  applyCustomRotationOnPlace: 0
+  customRotationEuler: {x: 0, y: 0, z: 0}
+  localOffsetOnSpot: {x: 0, y: 0.08, z: 0}
+  icon: {fileID: 21300000, guid: 2d11d65c9b5002d43b31576c901e136d, type: 3}
   renderer: {fileID: 8973008692866032848}
   collider: {fileID: 3679849450928391630}
 --- !u!1001 &6877782272996937377

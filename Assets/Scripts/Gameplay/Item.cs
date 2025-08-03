@@ -8,7 +8,19 @@ public class Item : MonoBehaviour
     [Header("Data")]
     [SerializeField] private EItemName itemName;
     public EItemName ItemName => itemName; //this will return the item name
-
+    
+    
+    [Header("Rotation Settings")]
+    [SerializeField] private bool applyCustomRotationOnPlace;
+    [SerializeField] private Vector3 customRotationEuler;
+    public bool ApplyCustomRotationOnPlace => applyCustomRotationOnPlace;
+    public Vector3 CustomRotationEuler => customRotationEuler;
+    
+    [Header("Placement Offset")]
+    [SerializeField] private Vector3 localOffsetOnSpot;
+    public Vector3 LocalOffsetOnSpot => localOffsetOnSpot;
+ 
+    
     private ItemSpot spot;
     public ItemSpot Spot => spot;
 

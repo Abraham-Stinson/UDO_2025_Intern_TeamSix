@@ -12,6 +12,8 @@ public class GoalCard : MonoBehaviour
    [SerializeField] private GameObject backFace;
    [SerializeField] private Animator animator;
 
+   public Action onCompleteAnimationFinished;
+   
    public static event Action complete;
    
    private void Start()
@@ -53,5 +55,10 @@ public class GoalCard : MonoBehaviour
       animator.Play("Complete");
       
       complete?.Invoke();
+   }
+   
+   private void OnCompleteAnimationEnd()
+   {
+      onCompleteAnimationFinished?.Invoke();
    }
 }

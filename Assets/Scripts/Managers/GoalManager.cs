@@ -19,6 +19,8 @@ public class GoalManager : MonoBehaviour
 
     public ItemLevelData[] Goals => goals;
     
+    public static event System.Action levelCompleted;
+    
     private void Awake()
     {
         if (instance == null)
@@ -121,9 +123,14 @@ public class GoalManager : MonoBehaviour
        Debug.Log("Goal Complete : " + goals[goalIndex].itemPrefab.ItemName);
        
        if (goalIndex < goalCards.Count && goalCards[goalIndex] != null)
-           goalCards[goalIndex].Complate();
-
-       CheckForLevelComplete();
+       {
+           var card = goalCards[goalIndex];
+           card.Complate();
+           
+           card.onCompleteAnimationFinished = () => {
+               CheckForLevelComplete();
+           };
+       }
     }
 
     private void CheckForLevelComplete()
@@ -135,6 +142,9 @@ public class GoalManager : MonoBehaviour
         }
         GameManager.instance.SetGameState(EGameState.LEVELCOMPLETE);
         LevelManager.Instance.DestroyCurrentLevel();
+        
+        
+        levelCompleted?.Invoke();
     }
 
     // Level değişiminde manuel temizleme için
