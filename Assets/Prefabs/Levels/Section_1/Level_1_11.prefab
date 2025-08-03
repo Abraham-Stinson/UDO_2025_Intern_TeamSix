@@ -184,6 +184,8 @@ MonoBehaviour:
     currentSpawnTime: 0
     nextSpawnTime: 0
   goalItemWeightMultiplier: 2
+  maxHorizontalOffset: 0.3
+  maxDepthOffset: 0.3
 --- !u!1 &7847192107725340512
 GameObject:
   m_ObjectHideFlags: 0
