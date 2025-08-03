@@ -105,7 +105,7 @@ public class TimerManager : MonoBehaviour, IGameStateListener
 
     public void GameStateChangedCallBack(EGameState gameState)
     {
-        if (gameState == EGameState.LEVELCOMPLETE || gameState == EGameState.GAMEOVER)
+        if (gameState != EGameState.GAME)
         {
             SectionAndLevelUI.Instance.ShowAnxiousMasscot(false);
             StopTimer();

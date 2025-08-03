@@ -4156,6 +4156,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sections:
+  - sectionName: Aquapark
+    sectionIcon: {fileID: 21300000, guid: edf443acca90a77418d48f2fa9558414, type: 3}
+    sectionBackground: {fileID: 21300000, guid: c8652969c1fc6d945807029ad995e0f1, type: 3}
+    levels:
+    - {fileID: 4027883770162325361, guid: eac79d3d6928cac47be8443feb109562, type: 3}
+    - {fileID: 4027883770162325361, guid: b8e02cc4c15529e40833c65aac226255, type: 3}
+    - {fileID: 4027883770162325361, guid: 7c76573b8839cbc4583e9b2ce608e959, type: 3}
+    isUnlocked: 1
+    sectionColor: {r: 1, g: 1, b: 1, a: 0}
+  - sectionName: Funfair
+    sectionIcon: {fileID: 21300000, guid: 1119cad7db3bf9b4ca49654962e4c5c6, type: 3}
+    sectionBackground: {fileID: 21300000, guid: c8652969c1fc6d945807029ad995e0f1, type: 3}
+    levels:
+    - {fileID: 4027883770162325361, guid: eac79d3d6928cac47be8443feb109562, type: 3}
+    - {fileID: 4027883770162325361, guid: b8e02cc4c15529e40833c65aac226255, type: 3}
+    - {fileID: 4027883770162325361, guid: 7c76573b8839cbc4583e9b2ce608e959, type: 3}
+    isUnlocked: 1
+    sectionColor: {r: 1, g: 1, b: 1, a: 0}
   - sectionName: SHOPPING MALL
     sectionIcon: {fileID: 21300000, guid: 7b57e891b069fe24da78fc8a233d4084, type: 3}
     sectionBackground: {fileID: 21300000, guid: fb01d061a60d36149bd8d2bdc3b27165, type: 3}
@@ -4182,24 +4200,6 @@ MonoBehaviour:
     - {fileID: 4027883770162325361, guid: 1f7e570e15958674791ead5d0b55567b, type: 3}
     - {fileID: 4027883770162325361, guid: 82372eea4058dab478077153e2e781f4, type: 3}
     isUnlocked: 0
-    sectionColor: {r: 1, g: 1, b: 1, a: 0}
-  - sectionName: Funfair
-    sectionIcon: {fileID: 21300000, guid: 1119cad7db3bf9b4ca49654962e4c5c6, type: 3}
-    sectionBackground: {fileID: 21300000, guid: c8652969c1fc6d945807029ad995e0f1, type: 3}
-    levels:
-    - {fileID: 4027883770162325361, guid: eac79d3d6928cac47be8443feb109562, type: 3}
-    - {fileID: 4027883770162325361, guid: b8e02cc4c15529e40833c65aac226255, type: 3}
-    - {fileID: 4027883770162325361, guid: 7c76573b8839cbc4583e9b2ce608e959, type: 3}
-    isUnlocked: 1
-    sectionColor: {r: 1, g: 1, b: 1, a: 0}
-  - sectionName: Aquapark
-    sectionIcon: {fileID: 21300000, guid: edf443acca90a77418d48f2fa9558414, type: 3}
-    sectionBackground: {fileID: 21300000, guid: c8652969c1fc6d945807029ad995e0f1, type: 3}
-    levels:
-    - {fileID: 4027883770162325361, guid: eac79d3d6928cac47be8443feb109562, type: 3}
-    - {fileID: 4027883770162325361, guid: b8e02cc4c15529e40833c65aac226255, type: 3}
-    - {fileID: 4027883770162325361, guid: 7c76573b8839cbc4583e9b2ce608e959, type: 3}
-    isUnlocked: 1
     sectionColor: {r: 1, g: 1, b: 1, a: 0}
   mainMenuBackground: {fileID: 21300000, guid: 201af391c87cf4e7d8de699ba935aba6, type: 3}
   levelDataText: {fileID: 332063618195182656}
@@ -4991,7 +4991,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Lose
+  m_text: LOSE
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 02761faeca0ecec4ea0a34bd53d041b6, type: 2}
   m_sharedMaterial: {fileID: -6513195916528992748, guid: 02761faeca0ecec4ea0a34bd53d041b6, type: 2}
@@ -5024,7 +5024,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 100
-  m_fontStyle: 16
+  m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -6478,7 +6478,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &822464626353050329
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7140,7 +7140,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!223 &1125074775904055557
 Canvas:
   m_ObjectHideFlags: 0
@@ -7181,7 +7181,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -150}
+  m_AnchoredPosition: {x: 0, y: -50}
   m_SizeDelta: {x: 606, y: 201}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1150846917812349602
@@ -7857,7 +7857,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Empty slots with AD
+  m_text: EMPTY SLOTS WITH AD
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3d624eacf41e88245940ac4308180813, type: 2}
   m_sharedMaterial: {fileID: -942146051228193184, guid: 3d624eacf41e88245940ac4308180813, type: 2}
@@ -7890,7 +7890,7 @@ MonoBehaviour:
   m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 16
+  m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -8129,7 +8129,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Add time with gold
+  m_text: ADD TIME WITH GOLD
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3d624eacf41e88245940ac4308180813, type: 2}
   m_sharedMaterial: {fileID: -942146051228193184, guid: 3d624eacf41e88245940ac4308180813, type: 2}
@@ -8162,7 +8162,7 @@ MonoBehaviour:
   m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 16
+  m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -8298,10 +8298,10 @@ RectTransform:
   - {fileID: 6142986948193856161}
   m_Father: {fileID: 3017229761491211704}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 621.6, y: -139}
+  m_SizeDelta: {x: 128, y: 128}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!224 &1776370097678795370
 RectTransform:
@@ -8790,10 +8790,10 @@ RectTransform:
   - {fileID: 1880830142098518905}
   m_Father: {fileID: 3017229761491211704}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 265.6, y: -139}
+  m_SizeDelta: {x: 128, y: 128}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!1 &2237820569201063844
 GameObject:
@@ -11614,10 +11614,10 @@ RectTransform:
   - {fileID: 7849536684157324915}
   m_Father: {fileID: 3017229761491211704}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 443.6, y: -139}
+  m_SizeDelta: {x: 128, y: 128}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!1 &4023624039133468861
 GameObject:
@@ -11654,7 +11654,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &4028702603381515245
 RectTransform:
   m_ObjectHideFlags: 0
@@ -13388,7 +13388,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Add time with ad
+  m_text: ADD TIME WITH AD
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3d624eacf41e88245940ac4308180813, type: 2}
   m_sharedMaterial: {fileID: -942146051228193184, guid: 3d624eacf41e88245940ac4308180813, type: 2}
@@ -15878,7 +15878,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 125}
+  m_AnchoredPosition: {x: 0, y: 175}
   m_SizeDelta: {x: 500, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &6668823855793495049
@@ -17436,7 +17436,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Restart Level
+  m_text: RESTART LEVEL
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3d624eacf41e88245940ac4308180813, type: 2}
   m_sharedMaterial: {fileID: -942146051228193184, guid: 3d624eacf41e88245940ac4308180813, type: 2}
@@ -17469,7 +17469,7 @@ MonoBehaviour:
   m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 16
+  m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -18479,7 +18479,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "to ma\u0131n menu"
+  m_text: TO MAIN MENU
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3d624eacf41e88245940ac4308180813, type: 2}
   m_sharedMaterial: {fileID: -942146051228193184, guid: 3d624eacf41e88245940ac4308180813, type: 2}
@@ -18512,7 +18512,7 @@ MonoBehaviour:
   m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 16
+  m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -18724,9 +18724,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Level Completed
-
-'
+  m_text: LEVEL COMPLETED
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 02761faeca0ecec4ea0a34bd53d041b6, type: 2}
   m_sharedMaterial: {fileID: -6513195916528992748, guid: 02761faeca0ecec4ea0a34bd53d041b6, type: 2}
@@ -18759,7 +18757,7 @@ MonoBehaviour:
   m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 16
+  m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -19056,10 +19054,10 @@ RectTransform:
   - {fileID: 5899042397192375152}
   m_Father: {fileID: 3017229761491211704}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 799.6, y: -139}
+  m_SizeDelta: {x: 128, y: 128}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!224 &8497957236631430910
 RectTransform:
@@ -19550,10 +19548,10 @@ RectTransform:
   - {fileID: 3526017683966569121}
   m_Father: {fileID: 3017229761491211704}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 87.600006, y: -139}
+  m_SizeDelta: {x: 128, y: 128}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!1 &8917118588505978337
 GameObject:
@@ -19732,7 +19730,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Empty the slots with gold
+  m_text: EMPTY THE SLOTS WITH GOLD
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3d624eacf41e88245940ac4308180813, type: 2}
   m_sharedMaterial: {fileID: -942146051228193184, guid: 3d624eacf41e88245940ac4308180813, type: 2}
@@ -19765,7 +19763,7 @@ MonoBehaviour:
   m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 16
+  m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
