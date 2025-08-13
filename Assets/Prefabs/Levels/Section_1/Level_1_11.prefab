@@ -186,6 +186,7 @@ MonoBehaviour:
   goalItemWeightMultiplier: 2
   maxHorizontalOffset: 0.3
   maxDepthOffset: 0.3
+  maxYRotationOffset: 90
 --- !u!1 &7847192107725340512
 GameObject:
   m_ObjectHideFlags: 0
@@ -324,7 +325,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemplacer: {fileID: 557963257663168418}
   levelName: Level 11
-  duration: 85
+  duration: 110
   rewardCoin: 500
 --- !u!1001 &2140867824838210586
 PrefabInstance:

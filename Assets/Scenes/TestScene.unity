@@ -813,7 +813,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 15, y: 0}
   m_SizeDelta: {x: 20, y: -17}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &80327147
@@ -5173,7 +5173,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: -11.710022}
   m_SizeDelta: {x: -17, y: 20}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &494211442
@@ -14590,7 +14590,7 @@ Light:
   serializedVersion: 11
   m_Type: 1
   m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
-  m_Intensity: 1.5
+  m_Intensity: 2
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -17700,7 +17700,7 @@ MonoBehaviour:
     - {fileID: 4027883770162325361, guid: 1f7e570e15958674791ead5d0b55567b, type: 3}
     isUnlocked: 0
     sectionColor: {r: 1, g: 1, b: 1, a: 0}
-  - sectionName: Funfair
+  - sectionName: FUNFAIR
     sectionIcon: {fileID: 21300000, guid: 1119cad7db3bf9b4ca49654962e4c5c6, type: 3}
     sectionBackground: {fileID: 21300000, guid: c86b47ec4ef0544f39b7f1071a27cf27, type: 3}
     levels:
@@ -17709,7 +17709,7 @@ MonoBehaviour:
     - {fileID: 4027883770162325361, guid: 7c76573b8839cbc4583e9b2ce608e959, type: 3}
     isUnlocked: 1
     sectionColor: {r: 1, g: 1, b: 1, a: 0}
-  - sectionName: Aquapark
+  - sectionName: AQUAPARK
     sectionIcon: {fileID: 21300000, guid: edf443acca90a77418d48f2fa9558414, type: 3}
     sectionBackground: {fileID: 21300000, guid: c86b47ec4ef0544f39b7f1071a27cf27, type: 3}
     levels:
@@ -28078,7 +28078,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Options
+  m_text: OPTIONS
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3d624eacf41e88245940ac4308180813, type: 2}
   m_sharedMaterial: {fileID: -942146051228193184, guid: 3d624eacf41e88245940ac4308180813, type: 2}
@@ -28111,7 +28111,7 @@ MonoBehaviour:
   m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 120
-  m_fontStyle: 16
+  m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -28330,7 +28330,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Exit
+  m_text: EXIT
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3d624eacf41e88245940ac4308180813, type: 2}
   m_sharedMaterial: {fileID: -942146051228193184, guid: 3d624eacf41e88245940ac4308180813, type: 2}
@@ -28363,7 +28363,7 @@ MonoBehaviour:
   m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 120
-  m_fontStyle: 16
+  m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -32732,7 +32732,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Resume
+  m_text: RESUME
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 3d624eacf41e88245940ac4308180813, type: 2}
   m_sharedMaterial: {fileID: -942146051228193184, guid: 3d624eacf41e88245940ac4308180813, type: 2}
@@ -32765,7 +32765,7 @@ MonoBehaviour:
   m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 120
-  m_fontStyle: 16
+  m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
