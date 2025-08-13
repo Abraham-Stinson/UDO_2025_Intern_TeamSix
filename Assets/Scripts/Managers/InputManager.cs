@@ -1,5 +1,7 @@
 using UnityEngine;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEditor;
 
 public class InputManager : MonoBehaviour
@@ -77,10 +79,21 @@ public class InputManager : MonoBehaviour
                 DeselectionCurrentItem();
                 currentItem = item;
                 currentItem.Select(outlineMaterial);
-                itemClicked?.Invoke(currentItem);
-                currentItem = null;
+
+
+                StartCoroutine(SelectAndClickItem(currentItem));
+                // itemClicked?.Invoke(currentItem);
+                // currentItem = null;
             }
         }
+    }
+    
+    private IEnumerator SelectAndClickItem(Item item)
+    {
+        yield return null;
+        item.Deselect();
+        itemClicked?.Invoke(item);
+        currentItem = null;
     }
 
     private void HandleTouchDrag(Vector2 touchPosition)
