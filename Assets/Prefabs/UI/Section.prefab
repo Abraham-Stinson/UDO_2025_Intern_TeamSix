@@ -188,7 +188,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: -256}
-  m_SizeDelta: {x: 900, y: 150}
+  m_SizeDelta: {x: 830, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7792100215070329453
 CanvasRenderer:
@@ -218,7 +218,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "sect\u0131on name"
+  m_text: TEST TEST TEST TEST
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 02761faeca0ecec4ea0a34bd53d041b6, type: 2}
   m_sharedMaterial: {fileID: -6513195916528992748, guid: 02761faeca0ecec4ea0a34bd53d041b6, type: 2}
@@ -245,7 +245,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 110.35
+  m_fontSize: 68.3
   m_fontSizeBase: 100
   m_fontWeight: 400
   m_enableAutoSizing: 1
