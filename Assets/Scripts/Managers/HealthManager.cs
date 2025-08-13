@@ -153,14 +153,17 @@ public class HealthManager : MonoBehaviour
 
     public void AddHealth(int amount)
     {
-        if (health >= 0 && health + amount <= 5)
+        if (health >= 0 && health + amount <= maxHealth)
         {
             health += amount;
-            Debug.Log("Health Added");
+            PlayerPrefs.SetInt(CURRENT_LIVES_KEY, health);
+            SaveCurrentTime();
+            Debug.Log($"Health Added: {amount}. Current health: {health}");
         }
-
-        else if (health + amount > 5)
-            SectionAndLevelUI.Instance.WarningMesageUI("overHealth");
+        else
+        {
+            Debug.LogWarning($"Cannot add {amount} health. Current: {health}, Max: {maxHealth}");
+        }
     }
 }
 

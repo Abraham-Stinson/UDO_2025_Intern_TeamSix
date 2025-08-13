@@ -5,7 +5,7 @@ using System;
 
 public class HealthUIManager : MonoBehaviour
 {
-    public static HealthUIManager Instance { get; private set; }
+    public static HealthUIManager Instance { get; set; }
     [Header("UI Elements")]
     public Image healthBar; // Fill amount için Image component
     public TextMeshProUGUI healthText; // "5/10" şeklinde gösterim
@@ -17,6 +17,20 @@ public class HealthUIManager : MonoBehaviour
     public Color lowHealthColor = Color.red;
     public Color mediumHealthColor = Color.yellow;
     */
+    
+    void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+    
     void Start()
     {
         if (healthBar == null)
