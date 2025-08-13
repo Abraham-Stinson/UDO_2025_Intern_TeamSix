@@ -5,6 +5,7 @@ using System;
 
 public class HealthUIManager : MonoBehaviour
 {
+    public static HealthUIManager Instance { get; private set; }
     [Header("UI Elements")]
     public Image healthBar; // Fill amount için Image component
     public TextMeshProUGUI healthText; // "5/10" şeklinde gösterim
@@ -32,7 +33,7 @@ public class HealthUIManager : MonoBehaviour
         UpdateUI();
     }
 
-    void UpdateUI()
+    public void UpdateUI()
     {
         if (HealthManager.instance == null || healthBar == null)
             return;

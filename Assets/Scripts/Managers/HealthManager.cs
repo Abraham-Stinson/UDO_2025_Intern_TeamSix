@@ -153,9 +153,13 @@ public class HealthManager : MonoBehaviour
 
     public void AddHealth(int amount)
     {
-        if (health >= 0 && health + amount <= 10)
+        if (health >= 0 && health + amount <= 5)
+        {
             health += amount;
-        else if (health + amount > 10)
+            Debug.Log("Health Added");
+        }
+
+        else if (health + amount > 5)
             SectionAndLevelUI.Instance.WarningMesageUI("overHealth");
     }
 }

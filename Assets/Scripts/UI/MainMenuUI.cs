@@ -22,9 +22,16 @@ public class MainMenuUI : MonoBehaviour
             {
                 panel.SetActive(false);
             }
-
         }
         bool isPanelOpen = target.activeSelf;
         target.SetActive(!isPanelOpen);
+    }
+
+    public void CloseAllUI()
+    {
+        foreach (var panel in allMoreOptionPanels)
+        {
+            panel.SetActive(false);
+        }
     }
 }
