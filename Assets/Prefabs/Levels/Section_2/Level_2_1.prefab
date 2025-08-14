@@ -145,6 +145,7 @@ MonoBehaviour:
   goalItemWeightMultiplier: 2
   maxHorizontalOffset: 0.1
   maxDepthOffset: 0.1
+  maxYRotationOffset: 90
 --- !u!1 &7384649991002138788
 GameObject:
   m_ObjectHideFlags: 0
@@ -283,9 +284,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemplacer: {fileID: 557963257663168418}
-  levelName: 
+  levelName: Level 1
   duration: 40
-  rewardCoin: 100
+  rewardCoin: 40
 --- !u!1 &8315240269692054203
 GameObject:
   m_ObjectHideFlags: 0

@@ -209,6 +209,7 @@ MonoBehaviour:
   goalItemWeightMultiplier: 2
   maxHorizontalOffset: 0.3
   maxDepthOffset: 0.3
+  maxYRotationOffset: 90
 --- !u!1 &6940086110711019800
 GameObject:
   m_ObjectHideFlags: 0
@@ -380,7 +381,7 @@ MonoBehaviour:
   itemplacer: {fileID: 557963257663168418}
   levelName: Level 3
   duration: 120
-  rewardCoin: 300
+  rewardCoin: 30
 --- !u!1001 &489412382942832559
 PrefabInstance:
   m_ObjectHideFlags: 0

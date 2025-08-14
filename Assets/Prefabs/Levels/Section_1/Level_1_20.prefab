@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 798230276718904733}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.59, y: 1.36, z: -2.56}
+  m_LocalPosition: {x: 4.59, y: 1.86, z: -2.56}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -56,7 +56,7 @@ Transform:
   m_GameObject: {fileID: 1263917912366739613}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.861, y: 0.047, z: -0.809}
+  m_LocalPosition: {x: -4.861, y: 0.55, z: -0.809}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -87,7 +87,7 @@ Transform:
   m_GameObject: {fileID: 3650370698514270393}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.52, y: -1.59, z: 0.72}
+  m_LocalPosition: {x: 4.52, y: -1.09, z: 0.72}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -209,6 +209,7 @@ MonoBehaviour:
   goalItemWeightMultiplier: 2
   maxHorizontalOffset: 0.3
   maxDepthOffset: 0.3
+  maxYRotationOffset: 90
 --- !u!1 &8123244948604613157
 GameObject:
   m_ObjectHideFlags: 0
@@ -263,7 +264,7 @@ MonoBehaviour:
   itemplacer: {fileID: 557963257663168418}
   levelName: Level 20
   duration: 85
-  rewardCoin: 500
+  rewardCoin: 50
 --- !u!1001 &3505153233742269624
 PrefabInstance:
   m_ObjectHideFlags: 0
